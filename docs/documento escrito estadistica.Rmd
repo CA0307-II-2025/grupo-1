@@ -1,16 +1,13 @@
 ---
-title: "Documento escrito"
+title: "Reporte de Proyecto"
 author: 
   - "José Carlos Quintero" 
   - "Paola Espinoza" 
   - "Julián Soto"
   - "María Paula Jiménez"
-output:
-  html_document:
-    toc: yes
-    toc_float: yes
-    df_print: paged
-    theme: united
-    highlight: tango
+output: pdf_document
 ---
+## Pregunta de Investigación
+¿?
 
+## Objetivo
