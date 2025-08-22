@@ -40,21 +40,35 @@ Nota del SCRUM master: la numeración de las notas están desordenadas porque, a
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
-- **Bloqueo:** Poca idea de como implementar una metodología estadística sólida en el estudio
-- **Solución** Investigar y basarse fuertemente en trabajos de otros autores, así como consultar con el profesor
+- **Bloqueo:** Poca idea de como implementar una metodología estadística sólida en el estudio.
+- **Solución** Investigar y basarse fuertemente en trabajos de otros autores, así como consultar con el profesor.
 
 
 
 
 # ⏳  Daily
 
-El formato para cada estudiante debe ser
+##  Fecha: 2025-08-18
 
-- **¿Qué hice ayer?**: _Describir brevemente las tareas completadas ayer, vinculadas a historias (ej: "Implementé la función de limpieza y escribí test para valores faltantes")._
-- **¿Qué haré hoy?**: _Enumerar foco de hoy (ej: "Integrar resultados descriptivos en el reporte y comenzar prueba de hipótesis")._
-- **¿Hay algo que me está bloqueando?**: _Listar obstáculos o dependencias (ej: "Falta confirmar el rango de años con PO" o "La librería X está dando un bug")._
+### Estudiante A:
+- **¿Qué hice ayer?**:
+- **¿Qué haré hoy?**:
+- **¿Hay algo que me está bloqueando?**:
 
+### Estudiante B:
+- **¿Qué hice ayer?**:
+- **¿Qué haré hoy?**:
+- **¿Hay algo que me está bloqueando?**:
 
+### Paola Espinoza Hernández:
+- **¿Qué hice ayer?**: Busqué posibles bases de datos para el proyecto.
+- **¿Qué haré hoy?**: Explorar distintas alternativas para el desarrollo del dashboard.
+- **¿Hay algo que me está bloqueando?**: No tenemos definida la metodología que podemos aplicar.
+
+### José Carlos:
+- **¿Qué hice ayer?**:
+- **¿Qué haré hoy?**:
+- **¿Hay algo que me está bloqueando?**:
 
 ##  Fecha: 2025-08-20
 
@@ -68,10 +82,10 @@ El formato para cada estudiante debe ser
 - **¿Qué haré hoy?**:
 - **¿Hay algo que me está bloqueando?**:
 
-### Estudiante C:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Paola Espinoza Hernández:
+- **¿Qué hice ayer?**: Investigué opciones para el desarrollo del dashboard y elaboré una versión inicial.
+- **¿Qué haré hoy?**: Analizaré las bases de datos propuestas y revisaré posibles artículos a replicar.
+- **¿Hay algo que me está bloqueando?**: La falta de certeza sobre el tema y la base de datos a utilizar.
 
 ### José Carlos:
 - **¿Qué hice ayer?**: Investigué sobre diferentes opciones de bases de datos y consulté sobre artículos compartidos por mis compañeros
