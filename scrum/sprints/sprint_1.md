@@ -77,10 +77,10 @@ Nota del SCRUM master: la numeración de las notas están desordenadas porque, a
 - **¿Qué haré hoy?**:
 - **¿Hay algo que me está bloqueando?**:
 
-### Estudiante B:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### María Paula:
+- **¿Qué hice ayer?**: Revisé los articulos y bases de datos proporcionados por mis compañeros.
+- **¿Qué haré hoy?**: Ir comenzando una presentación en canva del proyecto para presentarla el viernes.
+- **¿Hay algo que me está bloqueando?**: Estoy teniendo problemas con el manejo de git.
 
 ### Paola Espinoza Hernández:
 - **¿Qué hice ayer?**: Investigué opciones para el desarrollo del dashboard y elaboré una versión inicial.
