@@ -7,13 +7,13 @@ Tener una propuesta de base de datos para usar en el proyecto, así como potenci
 
 Nota del SCRUM master: la numeración de las notas están desordenadas porque, al estar en un periodo de aprendizaje, se cometieron errores que no se podían eliminar
 
-- HU4 - "Como equipo, queremos encontrar una base de datos que podamos usar para la investigación" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
+- HU4 - "Como equipo, queremos encontrar una base de datos que podamos usar para la investigación" (Estimación: 8 pts) – *Criterios de aceptación confirmados.*
 - HU6 - "Como equipo, queremos proponer diferentes enfoques y temas para la investigación que se respalden en la base" (Estimación: 5 pts) – *Criterios de aceptación confirmados.*
 - HU7 - "Como científico de datos, quiero generar scripts de carga y limpieza de la base de datos" (Estimación: 3 pts) – *Criterios de aceptación pendientes.*
-- HU8 - "Como científico de datos, quiero generar scripts de creación de gráficos y tablas" (Estimación: 5 pts) – *Criterios de aceptación pendientes.*
-- HU9 - "Como científico de datos, quiero generar una primera instancia del dashboard en Python" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
-- HU10 - "Como investigador, quiero encontrar artículos relacionados con temas potenciales para la investigación" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
-- HU11 - "Como investigador, quiero generar una primera versión del trabajo escrito" (Estimación: 5 pts) – *Criterios de aceptación confirmados.*
+- HU8 - "Como científico de datos, quiero generar scripts de creación de gráficos y tablas" (Estimación: 3 pts) – *Criterios de aceptación pendientes.*
+- HU9 - "Como científico de datos, quiero generar una primera instancia del dashboard en Python" (Estimación: 1 pts) – *Criterios de aceptación confirmados.*
+- HU10 - "Como investigador, quiero encontrar artículos relacionados con temas potenciales para la investigación" (Estimación: 5 pts) – *Criterios de aceptación confirmados.*
+- HU11 - "Como investigador, quiero generar una primera versión del trabajo escrito" (Estimación: 1 pts) – *Criterios de aceptación confirmados.*
 
 ---
 
