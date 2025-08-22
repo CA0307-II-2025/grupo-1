@@ -1,36 +1,47 @@
 # 📆  Planificación
 
-## 🎯  Objetivo del Sprint:
-
- _Declarar la meta del sprint en 1-2 frases (ej: "Tener datos limpios y un análisis descriptivo inicial completado")._
+## 🎯  Objetivo del Sprint
+Tener una propuesta de base de datos para usar en el proyecto, así como potenciales temas de investigación, y dejar la estructura inicial del repositorio lista con scripts y documentos básicos.
 
 ## 😃  Historias de usuario
 
-- HU# - "Título de la Historia" (Estimación: Y pts) – *Criterios de aceptación confirmados.*
-- HU# - ...
-*(Listar las historias del backlog que el equipo se compromete a completar este sprint, con sus IDs y breve nombre.)*
+Nota del SCRUM master: la numeración de las notas están desordenadas porque, al estar en un periodo de aprendizaje, se cometieron errores que no se podían eliminar
 
+- HU4 - "Como equipo, queremos encontrar una base de datos que podamos usar para la investigación" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
+- HU6 - "Como equipo, queremos proponer diferentes enfoques y temas para la investigación que se respalden en la base" (Estimación: 5 pts) – *Criterios de aceptación confirmados.*
+- HU7 - "Como científico de datos, quiero generar scripts de carga y limpieza de la base de datos" (Estimación: 3 pts) – *Criterios de aceptación pendientes.*
+- HU8 - "Como científico de datos, quiero generar scripts de creación de gráficos y tablas" (Estimación: 5 pts) – *Criterios de aceptación pendientes.*
+- HU9 - "Como científico de datos, quiero generar una primera instancia del dashboard en Python" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
+- HU10 - "Como investigador, quiero encontrar artículos relacionados con temas potenciales para la investigación" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
+- HU11 - "Como investigador, quiero generar una primera versión del trabajo escrito" (Estimación: 5 pts) – *Criterios de aceptación confirmados.*
 
+---
 
-## 🔜  Plan de alto nivel:
-- *Semana 1:* _Tareas principales (ej: Ingesta de datos, Setup entorno CI)._
-- *Semana 2:* _Tareas principales (ej: Implementar modelo y validar, preparar demo)._
+## 🔜  Plan de alto nivel
+- *Semana 1:* Investigar sobre metodologías posibles, indagar sobre bases de datos y proponer temas iniciales.
+- *Semana 2:* Cargar la base de datos al repositorio, crear primera versión del escrito y del dashboard básico.
 
+---
 
-## 🥇  Criterios de aceptación del Sprint:
+## 🥇  Criterios de aceptación del Sprint
 - [ ] _Todas las historias listadas completadas y aceptadas por el profesor._
-- [ ] _El código limpia automáticamente la base de datos._
+- [ ] _La base de datos seleccionada se encuentra en `data/raw`._
+- [ ] _El dashboard básico se ejecuta desde la carpeta `app`._
+- [ ] _El documento escrito preliminar se encuentra en la carpeta `docs`._
+
 
 
 ## 📌  Asignación de tareas inicial
-- *Persona A:* Historia 1
-- *Persona B:* Historia 2
-- *Persona C:* documentación
+- *Todos*: Historia 4 y 6
+- *Paola:* Historia 7 y 9
+- *Paula:* Historia 11
+- *Julián:* Historia 10
+- *José Carlos:* Historia 7 y 8 y documentación SCRUM
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
-- **Bloqueo:** _No tenemos la base de datos limpia.
-- **Solución** _Crear una historia solo para limpiar la base de datos_.
+- **Bloqueo:** Poca idea de como implementar una metodología estadística sólida en el estudio
+- **Solución** Investigar y basarse fuertemente en trabajos de otros autores, así como consultar con el profesor
 
 
 
@@ -45,7 +56,7 @@ El formato para cada estudiante debe ser
 
 
 
-##  Fecha: YYYY-MM-DD
+##  Fecha: 2025-08-20
 
 ### Estudiante A:
 - **¿Qué hice ayer?**:
@@ -62,10 +73,10 @@ El formato para cada estudiante debe ser
 - **¿Qué haré hoy?**:
 - **¿Hay algo que me está bloqueando?**:
 
-### Estudiante D:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### José Carlos:
+- **¿Qué hice ayer?**: Investigué sobre diferentes opciones de bases de datos y consulté sobre artículos compartidos por mis compañeros
+- **¿Qué haré hoy?**: le escribiré al profe sobre nuestras propuestas de base de datos y organizaré la documentación del SCRUM de mejor manera
+- **¿Hay algo que me está bloqueando?**: no estoy seguro de como implementaremos la metodología, pero eso es para etapas posteriores
 
 
 
