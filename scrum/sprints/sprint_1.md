@@ -40,7 +40,7 @@ Nota del SCRUM master: la numeración de las notas están desordenadas porque, a
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
-- **Bloqueo:** Poca idea de como implementar una metodología estadística sólida en el estudio.
+- **Bloqueo:** Poca idea de cómo implementar una metodología estadística sólida en el estudio.
 - **Solución** Investigar y basarse fuertemente en trabajos de otros autores, así como consultar con el profesor.
 
 
@@ -50,10 +50,10 @@ Nota del SCRUM master: la numeración de las notas están desordenadas porque, a
 
 ##  Fecha: 2025-08-18
 
-### Estudiante A:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Julián Soto Montoya
+- **¿Qué hice ayer?**: Lectura del artículo "Bayesian spatial modeling of childhood overweight and obesity prevalence in Costa Rica".
+- **¿Qué haré hoy?**: Presentar las ideas encontradas durante la lectura del artículo, a los compañeros de trabajo.
+- **¿Hay algo que me está bloqueando?**:  -
 
 ### Estudiante B:
 - **¿Qué hice ayer?**:
@@ -72,10 +72,10 @@ Nota del SCRUM master: la numeración de las notas están desordenadas porque, a
 
 ##  Fecha: 2025-08-20
 
-### Estudiante A:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Julián Soto Montoya:
+- **¿Qué hice ayer?**: Lectura del artículo "Species Distribution Modeling using Spatial Point Processes: a Case Study of Sloths in Costa Rica"
+- **¿Qué haré hoy?**: Divulgar las ideas encontradas con los compañeros, en la reunión acordada.
+- **¿Hay algo que me está bloqueando?**: Dificultades en la utilización de git.
 
 ### María Paula:
 - **¿Qué hice ayer?**: Revisé los articulos y bases de datos proporcionados por mis compañeros.
