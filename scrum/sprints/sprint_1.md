@@ -44,8 +44,6 @@ Nota del SCRUM master: la numeración de las notas están desordenadas porque, a
 - **Solución** Investigar y basarse fuertemente en trabajos de otros autores, así como consultar con el profesor.
 
 
-
-
 # ⏳  Daily
 
 ##  Fecha: 2025-08-18
@@ -55,20 +53,15 @@ Nota del SCRUM master: la numeración de las notas están desordenadas porque, a
 - **¿Qué haré hoy?**: Presentar las ideas encontradas durante la lectura del artículo, a los compañeros de trabajo.
 - **¿Hay algo que me está bloqueando?**:  -
 
-### Estudiante B:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
-
 ### Paola Espinoza Hernández:
 - **¿Qué hice ayer?**: Busqué posibles bases de datos para el proyecto.
 - **¿Qué haré hoy?**: Explorar distintas alternativas para el desarrollo del dashboard.
 - **¿Hay algo que me está bloqueando?**: No tenemos definida la metodología que podemos aplicar.
 
 ### José Carlos:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- **¿Qué hice ayer?**: Consulté una base relacionada con el Covid-19 que podríamos usar
+- **¿Qué haré hoy?**: Exploraré otras alternativas propuestas por mis compañeros
+- **¿Hay algo que me está bloqueando?**: -
 
 ##  Fecha: 2025-08-20
 
@@ -94,44 +87,46 @@ Nota del SCRUM master: la numeración de las notas están desordenadas porque, a
 
 
 
-# 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
-
-
+# 🔍   Revisión en clase (Fecha: 2025-08-22)
 
 ## 📈  Resultado mostrado
 
-- *Funcionalidad A:* (ej: "Carga automática de dataset desde CSV en base de datos completada").
-- *Funcionalidad B:* (ej: "Gráficos descriptivos generados dinámicamente").
-
+- *Funcionalidad A:* Selección de base de datos final (con validación del coordinador).
+- *Funcionalidad B:* Exploración inicial de temas de investigación vinculados a la base de datos.
+- *Funcionalidad C:* Primera versión del documento preliminar del proyecto ubicada en `docs`.
+- *Funcionalidad D:* Dashboard básico en Python ejecutado desde la carpeta `app`.
 
 ## :arrows_counterclockwise:  Retroalimentación
 
-- **Profesor**:
-- **Compañeros:**
-
+- **Profesor**: en cada commit es recomendable mencionar, cuando corresponda, la historia de usuario/issue que se resuelve.
+- **Compañeros:** falta definir un plan más claro en las reuniones para no divagar en discusiones sin rumbo.
 
 ## ✔️  Criterios de aceptación cumplidos:
-- [] _Historias 1, 2, 3. completadas. Falta la historia 4.
-- [x] Carga automática de la base de datos.
+- [x] HU4 – Base de datos seleccionada (ubicada en `data/raw`).
+- [~] HU6 – Temas explorados, pero el ranking comparativo aún está pendiente.
+- [ ] HU7 – Scripts de carga y limpieza de datos no finalizados.
+- [ ] HU8 – Scripts de gráficos/tablas no implementados.
+- [x] HU9 – Dashboard inicial ejecutable desde `app`.
+- [~] HU10 – Algunas referencias encontradas, pero falta ampliar investigación académica.
+- [x] HU11 – Documento preliminar del proyecto en `docs`.
 
+---
 
-# 🔙  Retrospective – Fecha: YYYY-MM-DD
+# 🔙  Retrospective – Fecha: 2025-08-22
 
 ## :white_check_mark: Qué salió bien
-1.  _Colaboración en el equipo_ Logramos terminar el sprint a tiempo.
-1.  _Usamos commits convencionales correctamente y no hubo errores_
-1.  Documentación actualizada al día evitó retrabajo luego.
-
-
+1. Seleccionamos la base de datos final de forma consensuada y validada con el coordinador.
+2. Se generó un primer dashboard básico en Python.
+3. Se logró una primera versión del documento escrito, lo que da estructura al trabajo.
 
 ## :no_good: Qué podría mejorar
+- A veces nos desviamos del tema en las reuniones y no llegábamos a conclusiones claras.
+- La organización del backlog no fue del todo clara debido a la inexperiencia, lo que retrasó la secuencia de tareas.
+- Falta de avance en referencias y scripts técnicos (limpieza de datos y visualizaciones).
 
-- _Gestión de tiempo en Daily:_ a veces se extendieron a 20 min discutiendo detalles innecesarios.
-- _Claridad de criterios de aceptación:_ En HU2 inicialmente no estaba claro cómo validar "datos limpios". Mejoraremos definición de *Done* para tareas de datos.
-- _Distribución de carga:_ Persona A quedó sobrecargada con 3 historias. El próximo sprint se equilibrará asignación más temprano.
-
-
-## :pencil: Acciones concretas  para el próximo sprint
-1. **Timebox en Daily** – SM usará temporizador de 15 min y cortará discusiones largas, anotándolas para after.
-2. **Refinar historias en refinamiento semanal** – Agregar criterios de aceptación más detallados, especialmente para historias técnicas (como limpieza de datos).
-3. **Balancear asignación tareas** – Implementar mini-plan al inicio del sprint donde cada dev toma carga similar; SM monitoreará que nadie tenga >40% de tareas.
+## :pencil: Acciones concretas para el próximo sprint
+1. **Plan previo para cada reunión** – Definir una mini-agenda con 2–3 puntos clave para evitar divagar y asegurar decisiones rápidas.
+2. **Commits vinculados a issues** – Al hacer commits, incluir referencia al issue/HU correspondiente cuando aplique.
+3. **Refinamiento de backlog** – Dedicar una sesión corta a clarificar dependencias entre historias y qué significa “done” en cada caso.
+4. **Avance incremental en tareas técnicas** – No esperar a tener todo listo: scripts de limpieza y gráficos deben avanzar en etapas pequeñas y revisables.
+6. **Bibliografía semanal** – Cada miembro debe traer al menos 1 referencia académica nueva en el próximo sprint para reforzar HU10.
