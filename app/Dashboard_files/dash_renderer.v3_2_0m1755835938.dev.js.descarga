@@ -4314,7 +4314,7 @@ CoSEConstants.ENFORCE_CONSTRAINTS = true;
 CoSEConstants.APPLY_LAYOUT = true;
 CoSEConstants.RELAX_MOVEMENT_ON_CONSTRAINTS = true;
 CoSEConstants.TREE_REDUCTION_ON_INCREMENTAL = true; // this should be set to false if there will be a constraint
-// This constant is for differentiating whether actual layout algorithm that uses cose-base wants to apply only incremental layout or 
+// This constant is for differentiating whether actual layout algorithm that uses cose-base wants to apply only incremental layout or
 // an incremental layout on top of a randomized layout. If it is only incremental layout, then this constant should be true.
 CoSEConstants.PURE_INCREMENTAL = CoSEConstants.DEFAULT_INCREMENTAL;
 
@@ -4501,7 +4501,7 @@ CoSELayout.prototype.classicLayout = function () {
     }
     // The graph associated with this layout is not flat or a forest
     else {
-        // Reduce the trees when incremental mode is not enabled and graph is not a forest 
+        // Reduce the trees when incremental mode is not enabled and graph is not a forest
         this.reduceTrees();
         // Update nodes that gravity will be applied
         this.graphManager.resetAllNodesToApplyGravitation();
@@ -4515,7 +4515,7 @@ CoSELayout.prototype.classicLayout = function () {
       }
   } else {
     if (CoSEConstants.TREE_REDUCTION_ON_INCREMENTAL) {
-      // Reduce the trees in incremental mode if only this constant is set to true 
+      // Reduce the trees in incremental mode if only this constant is set to true
       this.reduceTrees();
       // Update nodes that gravity will be applied
       this.graphManager.resetAllNodesToApplyGravitation();
@@ -4574,7 +4574,7 @@ CoSELayout.prototype.tick = function () {
     this.coolingFactor = Math.max(this.initialCoolingFactor - Math.pow(this.coolingCycle, Math.log(100 * (this.initialCoolingFactor - this.finalTemperature)) / Math.log(this.maxCoolingCycle)) / 100 * this.coolingAdjuster, this.finalTemperature);
     this.animationPeriod = Math.ceil(this.initialAnimationPeriod * Math.sqrt(this.coolingFactor));
   }
-  // Operations while tree is growing again 
+  // Operations while tree is growing again
   if (this.isTreeGrowing) {
     if (this.growTreeIterations % 10 == 0) {
       if (this.prunedNodesAll.length > 0) {
@@ -4667,7 +4667,7 @@ CoSELayout.prototype.moveNodes = function () {
   var lNodes = this.getAllNodes();
   var node;
 
-  // calculate displacement for each node 
+  // calculate displacement for each node
   for (var i = 0; i < lNodes.length; i++) {
     node = lNodes[i];
     node.calculateDisplacement();
@@ -4859,7 +4859,7 @@ CoSELayout.prototype.initConstraintVariables = function () {
       var subGraphOnHorizontal = new Map(); // subgraph from vertical RP constraints
       var subGraphOnVertical = new Map(); // subgraph from vertical RP constraints
 
-      // construct subgraphs from relative placement constraints 
+      // construct subgraphs from relative placement constraints
       this.constraints.relativePlacementConstraint.forEach(function (constraint) {
         if (constraint.left) {
           var left = nodeToDummyForVerticalAlignment.has(constraint.left) ? nodeToDummyForVerticalAlignment.get(constraint.left) : constraint.left;
@@ -4890,7 +4890,7 @@ CoSELayout.prototype.initConstraintVariables = function () {
         }
       });
 
-      // function to construct components from a given graph 
+      // function to construct components from a given graph
       // also returns an array that keeps whether each component contains fixed node
       var constructComponents = function constructComponents(graph, fixedNodes) {
         var components = [];
@@ -5373,7 +5373,7 @@ CoSELayout.prototype.groupZeroDegreeMembers = function () {
   // array of [parent_id x oneDegreeNode_id]
   var tempMemberGroups = {}; // A temporary map of parent node and its zero degree members
   this.memberGroups = {}; // A map of dummy parent node and its zero degree members whose parents are not to be tiled
-  this.idToDummyNode = {}; // A map of id to dummy node 
+  this.idToDummyNode = {}; // A map of id to dummy node
 
   var zeroDegree = []; // List of zero degree nodes whose parents are not to be tiled
   var allNodes = this.graphManager.getAllNodes();
@@ -6097,7 +6097,7 @@ CoSELayout.prototype.tilingPostLayout = function () {
 // -----------------------------------------------------------------------------
 // Section: Tree Reduction methods
 // -----------------------------------------------------------------------------
-// Reduce trees 
+// Reduce trees
 CoSELayout.prototype.reduceTrees = function () {
   var prunedNodesAll = [];
   var containsLeaf = true;
@@ -6137,7 +6137,7 @@ CoSELayout.prototype.reduceTrees = function () {
   this.prunedNodesAll = prunedNodesAll;
 };
 
-// Grow tree one step 
+// Grow tree one step
 CoSELayout.prototype.growTree = function (prunedNodesAll) {
   var lengthOfPrunedNodesInStep = prunedNodesAll.length;
   var prunedNodesInStep = prunedNodesAll[lengthOfPrunedNodesInStep - 1];
@@ -6438,7 +6438,7 @@ ConstraintHandler.handleConstraints = function (layout) {
     }
   }
 
-  // if there exists relative placement constraint without gap value, set it to default 
+  // if there exists relative placement constraint without gap value, set it to default
   if (constraints.relativePlacementConstraint) {
     constraints.relativePlacementConstraint.forEach(function (constraint) {
       if (!constraint.gap && constraint.gap != 0) {
@@ -6472,8 +6472,8 @@ ConstraintHandler.handleConstraints = function (layout) {
 
   // find an appropriate positioning for the nodes in a given graph according to relative placement constraints
   // this function also takes the fixed nodes and alignment constraints into account
-  // graph: dag to be evaluated, direction: "horizontal" or "vertical", 
-  // fixedNodes: set of fixed nodes to consider during evaluation, dummyPositions: appropriate coordinates of the dummy nodes  
+  // graph: dag to be evaluated, direction: "horizontal" or "vertical",
+  // fixedNodes: set of fixed nodes to consider during evaluation, dummyPositions: appropriate coordinates of the dummy nodes
   var findAppropriatePositionForRelativePlacement = function findAppropriatePositionForRelativePlacement(graph, direction, fixedNodes, dummyPositions, componentSources) {
 
     // find union of two sets
@@ -6868,12 +6868,12 @@ ConstraintHandler.handleConstraints = function (layout) {
 
   /****  apply transformation to the initial draft layout to better align with constrained nodes ****/
   // solve the Orthogonal Procrustean Problem to rotate and/or reflect initial draft layout
-  // here we follow the solution in Chapter 20.2 of Borg, I. & Groenen, P. (2005) Modern Multidimensional Scaling: Theory and Applications 
+  // here we follow the solution in Chapter 20.2 of Borg, I. & Groenen, P. (2005) Modern Multidimensional Scaling: Theory and Applications
 
   /* construct source and target configurations */
 
   var targetMatrix = []; // A - target configuration
-  var sourceMatrix = []; // B - source configuration 
+  var sourceMatrix = []; // B - source configuration
   var standardTransformation = false; // false for no transformation, true for standart (Procrustes) transformation (rotation and/or reflection)
   var reflectionType = false; // false/true for reflection check, 'reflectOnX', 'reflectOnY' or 'reflectOnBoth' for reflection type if necessary
   var fixedNodes = new Set();
@@ -6888,7 +6888,7 @@ ConstraintHandler.handleConstraints = function (layout) {
     });
   }
 
-  // construct dag from relative placement constraints 
+  // construct dag from relative placement constraints
   if (constraints.relativePlacementConstraint) {
     // construct both directed and undirected version of the dag
     constraints.relativePlacementConstraint.forEach(function (constraint) {
@@ -7076,7 +7076,7 @@ ConstraintHandler.handleConstraints = function (layout) {
 
       // do actual calculation for transformation matrix
       var tempMatrix = Matrix.multMat(targetMatrixTranspose, Matrix.transpose(sourceMatrixTranspose)); // tempMatrix = A'B
-      var SVDResult = SVD.svd(tempMatrix); // SVD(A'B) = USV', svd function returns U, S and V 
+      var SVDResult = SVD.svd(tempMatrix); // SVD(A'B) = USV', svd function returns U, S and V
       transformationMatrix = Matrix.multMat(SVDResult.V, Matrix.transpose(SVDResult.U)); // transformationMatrix = T = VU'
 
       /* apply found transformation matrix to obtain final draft layout */
@@ -7190,7 +7190,7 @@ ConstraintHandler.handleConstraints = function (layout) {
         var fixedNodesOnHorizontal = new Set();
         var fixedNodesOnVertical = new Set();
 
-        // fill maps and sets      
+        // fill maps and sets
         fixedNodes.forEach(function (nodeId) {
           fixedNodesOnHorizontal.add(nodeId);
           fixedNodesOnVertical.add(nodeId);
@@ -7436,7 +7436,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__551__;
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __nested_webpack_require_117795__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -7450,21 +7450,21 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__551__;
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __nested_webpack_require_117795__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
-/******/ 	
+/******/
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __nested_webpack_exports__ = __nested_webpack_require_117795__(45);
-/******/ 	
+/******/
 /******/ 	return __nested_webpack_exports__;
 /******/ })()
 ;
@@ -8737,10 +8737,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var _require2 = __nested_webpack_require_27297__(816),
           coseLayout = _require2.coseLayout;
         var defaults = Object.freeze({
-          // 'draft', 'default' or 'proof' 
-          // - 'draft' only applies spectral layout 
+          // 'draft', 'default' or 'proof'
+          // - 'draft' only applies spectral layout
           // - 'default' improves the quality with subsequent CoSE layout (fast cooling rate)
-          // - 'proof' improves the quality with subsequent CoSE layout (slow cooling rate) 
+          // - 'proof' improves the quality with subsequent CoSE layout (slow cooling rate)
           quality: "default",
           // Use random node positions at beginning of layout
           // if this is set to false, then quality option must be "proof"
@@ -8808,7 +8808,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           gravityCompound: 1.0,
           // Gravity range (constant)
           gravityRange: 3.8,
-          // Initial cooling factor for incremental layout  
+          // Initial cooling factor for incremental layout
           initialEnergyOnIncremental: 0.3,
           /* constraint options */
 
@@ -8818,7 +8818,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           // Align required nodes in vertical/horizontal direction
           // {vertical: [['n1', 'n2')], ['n3', 'n4']], horizontal: ['n2', 'n4']}
           alignmentConstraint: undefined,
-          // Place two nodes relatively in vertical/horizontal direction 
+          // Place two nodes relatively in vertical/horizontal direction
           // [{top: 'n1', bottom: 'n2', gap: 100}, {left: 'n3', right: 'n4', gap: 75}]
           relativePlacementConstraint: undefined,
           /* layout event callbacks */
@@ -8845,7 +8845,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               var components = void 0;
               var componentCenters = [];
 
-              // basic validity check for constraint inputs 
+              // basic validity check for constraint inputs
               if (options.fixedNodeConstraint && (!Array.isArray(options.fixedNodeConstraint) || options.fixedNodeConstraint.length == 0)) {
                 options.fixedNodeConstraint = undefined;
               }
@@ -9201,15 +9201,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           var parentNodes = eles.nodes(":parent");
           var dummyNodes = new Map(); // map to keep dummy nodes and their neighbors
           var nodeIndexes = new Map(); // map to keep indexes to nodes
-          var parentChildMap = new Map(); // mapping btw. compound and its representative node 
+          var parentChildMap = new Map(); // mapping btw. compound and its representative node
           var allNodesNeighborhood = []; // array to keep neighborhood of all nodes
           var xCoords = [];
           var yCoords = [];
           var samplesColumn = []; // sampled vertices
           var minDistancesColumn = [];
           var C = []; // column sampling matrix
-          var PHI = []; // intersection of column and row sampling matrices 
-          var INV = []; // inverse of PHI 
+          var PHI = []; // intersection of column and row sampling matrices
+          var INV = []; // inverse of PHI
 
           var firstSample = void 0; // the first sampled node
           var nodeSize = void 0;
@@ -9350,7 +9350,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             INV = Matrix.multMat(Matrix.multMat(a_v, a_Sig), Matrix.transpose(a_u));
           };
 
-          // calculate final coordinates 
+          // calculate final coordinates
           var powerIteration = function powerIteration() {
             // two largest eigenvalues
             var theta1 = void 0;
@@ -9465,7 +9465,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             allNodesNeighborhood[_i13] = [];
           }
 
-          // form a parent-child map to keep representative node of each compound node  
+          // form a parent-child map to keep representative node of each compound node
           parentNodes.forEach(function (ele) {
             var children = ele.children().intersection(eles);
 
@@ -11540,9 +11540,9 @@ var heap$1 = createCommonjsModule(function (module, exports) {
 
   /*
   Insert item x in list a, and keep it sorted assuming a is sorted.
-  
+
   If x is already in a, insert it to the right of the rightmost x.
-  
+
   Optional args lo (default 0) and hi (default a.length) bound the slice
   of a to be searched.
    */
@@ -11609,7 +11609,7 @@ var heap$1 = createCommonjsModule(function (module, exports) {
 
   /*
   Pop and return the current smallest value, and add the new item.
-  
+
   This is more efficient than heappop() followed by heappush(), and can be
   more appropriate when using a fixed size heap. Note that the value
   returned may be larger than item! That constrains reasonable use of
@@ -17648,7 +17648,7 @@ var define$2 = {
       // .data('foo', ...)
       if (string(name)) {
         // set or get property
-        var isPathLike = name.indexOf('.') !== -1; // there might be a normal field with a dot 
+        var isPathLike = name.indexOf('.') !== -1; // there might be a normal field with a dot
         var path = isPathLike && toPath_1(name);
 
         // .data('foo')
@@ -29293,7 +29293,7 @@ var defaults$6 = {
   // callback on layoutstop
   transform: function transform(node, position) {
     return position;
-  } // transform a given node position. Useful for changing flow direction in discrete layouts 
+  } // transform a given node position. Useful for changing flow direction in discrete layouts
 };
 
 function CircleLayout(options) {
@@ -30060,7 +30060,7 @@ var findLCA_aux = function findLCA_aux(node1, node2, graphIx, layoutInfo) {
  * @brief: printsLayoutInfo into js console
  *         Only used for debbuging
  */
-var printLayoutInfo; 
+var printLayoutInfo;
 
 /**
  * @brief : Randomizes the position of all nodes
@@ -30790,7 +30790,7 @@ var defaults$3 = {
   // callback on layoutstop
   transform: function transform(node, position) {
     return position;
-  } // transform a given node position. Useful for changing flow direction in discrete layouts 
+  } // transform a given node position. Useful for changing flow direction in discrete layouts
 };
 
 function GridLayout(options) {
@@ -31128,7 +31128,7 @@ var defaults = {
   // callback on layoutstop
   transform: function transform(node, position) {
     return position;
-  } // transform a given node position. Useful for changing flow direction in discrete layouts 
+  } // transform a given node position. Useful for changing flow direction in discrete layouts
 };
 
 function RandomLayout(options) {
@@ -33956,7 +33956,7 @@ BRp$4.getCachedImage = function (url, crossOrigin, onLoad) {
     var dataUriPrefix = 'data:';
     var isDataUri = url.substring(0, dataUriPrefix.length).toLowerCase() === dataUriPrefix;
     if (!isDataUri) {
-      // if crossorigin is 'null'(stringified), then manually set it to null 
+      // if crossorigin is 'null'(stringified), then manually set it to null
       crossOrigin = crossOrigin === 'null' ? null : crossOrigin;
       image.crossOrigin = crossOrigin; // prevent tainted canvas
     }
@@ -39219,7 +39219,7 @@ CRp$5.drawNode = function (context, node, shiftToOriginWithBb) {
         _path = outlinePath.path;
       }
 
-      // draw the outline path, either by using expanded points or by scaling 
+      // draw the outline path, either by using expanded points or by scaling
       // the dimensions, depending on shape
       if (shape === "ellipse") {
         r.drawEllipsePath(_path || context, npos.x, npos.y, sWidth, sHeight);
@@ -41541,7 +41541,7 @@ module.exports = layout;
 function layout(g, opts) {
   var time = opts && opts.debugTiming ? util.time : util.notime;
   time("layout", function() {
-    var layoutGraph = 
+    var layoutGraph =
       time("  buildLayoutGraph", function() { return buildLayoutGraph(g); });
     time("  runLayout",        function() { runLayout(layoutGraph, time); });
     time("  updateInputGraph", function() { updateInputGraph(g, layoutGraph); });
@@ -46802,7 +46802,7 @@ LNode.prototype.updateBounds = function () {
     this.setWidth(childGraph.getRight() - childGraph.getLeft());
     this.setHeight(childGraph.getBottom() - childGraph.getTop());
 
-    // Update compound bounds considering its label properties    
+    // Update compound bounds considering its label properties
     if (LayoutConstants.NODE_DIMENSIONS_INCLUDE_LABELS) {
 
       var width = childGraph.getRight() - childGraph.getLeft();
@@ -48331,7 +48331,7 @@ IGeometry.doIntersect = function (p1, p2, p3, p4) {
 };
 
 /**
- * This method checks and calculates the intersection of 
+ * This method checks and calculates the intersection of
  * a line segment and a circle.
  */
 IGeometry.findCircleLineIntersections = function (Ex, Ey, Lx, Ly, Cx, Cy, r) {
@@ -48953,7 +48953,7 @@ Layout.prototype.runLayout = function () {
   }
 
   if (LayoutConstants.ANIMATE === 'during') {
-    // If this is a 'during' layout animation. Layout is not finished yet. 
+    // If this is a 'during' layout animation. Layout is not finished yet.
     // We need to perform these in index.js when layout is really finished.
     return false;
   }
@@ -49874,7 +49874,7 @@ FDLayout.prototype.calcRepulsionForce = function (nodeA, nodeB) {
       repulsionForceX = repulsionForce * distanceX / distance;
       repulsionForceY = repulsionForce * distanceY / distance;
 
-      // Apply forces on the two nodes    
+      // Apply forces on the two nodes
       nodeA.repulsionForceX -= repulsionForceX;
       nodeA.repulsionForceY -= repulsionForceY;
       nodeB.repulsionForceX += repulsionForceX;
@@ -50031,7 +50031,7 @@ FDLayout.prototype.calculateRepulsionForceOfANode = function (nodeA, processedNo
           for (var k = 0; k < grid[i][j].length; k++) {
             nodeB = grid[i][j][k];
 
-            // If both nodes are not members of the same graph, 
+            // If both nodes are not members of the same graph,
             // or both nodes are the same, skip.
             if (nodeA.getOwner() != nodeB.getOwner() || nodeA == nodeB) {
               continue;
@@ -50043,7 +50043,7 @@ FDLayout.prototype.calculateRepulsionForceOfANode = function (nodeA, processedNo
               var distanceX = Math.abs(nodeA.getCenterX() - nodeB.getCenterX()) - (nodeA.getWidth() / 2 + nodeB.getWidth() / 2);
               var distanceY = Math.abs(nodeA.getCenterY() - nodeB.getCenterY()) - (nodeA.getHeight() / 2 + nodeB.getHeight() / 2);
 
-              // if the distance between nodeA and nodeB 
+              // if the distance between nodeA and nodeB
               // is less then calculation range
               if (distanceX <= this.repulsionRange && distanceY <= this.repulsionRange) {
                 //then add nodeB to surrounding of nodeA
@@ -50553,8 +50553,8 @@ function SVD() {};
 /* Below singular value decomposition (svd) code including hypot function is adopted from https://github.com/dragonfly-ai/JamaJS
    Some changes are applied to make the code compatible with the fcose code and to make it independent from Jama.
    Input matrix is changed to a 2D array instead of Jama matrix. Matrix dimensions are taken according to 2D array instead of using Jama functions.
-   An object that includes singular value components is created for return. 
-   The types of input parameters of the hypot function are removed. 
+   An object that includes singular value components is created for return.
+   The types of input parameters of the hypot function are removed.
    let is used instead of var for the variable initialization.
 */
 /*
@@ -74137,7 +74137,7 @@ if (
 ) {
   __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(new Error());
 }
-        
+
   })();
 }
 
@@ -74313,7 +74313,7 @@ if (
 ) {
   __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(new Error());
 }
-        
+
   })();
 }
 
@@ -78887,15 +78887,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_Toolbar_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!./Toolbar.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/core/Toolbar.css");
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
 
 var options = {};
 
@@ -78903,7 +78903,7 @@ options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTra
 options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
 
       options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
+
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
@@ -79005,15 +79005,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_CallbackGraphContainer_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js!./CallbackGraphContainer.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/error/CallbackGraph/CallbackGraphContainer.css");
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
 
 var options = {};
 
@@ -79021,7 +79021,7 @@ options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTra
 options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
 
       options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
+
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
@@ -79995,15 +79995,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_FrontEndError_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js!./FrontEndError.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/error/FrontEnd/FrontEndError.css");
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
 
 var options = {};
 
@@ -80011,7 +80011,7 @@ options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTra
 options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
 
       options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
+
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
@@ -80412,15 +80412,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_Percy_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!./Percy.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/error/Percy.css");
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
 
 var options = {};
 
@@ -80428,7 +80428,7 @@ options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTra
 options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
 
       options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
+
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
@@ -80662,15 +80662,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_DebugMenu_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js!./DebugMenu.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/error/menu/DebugMenu.css");
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
 
 var options = {};
 
@@ -80678,7 +80678,7 @@ options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTra
 options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
 
       options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
+
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
@@ -80907,15 +80907,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_VersionInfo_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js!./VersionInfo.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/error/menu/VersionInfo.css");
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
 
 var options = {};
 
@@ -80923,7 +80923,7 @@ options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTra
 options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
 
       options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
+
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
@@ -84966,7 +84966,7 @@ module.exports = window["ReactDOM"];
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -84980,17 +84980,17 @@ module.exports = window["ReactDOM"];
 /******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	!function() {
@@ -85003,7 +85003,7 @@ module.exports = window["ReactDOM"];
 /******/ 			return getter;
 /******/ 		};
 /******/ 	}();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
@@ -85015,7 +85015,7 @@ module.exports = window["ReactDOM"];
 /******/ 			}
 /******/ 		};
 /******/ 	}();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/global */
 /******/ 	!function() {
 /******/ 		__webpack_require__.g = (function() {
@@ -85027,12 +85027,12 @@ module.exports = window["ReactDOM"];
 /******/ 			}
 /******/ 		})();
 /******/ 	}();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	!function() {
 /******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
 /******/ 	}();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	!function() {
 /******/ 		// define __esModule on exports
@@ -85043,7 +85043,7 @@ module.exports = window["ReactDOM"];
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	}();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/node module decorator */
 /******/ 	!function() {
 /******/ 		__webpack_require__.nmd = function(module) {
@@ -85052,12 +85052,12 @@ module.exports = window["ReactDOM"];
 /******/ 			return module;
 /******/ 		};
 /******/ 	}();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/nonce */
 /******/ 	!function() {
 /******/ 		__webpack_require__.nc = undefined;
 /******/ 	}();
-/******/ 	
+/******/
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
