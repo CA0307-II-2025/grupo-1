@@ -52,19 +52,19 @@ Se ha tomado como fuente principal el libro *Handbook of Spatial Statistics* [@G
 
 La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón.
 
-- **distrito**: Nombre del distrito al que corresponde el registro. 
-- **provincia**: Nombre de la provincia correspondiente.  
-- **canton**: Nombre del cantón correspondiente. Representa la unidad territorial principal de análisis.  
-- **condicion**: Clasificación de los casos según el estado nutricional: sobrepeso, obesidad o combinada.  
-- **total**: Número total de casos combinados registrados por cantón, considerando todas las categorías de condición.  
-- **subtotal**: Número de casos registrados por cantón dentro de cada categoría específica de condición.  
-- **prevalencia**: Porcentaje de la población del cantón que presenta sobrepeso u obesidad.  
+- **distrito**: Nombre del distrito al que corresponde el registro.
+- **provincia**: Nombre de la provincia correspondiente.
+- **canton**: Nombre del cantón correspondiente. Representa la unidad territorial principal de análisis.
+- **condicion**: Clasificación de los casos según el estado nutricional: sobrepeso, obesidad o combinada.
+- **total**: Número total de casos combinados registrados por cantón, considerando todas las categorías de condición.
+- **subtotal**: Número de casos registrados por cantón dentro de cada categoría específica de condición.
+- **prevalencia**: Porcentaje de la población del cantón que presenta sobrepeso u obesidad.
 - **desempleo**: Porcentaje de personas desempleadas dentro del cantón.
 - **poblacion_urbana**: Porcentaje de la población que reside en áreas urbanas del cantón.
 - **privacion_critica**: Porcentaje de población en situación de privación crítica.
-- **poblacion_menor_14**: Porcentaje de personas menores de 14 años en la población total del cantón.  
-- **hogares_monomarentales**: Porcentaje de hogares encabezados por un solo padre o madre.  
-- **ocupantes_por_hogar**: Promedio de personas que habitan en cada hogar del cantón.  
+- **poblacion_menor_14**: Porcentaje de personas menores de 14 años en la población total del cantón.
+- **hogares_monomarentales**: Porcentaje de hogares encabezados por un solo padre o madre.
+- **ocupantes_por_hogar**: Promedio de personas que habitan en cada hogar del cantón.
 - **anos_escolaridad**: Promedio de años de escolaridad alcanzados por la población, indicador del nivel educativo.
 
 ## Referencias
