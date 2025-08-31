@@ -24,9 +24,9 @@ nocite: '@*'
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
-# Artículos consultados
+## Artículos consultados
 
-## *Species Distribution Modeling Using Spatial Point Processes: a Case Study of Sloths in Costa Rica*
+### *Species Distribution Modeling Using Spatial Point Processes: a Case Study of Sloths in Costa Rica*
 
 **Descripción:** El artículo [@Moraga2020Sloth] propone la aplicación de técnicas de procesos puntuales, específicamente el ajuste de un modelo Log-Gaussiano Cox, para la estimación de la intensidad espacial de avistamientos de la especie de Osos Perezozos, Bradypus variegatus, en Costa Rica. Además, el estudio valora el efecto de variables climáticas en los patrones espaciales de esta especie
 
@@ -36,7 +36,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 **Relevancia:** En el contexto del proyecto del curso, la metodología planteada en el artículo resulta relevante por diversas razones. Primeramente, resalta la importancia del uso de técnicas estadísticas en áreas como la ecología, para el manejo y seguimiento de especies. También así, existe la apertura para replicar esta metodología para distintas especies presentes en Costa Rica, como es el caso del primate Cebus imitator, conocido coloquialmente como Mono Carablanca. Finalmente, el estudio incorpora la presentación de la información estadística a través de técnicas visuales compatibles con la creación de dashboards.
 
 
-## *Bayesian spatial modeling of childhood overweight and obesity prevalence in Costa Rica*
+### *Bayesian spatial modeling of childhood overweight and obesity prevalence in Costa Rica*
 
 **Descripción:** El artículo [@Gomez2023] emplea técnicas del modelado bayesiano espacial para el estudio de los patrones geográficos de la prevalencia de sobrepeso y obesidad infantil en Costa Rica, y su relación con variables socieconómicas.
 
@@ -44,8 +44,11 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 **Relevancia:** En el marco del curso, este artículo es una opción valiosa porque aplica modelado bayesiano espacial, lo que constituye una continuación de los contenidos de inferencia bayesiana que serán abordados en el curso. A la vez, ofrece una aplicación directa de técnicas estadísticas en salud pública, un ámbito de gran importancia a nivel nacional. Por su parte, la metodología planteada resulta idónea para la visualización de datos a través de dashboards.
 
-# Literatura consultada
+## Literatura consultada
 
 Se ha tomado como fuente principal el libro *Handbook of Spatial Statistics* [@Gelfand2010Handbook]. En el contexto de los artículos consultados, se ha dado enfásis a los capítulos del libro en los que se abordan modelos de procesos puntuales, y modelos con efectos aleatorios espaciales. A su vez, los libros [@Moraga2019Geospatial], [@Moraga2023SpatialStats] han sido utilizados como literatura completamentaria.
 
-# Referencias
+## Descripción de los datos
+
+
+## Referencias
