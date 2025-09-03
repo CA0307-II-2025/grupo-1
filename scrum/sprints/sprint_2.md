@@ -24,16 +24,16 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 - *Semana 2:* _Análisis descriptivo, redacción de metodología y presentación_
 
 
-## 🥇 Criterios de aceptación del Sprint:  
-- [ ] _El tema del proyecto está definido y delimitado, con objetivos claros (HU#29)._  
-- [ ] _La revisión de literatura está realizada y documentada, con fuentes confiables y actualizadas (HU#23)._  
-- [ ] _El marco teórico está redactado y enlaza correctamente la bibliografía (HU#28)._  
-- [ ] _La base de datos cruda en CSV se carga y se transforma en un dataset limpio en formato parquet (HU#1, HU#7)._  
-- [ ] _El código limpia automáticamente la base de datos, imputando o eliminando valores faltantes según reglas establecidas (HU#7)._  
-- [ ] _Existe un informe de calidad de datos documentado (HU#20)._  
-- [ ] _Se generan scripts para gráficos y tablas en la carpeta `src/viz`, que al ejecutarse producen al menos un gráfico y una tabla guardados en `res` (HU#8)._  
-- [ ] _El dashboard refleja la información más reciente del proyecto (HU#32)._  
-- [ ] _La presentación de resultados de los Sprints #1 y #2 está lista con gráficos y análisis textual (HU#37)._  
+## 🥇 Criterios de aceptación del Sprint:
+- [ ] _El tema del proyecto está definido y delimitado, con objetivos claros (HU#29)._
+- [ ] _La revisión de literatura está realizada y documentada, con fuentes confiables y actualizadas (HU#23)._
+- [ ] _El marco teórico está redactado y enlaza correctamente la bibliografía (HU#28)._
+- [ ] _La base de datos cruda en CSV se carga y se transforma en un dataset limpio en formato parquet (HU#1, HU#7)._
+- [ ] _El código limpia automáticamente la base de datos, imputando o eliminando valores faltantes según reglas establecidas (HU#7)._
+- [ ] _Existe un informe de calidad de datos documentado (HU#20)._
+- [ ] _Se generan scripts para gráficos y tablas en la carpeta `src/viz`, que al ejecutarse producen al menos un gráfico y una tabla guardados en `res` (HU#8)._
+- [ ] _El dashboard refleja la información más reciente del proyecto (HU#32)._
+- [ ] _La presentación de resultados de los Sprints #1 y #2 está lista con gráficos y análisis textual (HU#37)._
 
 
 
@@ -45,8 +45,8 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
-- **Bloqueo:** _Falta de claridad en la definición del tema y objetivos del proyecto._  
-  **Solución:** _Completar la HU#29 y validarla con el profesor antes de avanzar._  
+- **Bloqueo:** _Falta de claridad en la definición del tema y objetivos del proyecto._
+  **Solución:** _Completar la HU#29 y validarla con el profesor antes de avanzar._
 
 # ⏳  Daily
 
@@ -64,12 +64,12 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 
 ### Julián Soto:
 - **¿Qué hice ayer?**: conversar con los integrantes del grupo acerca las tareas propuestas para el sprint2
-- **¿Qué haré hoy?**: iniciar con el análisis de la metodología del artículo de referencia. 
+- **¿Qué haré hoy?**: iniciar con el análisis de la metodología del artículo de referencia.
 - **¿Hay algo que me está bloqueando?**:  -
 
 ### María Paula Jiménez:
 - **¿Qué hice ayer?**: reunirme con mis compañeros para discutir la dinámica del sprint siguiente.
-- **¿Qué haré hoy?**: investigaré sobre antecedentes y conceptos 
+- **¿Qué haré hoy?**: investigaré sobre antecedentes y conceptos
 - **¿Hay algo que me está bloqueando?**: no
 
 ##  Fecha: 2025-08-28
@@ -81,13 +81,13 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 
 ### José Carlos Quintero:
 - **¿Qué hice ayer?**: comenzar limpieza de datos
-- **¿Qué haré hoy?**: completar módulo de limpieza de datos y el script de limpieza de la base, comenzar con el módulo de graficacion 
-- **¿Hay algo que me está bloqueando?**: graficacion en Python 
+- **¿Qué haré hoy?**: completar módulo de limpieza de datos y el script de limpieza de la base, comenzar con el módulo de graficacion
+- **¿Hay algo que me está bloqueando?**: graficacion en Python
 
 ### Julián Soto:
-- **¿Qué hice ayer?**: delimitación del análisis metodológico para modelos tipo CAR (conditional autoregressive models) 
+- **¿Qué hice ayer?**: delimitación del análisis metodológico para modelos tipo CAR (conditional autoregressive models)
 - **¿Qué haré hoy?**: continuación de la lectura de bibliografía sobre modelos CAR
-- **¿Hay algo que me está bloqueando?**: falta de familiarización con modelos estadísticos autoregresivos  
+- **¿Hay algo que me está bloqueando?**: falta de familiarización con modelos estadísticos autoregresivos
 
 ### Paula:
 - **¿Qué hice ayer?**: busqué varios artículos relacionados con nuestro tema
@@ -102,17 +102,17 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 - *¿Hay algo que me está bloqueando?*:  no
 
 ### José Carlos Quintero:
-- *¿Qué hice ayer?*: trabajar en la creación de un modulo de creación de gráficos en python. 
+- *¿Qué hice ayer?*: trabajar en la creación de un modulo de creación de gráficos en python.
 - *¿Qué haré hoy?*: completer dicho modulo y generar un script para generar graficos de prueba
 - *¿Hay algo que me está bloqueando?*: no
 
 ### Julián Soto:
-- *¿Qué hice ayer?*: revisión de las tareas asignadas a mi persona, para el sprint 2. 
-- *¿Qué haré hoy?*: continuar con la revisión de la literatura seleccionada. 
+- *¿Qué hice ayer?*: revisión de las tareas asignadas a mi persona, para el sprint 2.
+- *¿Qué haré hoy?*: continuar con la revisión de la literatura seleccionada.
 - *¿Hay algo que me está bloqueando?*: no
 
 ### María Paula Jiménez:
-- *¿Qué hice ayer?*: meditar sobre las tareas a realizar 
+- *¿Qué hice ayer?*: meditar sobre las tareas a realizar
 - *¿Qué haré hoy?*: planeo empezar a escribir los antecedentes
 - *¿Hay algo que me está bloqueando?*: no
 
@@ -124,15 +124,15 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 
 ## 📈 Resultado mostrado
 
-- *Funcionalidad A:* Tema del proyecto definido y objetivos establecidos.  
-- *Funcionalidad B:* Revisión de literatura completada con lista de referencias confiables y actualizadas.  
-- *Funcionalidad C:* Marco teórico redactado e integrado con bibliografía en formato APA.  
-- *Funcionalidad D:* Dataset crudo cargado desde CSV y transformado en un archivo limpio en formato Parquet.  
-- *Funcionalidad E:* Base de datos limpiada con valores faltantes imputados o eliminados según reglas establecidas.  
-- *Funcionalidad F:* Informe de calidad de datos generado y documentado.  
-- *Funcionalidad G:* Scripts de gráficos y tablas creados en `src/viz`, que producen al menos un gráfico y una tabla guardados en `res`.  
-- *Funcionalidad H:* Dashboard actualizado con la información más reciente del proyecto.  
-- *Funcionalidad I:* Presentación de resultados de los Sprints #1 y #2 preparada con gráficos y análisis textual.  
+- *Funcionalidad A:* Tema del proyecto definido y objetivos establecidos.
+- *Funcionalidad B:* Revisión de literatura completada con lista de referencias confiables y actualizadas.
+- *Funcionalidad C:* Marco teórico redactado e integrado con bibliografía en formato APA.
+- *Funcionalidad D:* Dataset crudo cargado desde CSV y transformado en un archivo limpio en formato Parquet.
+- *Funcionalidad E:* Base de datos limpiada con valores faltantes imputados o eliminados según reglas establecidas.
+- *Funcionalidad F:* Informe de calidad de datos generado y documentado.
+- *Funcionalidad G:* Scripts de gráficos y tablas creados en `src/viz`, que producen al menos un gráfico y una tabla guardados en `res`.
+- *Funcionalidad H:* Dashboard actualizado con la información más reciente del proyecto.
+- *Funcionalidad I:* Presentación de resultados de los Sprints #1 y #2 preparada con gráficos y análisis textual.
 
 
 ## :arrows_counterclockwise:  Retroalimentación
