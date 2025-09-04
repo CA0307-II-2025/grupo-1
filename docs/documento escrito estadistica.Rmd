@@ -23,6 +23,10 @@ nocite: '@*'
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
+## Antecedentes
+
+El sobrepeso y la obesidad infantil se han establecido en las últimas décadas como una de las principales problemáticas de salud pública a nivel mundial. En tan solo cuatro décadas, la cantidad de niños y adolescentes en edad escolar con obesidad se multiplicó por más de diez, pasando de 11 millones a 124 millones, y se calculó que alrededor de 216 millones tenían sobrepeso según estimaciones del 2016. (WHO, 2018). Entre los efectos tempranos de estas afecciones se incluyen complicaciones respiratorias, alteraciones metabólicas y problemas psicosociales, mientras que en la adultez se asocia con mayor riesgo de enfermedades crónicas, discapacidad y mortalidad prematura (Gamboa-Gamboa et al., 2021).
+En Costa Rica, los resultados del Censo Escolar de Peso y Talla 2016 revelaron que más de un tercio de la población infantil en edad escolar presenta sobrepeso u obesidad (Gomez et al., 2023), lo que muestra urgencia de comprender este fenómeno en su complejidad de factores. Del mismo modo en otros países de ingresos medios, el exceso de peso infantil no se distribuye de manera uniforme debido a factores demográficos, socioeconómicos y territoriales que influyen en la prevalencia y configuran escenarios particulares según la zona de residencia, el nivel de desarrollo del distrito o el tipo de centro educativo (Gamboa-Gamboa et al., 2021).
 
 ## Artículos consultados
 
@@ -68,3 +72,4 @@ La base de datos utilizada en este estudio contiene información sobre la preval
 - **anos_escolaridad**: Promedio de años de escolaridad alcanzados por la población, indicador del nivel educativo.
 
 ## Referencias
+
