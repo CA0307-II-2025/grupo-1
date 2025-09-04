@@ -1,0 +1,143 @@
+---
+title: "Recopilación Bibliográfica (Versión Preliminar)"
+author:
+  - "José Carlos Quintero"
+  - "Paola Espinoza"
+  - "Julián Soto"
+  - "María Paula Jiménez"
+date: "22 de agosto de 2025"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+geometry: margin=1in
+header-includes:
+  - \renewcommand{\contentsname}{Tabla de contenidos}
+bibliography: bibliografía.bib
+link-citations: true
+csl: apa.csl
+nocite: '@*'
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+## Antecedentes
+
+El sobrepeso y la obesidad infantil se han establecido en las últimas décadas como una de las principales problemáticas de salud pública a nivel mundial. En tan solo cuatro décadas, la cantidad de niños y adolescentes en edad escolar con obesidad se multiplicó por más de diez, pasando de 11 millones a 124 millones, y se calculó que alrededor de 216 millones tenían sobrepeso según estimaciones del 2016. (WHO, 2018). Entre los efectos tempranos de estas afecciones se incluyen complicaciones respiratorias, alteraciones metabólicas y problemas psicosociales, mientras que en la adultez se asocia con mayor riesgo de enfermedades crónicas, discapacidad y mortalidad prematura (Gamboa-Gamboa et al., 2021).
+En Costa Rica, los resultados del Censo Escolar de Peso y Talla 2016 revelaron que más de un tercio de la población infantil en edad escolar presenta sobrepeso u obesidad (Gomez et al., 2023), lo que muestra urgencia de comprender este fenómeno en su complejidad de factores. Del mismo modo en otros países de ingresos medios, el exceso de peso infantil no se distribuye de manera uniforme debido a factores demográficos, socioeconómicos y territoriales que influyen en la prevalencia y configuran escenarios particulares según la zona de residencia, el nivel de desarrollo del distrito o el tipo de centro educativo (Gamboa-Gamboa et al., 2021).
+
+## Artículos consultados
+
+### *Bayesian spatial modeling of childhood overweight and obesity prevalence in Costa Rica*
+
+**Descripción:** El artículo [@Gomez2023] emplea técnicas del modelado bayesiano espacial para el estudio de los patrones geográficos de la prevalencia de sobrepeso y obesidad infantil en Costa Rica, y su relación con variables socieconómicas.
+
+**Datos:** Como se indica en el artículo, se utilizaron datos del Censo de Peso y Talla del año 2016, agregados a nivel distrital. Asimismo, para la incorporación de variables socieconómicas se utilizaron datos del Censo Nacional 2011. Los datos pueden ser accesados directamente desde el dashboard del artículo [@Gomez2023].
+
+**Relevancia:** En el marco del curso, este artículo es una opción valiosa porque aplica modelado bayesiano espacial, lo que constituye una continuación de los contenidos de inferencia bayesiana que serán abordados en el curso. A la vez, ofrece una aplicación directa de técnicas estadísticas en salud pública, un ámbito de gran importancia a nivel nacional. Por su parte, la metodología planteada resulta idónea para la visualización de datos a través de dashboards.
+
+
+### Obesity risk estimation accounting spatial dependency, error in covariate measurement, and factors operating at multiple levels
+
+**Autor:** Masud Rana
+
+**Año de publicación:** 2023
+
+**Palabras claves:** Riesgo de obesidad, Modelos Bayesianos Jerárquicos, Dependencia espacial.f
+
+**Descripición breve:** Tesis que aborda el modelado bayesiano espacial con énfasis en el riesgo de obesidad. Desarrolla modelos jerárquicos para la estimación de dicho riesgo, incorporando efectos estructurados y no estructurados. Además integra explícitamente el error de medición en covariables, y aborda el impacto del error en las inferencias estadísticas.
+
+**Relevancia para el estudio:** La tesis usa un marco jerárquico espacial con efectos estructurados y no estructurados (modelo BYM2), lo que se ajusta a la metodología del artículo de referencia. También, propone la modelación de la incertidumbre de variables de índole socieconómica, así como recopila información sobre los determinantes de la obesidad.
+
+### Regional Variation in lifestyle patterns and BMI in young children: the GECKO Drenthe cohort
+
+**Autor:** R. Wiersma et al.
+
+**Año de publicación:** 2022
+
+**Palabras claves:**
+
+**Descripición breve:**
+
+**Relevancia para el estudio:**
+
+
+### A Bayesian multinomial model to analyse spatial patterns of childhood co-morbidity in Malawi
+
+**Autor:** L.N. Kazembe, J.J Namangale
+
+**Año de publicación:** 2007
+
+**Palabras claves:**
+
+**Descripición breve:**
+
+**Relevancia para el estudio:**
+
+
+
+### An intuitive Bayesian spatial model for disease mapping that accounts for scaling (BYM2)
+
+**Autor:** A. Riebler et al
+
+**Año de publicación:** 2016
+
+**Palabras claves:**
+
+**Descripición breve:**
+
+**Relevancia para el estudio:**
+
+### Comparing Bayesian Spatial Conditional Overdispersion Models vs BYM
+
+**Autor:** M. Morales, V. Núñez
+
+**Año de publicación:** 2021
+
+**Palabras claves:**
+
+**Descripición breve:**
+
+**Relevancia para el estudio:**
+
+
+### Evaluating the impact of misspecified spatial neighboring structures on BYM2
+
+**Autor:** E. Somua-Wiafe et al
+
+**Año de publicación:** 2023
+
+**Palabras claves:**
+
+**Descripición breve:**
+
+**Relevancia para el estudio:**
+
+
+
+## Literatura consultada
+
+Se ha tomado como fuente principal el libro *Handbook of Spatial Statistics* [@Gelfand2010Handbook]. En el contexto de los artículos consultados, se ha dado enfásis a los capítulos del libro en los que se abordan modelos de procesos puntuales, y modelos con efectos aleatorios espaciales. A su vez, los libros [@Moraga2019Geospatial], [@Moraga2023SpatialStats] han sido utilizados como literatura completamentaria.
+
+## Descripción de los datos
+
+La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón.
+
+- **distrito**: Nombre del distrito al que corresponde el registro.
+- **provincia**: Nombre de la provincia correspondiente.
+- **canton**: Nombre del cantón correspondiente. Representa la unidad territorial principal de análisis.
+- **condicion**: Clasificación de los casos según el estado nutricional: sobrepeso, obesidad o combinada.
+- **total**: Número total de casos combinados registrados por cantón, considerando todas las categorías de condición.
+- **subtotal**: Número de casos registrados por cantón dentro de cada categoría específica de condición.
+- **prevalencia**: Porcentaje de la población del cantón que presenta sobrepeso u obesidad.
+- **desempleo**: Porcentaje de personas desempleadas dentro del cantón.
+- **poblacion_urbana**: Porcentaje de la población que reside en áreas urbanas del cantón.
+- **privacion_critica**: Porcentaje de población en situación de privación crítica.
+- **poblacion_menor_14**: Porcentaje de personas menores de 14 años en la población total del cantón.
+- **hogares_monomarentales**: Porcentaje de hogares encabezados por un solo padre o madre.
+- **ocupantes_por_hogar**: Promedio de personas que habitan en cada hogar del cantón.
+- **anos_escolaridad**: Promedio de años de escolaridad alcanzados por la población, indicador del nivel educativo.
+
+## Referencias
