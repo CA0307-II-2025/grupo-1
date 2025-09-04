@@ -72,4 +72,3 @@ La base de datos utilizada en este estudio contiene información sobre la preval
 - **anos_escolaridad**: Promedio de años de escolaridad alcanzados por la población, indicador del nivel educativo.
 
 ## Referencias
-
