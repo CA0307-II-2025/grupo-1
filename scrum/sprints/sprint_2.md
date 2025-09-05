@@ -58,9 +58,9 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 - **¿Hay algo que me está bloqueando?**:  Debemos definir y acordar las reglas de imputación antes de continuar con la limpieza.
 
 ### José Carlos Quintero:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- **¿Qué hice ayer?**: investigué sobre los datos y la metodología del artículo base del proyecto
+- **¿Qué haré hoy?**: comenzar con la limpieza y descripción de los datos
+- **¿Hay algo que me está bloqueando?**: falta de claridad en enfoque de investigacion
 
 ### Julián Soto:
 - **¿Qué hice ayer?**: conversar con los integrantes del grupo acerca las tareas propuestas para el sprint2
@@ -116,7 +116,27 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 - *¿Qué haré hoy?*: planeo empezar a escribir los antecedentes
 - *¿Hay algo que me está bloqueando?*: no
 
+##  Fecha: 2025-09-03
 
+### Paola Espinoza Hernández:
+- *¿Qué hice ayer?*: Revisé artículos y planteé posibles temas, junto con sus respectivas preguntas y objetivos.
+- *¿Qué haré hoy?*: Tendremos una reunión de equipo para definir el tema, la pregunta de investigación y los detalles finales de la presentación de los sprints 1 y 2. Además, trabajaré en mejorar la estética del dashboard, dejándolo listo para la eventual inclusión de resultados.
+- *¿Hay algo que me está bloqueando?*:  No
+
+### José Carlos Quintero:
+- *¿Qué hice ayer?*: investigar posibles temas para enfocar la investigacion
+- *¿Qué haré hoy?*: trabajar en elaborar un informe de calidad de los datos 
+- *¿Hay algo que me está bloqueando?*: -
+
+### Julián Soto:
+- *¿Qué hice ayer?*: Recopilación de la información bibliográfica consultada.
+- *¿Qué haré hoy?*: asistir a la reunión de equipo en la que se definirá el tema de la investigación, así como los objetivos. También, incluiré la revisión bibliográfica realizada. 
+- *¿Hay algo que me está bloqueando?*: no. 
+
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: hacer un borrador de la estructura que quiero para los antecedentes 
+•⁠  ⁠*¿Qué haré hoy?*: asistir a la reunión del grupo para escoger el tema de la investigación y objetivos. Resumir los artículos bibliográficos y poner en el documento escrito una introducción de los antecedentes
+•⁠  ⁠*¿Hay algo que me está bloqueando?*:no
 
 # 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
 
