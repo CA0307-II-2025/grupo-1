@@ -54,8 +54,8 @@ Se ha tomado como fuente principal el libro *Handbook of Spatial Statistics* [@G
 
 ## Descripción de los datos
 
-La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón.
-
+La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica en el año 2016, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón.
+Las variables consideradas en el análisis se describen a continuación:
 - **distrito**: Nombre del distrito al que corresponde el registro.
 - **provincia**: Nombre de la provincia correspondiente.
 - **canton**: Nombre del cantón correspondiente. Representa la unidad territorial principal de análisis.
