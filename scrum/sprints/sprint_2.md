@@ -125,16 +125,16 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 
 ### José Carlos Quintero:
 - *¿Qué hice ayer?*: investigar posibles temas para enfocar la investigacion
-- *¿Qué haré hoy?*: trabajar en elaborar un informe de calidad de los datos 
+- *¿Qué haré hoy?*: trabajar en elaborar un informe de calidad de los datos
 - *¿Hay algo que me está bloqueando?*: -
 
 ### Julián Soto:
 - *¿Qué hice ayer?*: Recopilación de la información bibliográfica consultada.
-- *¿Qué haré hoy?*: asistir a la reunión de equipo en la que se definirá el tema de la investigación, así como los objetivos. También, incluiré la revisión bibliográfica realizada. 
-- *¿Hay algo que me está bloqueando?*: no. 
+- *¿Qué haré hoy?*: asistir a la reunión de equipo en la que se definirá el tema de la investigación, así como los objetivos. También, incluiré la revisión bibliográfica realizada.
+- *¿Hay algo que me está bloqueando?*: no.
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*: hacer un borrador de la estructura que quiero para los antecedentes 
+•⁠  ⁠*¿Qué hice ayer?*: hacer un borrador de la estructura que quiero para los antecedentes
 •⁠  ⁠*¿Qué haré hoy?*: asistir a la reunión del grupo para escoger el tema de la investigación y objetivos. Resumir los artículos bibliográficos y poner en el documento escrito una introducción de los antecedentes
 •⁠  ⁠*¿Hay algo que me está bloqueando?*:no
 
