@@ -14,6 +14,7 @@ mapbox_style = ["open-street-map", "carto-positron", "carto-darkmatter"]
 with open("CRI.geo.json", "r", encoding="utf-8") as f:
     cr_geojson = json.load(f)
 
+
 # Crear mapa de Costa Rica
 def create_map_geomap_cr():
     fig = go.Figure(
@@ -56,11 +57,9 @@ app.layout = html.Div(
     ]
 )
 
+
 # Callback para manejar contenido de Tabs
-@app.callback(
-    dash.Output("tabs-content", "children"),
-    [dash.Input("tabs", "value")]
-)
+@app.callback(dash.Output("tabs-content", "children"), [dash.Input("tabs", "value")])
 def render_content(tab):
     if tab == "tab-1":
         return dcc.Graph(id="geomap-cr", figure=create_map_geomap_cr())
@@ -68,6 +67,7 @@ def render_content(tab):
         return html.Div([html.H3("Aquí van los resultados")])
     elif tab == "tab-3":
         return html.Div([html.H3("Otra sección del dashboard")])
+
 
 # Ejecutar servidor
 if __name__ == "__main__":
