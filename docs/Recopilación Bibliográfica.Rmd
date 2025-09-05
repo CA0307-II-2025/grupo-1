@@ -90,7 +90,7 @@ En Costa Rica, los resultados del Censo Escolar de Peso y Talla 2016 revelaron q
 
 **Relevancia para el estudio:** El enfoque incluye la comparación de modelos de sobredispersión, con respecto a modelos espaciales, en datos que puedan mostrar correlación espacial. En particular, se consideran los modelos BYM, BYM2, así como criterios de comparación y diagnóstico.
 
-## Relationship between childhood obesity and socio-economic status among primary school children in Costa Rica 
+## Relationship between childhood obesity and socio-economic status among primary school children in Costa Rica
 
 **Autor:** Tatiana Gamboa-Gamboa, Romain Fantin, Jeancarlo Cordoba, Ivannia Caravaca, Ingrid Gómez-Duarte
 
@@ -101,7 +101,7 @@ En Costa Rica, los resultados del Censo Escolar de Peso y Talla 2016 revelaron q
 **Resumen:** El artículo analiza la relación entre el nivel socioeconómico y la prevalencia de sobrepeso y obesidad en niños de escuelas primarias en Costa Rica, utilizando datos del Censo Nacional de Peso/Talla Escolar de 2016. La muestra incluyó a más de 347,000 estudiantes entre 6 y 12 años, y se clasificaron según su estado nutricional y características socioeconómicas como el tipo de escuela, la zona geográfica y el nivel de desarrollo del distrito.
 Los resultados revelan que el 34% de los niños presentaban sobrepeso u obesidad, siendo más común en varones que en niñas. Además, se observó que los niños que asistían a escuelas privadas, vivían en zonas urbanas o en distritos más desarrollados tenían mayor probabilidad de presentar exceso de peso. Esta tendencia contrasta con lo observado en países desarrollados, donde la obesidad infantil suele estar más asociada a niveles socioeconómicos bajos.
 
-## Percentiles of body mass index and waist circumference for Costa Rican children and adolescents 
+## Percentiles of body mass index and waist circumference for Costa Rican children and adolescents
 
 **Autor:** Hilda Núñez-Rivas, Ileana Holst-Schumacher, Natalia Campos-Saborío, Erasmo López-López
 
