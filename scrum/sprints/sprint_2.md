@@ -25,15 +25,15 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 
 
 ## 🥇 Criterios de aceptación del Sprint:
-- [ ] _El tema del proyecto está definido y delimitado, con objetivos claros (HU#29)._
-- [ ] _La revisión de literatura está realizada y documentada, con fuentes confiables y actualizadas (HU#23)._
-- [ ] _El marco teórico está redactado y enlaza correctamente la bibliografía (HU#28)._
-- [ ] _La base de datos cruda en CSV se carga y se transforma en un dataset limpio en formato parquet (HU#1, HU#7)._
-- [ ] _El código limpia automáticamente la base de datos, imputando o eliminando valores faltantes según reglas establecidas (HU#7)._
-- [ ] _Existe un informe de calidad de datos documentado (HU#20)._
-- [ ] _Se generan scripts para gráficos y tablas en la carpeta `src/viz`, que al ejecutarse producen al menos un gráfico y una tabla guardados en `res` (HU#8)._
-- [ ] _El dashboard refleja la información más reciente del proyecto (HU#32)._
-- [ ] _La presentación de resultados de los Sprints #1 y #2 está lista con gráficos y análisis textual (HU#37)._
+- [✔️] _El tema del proyecto está definido y delimitado, con objetivos claros (HU#29)._
+- [✔️] _La revisión de literatura está realizada y documentada, con fuentes confiables y actualizadas (HU#23)._
+- [✔️] _El marco teórico está redactado y enlaza correctamente la bibliografía (HU#28)._
+- [✔️] _La base de datos cruda en CSV se carga y se transforma en un dataset limpio en formato parquet (HU#1, HU#7)._
+- [✔️] _El código limpia automáticamente la base de datos, imputando o eliminando valores faltantes según reglas establecidas (HU#7)._
+- [✔️] _Existe un informe de calidad de datos documentado (HU#20)._
+- [✔️] _Se generan scripts para gráficos y tablas en la carpeta `src/viz`, que al ejecutarse producen al menos un gráfico y una tabla guardados en `res` (HU#8)._
+- [✔️] _El dashboard refleja la información más reciente del proyecto (HU#32)._
+- [✔️] _La presentación de resultados de los Sprints #1 y #2 está lista con gráficos y análisis textual (HU#37)._
 
 
 
@@ -138,16 +138,14 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 •⁠  ⁠*¿Qué haré hoy?*: asistir a la reunión del grupo para escoger el tema de la investigación y objetivos. Resumir los artículos bibliográficos y poner en el documento escrito una introducción de los antecedentes
 •⁠  ⁠*¿Hay algo que me está bloqueando?*:no
 
-# 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
-
-
+# 🔍   Revisión en clase (Fecha: 2025-09-05)
 
 ## 📈 Resultado mostrado
 
 - *Funcionalidad A:* Tema del proyecto definido y objetivos establecidos.
 - *Funcionalidad B:* Revisión de literatura completada con lista de referencias confiables y actualizadas.
 - *Funcionalidad C:* Marco teórico redactado e integrado con bibliografía en formato APA.
-- *Funcionalidad D:* Dataset crudo cargado desde CSV y transformado en un archivo limpio en formato Parquet.
+- *Funcionalidad D:* Dataset crudo cargado desde CSV y transformado en un archivo limpio.
 - *Funcionalidad E:* Base de datos limpiada con valores faltantes imputados o eliminados según reglas establecidas.
 - *Funcionalidad F:* Informe de calidad de datos generado y documentado.
 - *Funcionalidad G:* Scripts de gráficos y tablas creados en `src/viz`, que producen al menos un gráfico y una tabla guardados en `res`.
@@ -158,15 +156,15 @@ Entonces genero un documento coherente que presenta el marco conceptual del proy
 ## :arrows_counterclockwise:  Retroalimentación
 
 - **Profesor**:
-- **Compañeros:**
+- **Compañeros**:
 
 
 ## ✔️  Criterios de aceptación cumplidos:
-- [] _Historias 1, 2, 3. completadas. Falta la historia 4.
-- [x] Carga automática de la base de datos.
+- [✔️] Historias 29, 1, 7, 23, 8, 28, 20, 32, 37 completadas.
+- [✔️] Carga automática de la base de datos.
 
 
-# 🔙  Retrospective – Fecha: YYYY-MM-DD
+# 🔙  Retrospective – Fecha: 2025-09-05
 
 ## :white_check_mark: Qué salió bien
 1.  _Colaboración en el equipo_ Logramos terminar el sprint a tiempo.
