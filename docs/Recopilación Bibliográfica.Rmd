@@ -90,6 +90,41 @@ En Costa Rica, los resultados del Censo Escolar de Peso y Talla 2016 revelaron q
 
 **Relevancia para el estudio:** El enfoque incluye la comparación de modelos de sobredispersión, con respecto a modelos espaciales, en datos que puedan mostrar correlación espacial. En particular, se consideran los modelos BYM, BYM2, así como criterios de comparación y diagnóstico.
 
+## Relationship between childhood obesity and socio-economic status among primary school children in Costa Rica 
+
+**Autor:** Tatiana Gamboa-Gamboa, Romain Fantin, Jeancarlo Cordoba, Ivannia Caravaca, Ingrid Gómez-Duarte
+
+**Año de publicación:** 2021
+
+**Palabras claves:** Childhood overweight obesity , socio-economic status, socio-economic determinants, school children
+
+**Resumen:** El artículo analiza la relación entre el nivel socioeconómico y la prevalencia de sobrepeso y obesidad en niños de escuelas primarias en Costa Rica, utilizando datos del Censo Nacional de Peso/Talla Escolar de 2016. La muestra incluyó a más de 347,000 estudiantes entre 6 y 12 años, y se clasificaron según su estado nutricional y características socioeconómicas como el tipo de escuela, la zona geográfica y el nivel de desarrollo del distrito.
+Los resultados revelan que el 34% de los niños presentaban sobrepeso u obesidad, siendo más común en varones que en niñas. Además, se observó que los niños que asistían a escuelas privadas, vivían en zonas urbanas o en distritos más desarrollados tenían mayor probabilidad de presentar exceso de peso. Esta tendencia contrasta con lo observado en países desarrollados, donde la obesidad infantil suele estar más asociada a niveles socioeconómicos bajos.
+
+## Percentiles of body mass index and waist circumference for Costa Rican children and adolescents 
+
+**Autor:** Hilda Núñez-Rivas, Ileana Holst-Schumacher, Natalia Campos-Saborío, Erasmo López-López
+
+**Año de publicación:** 2022
+
+**Palabras claves:** Body mass index, waist circumference, children, adolescents, Costa Rica.
+
+**Resumen:** Este estudio presenta una distribución percentilar del índice de masa corporal (IMC) y la circunferencia de la cintura (CC) en una muestra representativa de 2,684 estudiantes costarricenses entre 7 y 17 años. El objetivo fue establecer referencias nacionales para evaluar el sobrepeso, la obesidad y el riesgo cardiovascular en la población infanto-juvenil, comparando los datos locales con referencias internacionales del National Center for Health Statistics (NCHS) de Estados Unidos de los años 2012, 2016 y 2021.
+Los resultados revelan que el 16.3 % de los estudiantes presentan obesidad y el 26.2 % sobrepeso, lo que confirma que la obesidad es el principal problema nutricional en Costa Rica. Se observaron diferencias significativas entre sexos en varios percentiles y edades, tanto en IMC como en CC. Las curvas de crecimiento costarricenses mostraron patrones similares a los internacionales, aunque con algunas discrepancias, especialmente en el percentil 50, donde los valores nacionales fueron generalmente más bajos en IMC y más altos en CC a partir de los 12 años.
+Se destaca que el uso exclusivo de referencias internacionales podría sobreestimar la prevalencia de obesidad en Costa Rica, por lo que propone utilizar las curvas nacionales como herramienta complementaria para monitorear la situación nutricional.
+
+
+## Análisis espacial del sobrepeso y la obesidad infantil en el Perú, 2014
+
+**Autor:** Akram Hernández-Vásquez, Guido Bendezú-Quispe2, Deysi Díaz-Seijas3, Marilina Santero, Nicole Minckas, Diego Azañedo, Daniel A. Antiporta
+
+**Año de publicación:** 2016
+
+**Palabras claves:** Sistemas de información geográfica, sobrepeso, obesidad, preescolar, Perú
+
+**Resumen:** El artículo analiza el sobrepeso y la obesidad infantil en Perú durante 2014, utilizando datos del Sistema de Información del Estado Nutricional (SIEN) que registró a más de dos millones de niños menores de cinco años. El estudio calculó prevalencias regionales y aplicó herramientas de análisis espacial para identificar patrones de concentración por distritos.
+Los resultados muestran que el 6,8% de los niños evaluados tenía sobrepeso y el 2,4% obesidad. Las tasas más altas se concentraron en la costa, especialmente en Tacna, Moquegua, Callao, Lima e Ica. Se identificaron clústeres distritales con altas prevalencias de ambos problemas, en su mayoría en zonas urbanas. En contraste, las regiones andinas y amazónicas presentaron los valores más bajos.
+El análisis confirma una clara distribución geográfica de la problemática: los distritos costeros presentan la mayor carga, mientras que las zonas de sierra y selva muestran menores tasas. Esto refleja la transición nutricional del país, donde coexisten la desnutrición y el exceso de peso, lo que complica la planificación de políticas públicas.
 
 ## Otra literatura consultada
 
