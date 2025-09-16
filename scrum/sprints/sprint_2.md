@@ -6,15 +6,15 @@ Definir el tema del proyecto, y un objetivo tentativo. Realizar la limpieza de d
 
 ##  😃  Historias de usuario
 
-- HU#29 - "Como analista/investigador quiero definir y delimitar el tema del proyecto y establecer sus objetivos para tener claridad sobre el enfoque de trabajo" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*  
-- HU#1 - "Como científico de datos quiero cargar datos crudos desde la fuente cruda (CSV) para crear mi base de datos limpia." (Estimación: 2 pts) – *Criterios de aceptación confirmados.*  
-- HU#7 - "Como cientifico de datos, quiero generar scripts de carga y limpieza de la base de datos" (Estimación: 5 pts) – *Criterios de aceptación confirmados.*  
-- HU#23 - "Como analista/investigador quiero recopilar y revisar literatura relevante para contar con fuentes confiables que sustenten el proyecto." (Estimación: 3 pts) – *Criterios de aceptación confirmados.*  
-- HU#8 - "Como cientifico de datos, quiero generar scripts de creación de gráficos y tablas" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*  
-- HU#28 - "Como analista/investigador quiero redactar el marco teórico y enlazar la bibliografía para sustentar el proyecto con evidencia científica." (Estimación: 3 pts) – *Criterios de aceptación confirmados.*  
-- HU#20 - "Como analista quiero generar un informe de calidad de datos para identificar problemas y asegurar la confiabilidad del dataset." (Estimación: 3 pts) – *Criterios de aceptación confirmados.*  
-- HU#32 - "Como analista quiero actualizar el dashboard del proyecto para reflejar la información más reciente generada por las demás tareas del proyecto." (Estimación: 2 pts) – *Criterios de aceptación confirmados.*  
-- HU#37 - "Como analista de datos, quiero preparar y presentar los resultados de los Sprints #1 y #2 para comunicar de manera clara los hallazgos, avances y resultados a los stakeholders del proyecto." (Estimación: 3 pts) – *Criterios de aceptación confirmados.*  
+- HU#29 - "Como analista/investigador quiero definir y delimitar el tema del proyecto y establecer sus objetivos para tener claridad sobre el enfoque de trabajo" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
+- HU#1 - "Como científico de datos quiero cargar datos crudos desde la fuente cruda (CSV) para crear mi base de datos limpia." (Estimación: 2 pts) – *Criterios de aceptación confirmados.*
+- HU#7 - "Como cientifico de datos, quiero generar scripts de carga y limpieza de la base de datos" (Estimación: 5 pts) – *Criterios de aceptación confirmados.*
+- HU#23 - "Como analista/investigador quiero recopilar y revisar literatura relevante para contar con fuentes confiables que sustenten el proyecto." (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
+- HU#8 - "Como cientifico de datos, quiero generar scripts de creación de gráficos y tablas" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
+- HU#28 - "Como analista/investigador quiero redactar el marco teórico y enlazar la bibliografía para sustentar el proyecto con evidencia científica." (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
+- HU#20 - "Como analista quiero generar un informe de calidad de datos para identificar problemas y asegurar la confiabilidad del dataset." (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
+- HU#32 - "Como analista quiero actualizar el dashboard del proyecto para reflejar la información más reciente generada por las demás tareas del proyecto." (Estimación: 2 pts) – *Criterios de aceptación confirmados.*
+- HU#37 - "Como analista de datos, quiero preparar y presentar los resultados de los Sprints #1 y #2 para comunicar de manera clara los hallazgos, avances y resultados a los stakeholders del proyecto." (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
 
 
 ##  🔜  Plan de alto nivel:
@@ -172,20 +172,20 @@ Definir el tema del proyecto, y un objetivo tentativo. Realizar la limpieza de d
 #  🔙  Retrospective – Fecha: 2025-09-05
 
 ##  :white_check_mark: Qué salió bien
-1. _Colaboración en el equipo:_ logramos terminar el sprint a tiempo.  
-2. _Documentación actualizada:_ se mantuvo día a día, lo que evitó retrabajo.  
-3. _Revisión de literatura y marco teórico:_ se completaron con fuentes confiables y se integraron correctamente.  
-4. _Dashboard y scripts:_ quedaron implementados y listos para incorporar resultados futuros.  
-5. _Daily meetings constantes:_ ayudaron a recordar tareas y deadlines.  
+1. _Colaboración en el equipo:_ logramos terminar el sprint a tiempo.
+2. _Documentación actualizada:_ se mantuvo día a día, lo que evitó retrabajo.
+3. _Revisión de literatura y marco teórico:_ se completaron con fuentes confiables y se integraron correctamente.
+4. _Dashboard y scripts:_ quedaron implementados y listos para incorporar resultados futuros.
+5. _Daily meetings constantes:_ ayudaron a recordar tareas y deadlines.
 
 ##  :no_good: Qué podría mejorar
-- _Claridad de criterios de aceptación:_ en algunas historias no estaba claro cómo validar la finalización.  
-- _Distribución de carga:_ algunas historias concentraron demasiado trabajo en una sola persona.  
-- _Uso de commits convencionales:_ hubo un commit no convencional que rompió el estándar.  
-- _Definición de metodología:_ se eligió una demasiado compleja inicialmente; fue necesario replantearla en clase.  
+- _Claridad de criterios de aceptación:_ en algunas historias no estaba claro cómo validar la finalización.
+- _Distribución de carga:_ algunas historias concentraron demasiado trabajo en una sola persona.
+- _Uso de commits convencionales:_ hubo un commit no convencional que rompió el estándar.
+- _Definición de metodología:_ se eligió una demasiado compleja inicialmente; fue necesario replantearla en clase.
 
 ##  :pencil: Acciones concretas para el próximo sprint
-1. **Refinar historias en refinamiento semanal** – agregar criterios de aceptación más detallados.  
-2. **Balancear asignación de tareas** – mejorar la estimación de puntos y equilibrar la carga de cada integrante.  
+1. **Refinar historias en refinamiento semanal** – agregar criterios de aceptación más detallados.
+2. **Balancear asignación de tareas** – mejorar la estimación de puntos y equilibrar la carga de cada integrante.
 3. **Estandarizar commits** – reforzar uso de commits convencionales.
 4. **Simplificar metodología** – acordar una estrategia más sencilla.
