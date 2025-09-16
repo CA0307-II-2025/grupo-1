@@ -377,3 +377,168 @@ class GeneradorGraficos:
             )
 
         plt.show()
+
+    def contar_na(self, columnas=None):
+        """Cuenta la cantidad de valores NA en columnas especificadas del DataFrame.
+
+        Parámetros
+        ----------
+        columnas : list[str] | None
+            Lista de nombres de columnas a evaluar. Si es None, usa todas.
+
+        Retorna
+        -------
+        pandas.Series:
+            Serie con la cantidad de NA por columna.
+        """
+        if self.__df is None:
+            raise ValueError("No hay DataFrame cargado. Use cargar_csv() primero.")
+
+        if columnas is None:
+            columnas = self.__df.columns
+
+        return self.__df[columnas].isna().sum()
+
+    def resumen_estadistico(
+        self, columnas=None, condicion=None, stats=None, group_by=None
+    ):
+        """Tabla(s) de estadísticos descriptivos para columnas numéricas.
+
+        Parámetros
+        ----------
+        columnas : list[str] | str | None
+            Columnas numéricas a resumir. Si None, usa todas las numéricas del DF.
+        condicion : str | None
+            Valor de la columna 'condicion' para filtrar (p. ej. 'combinada', 'obesidad').
+            Si None, no filtra por condición.
+        stats : list[str] | None
+            Estadísticos a calcular. Opciones soportadas:
+            ['count','mean','std','min','q25','q50','q75','max'].
+            Si None, usa ['mean','std','q25','q50','q75'].
+        group_by : str | None
+            Nombre de una columna categórica para generar una tabla por categoría.
+            Si None, devuelve una sola tabla.
+
+        Retorna
+        -------
+        pandas.DataFrame | dict[str, pandas.DataFrame]:
+            Si group_by es None: DataFrame con filas=columnas y columnas=estadísticos.
+            Si group_by no es None: dict {categoria: DataFrame}.
+        """
+        if self.__df is None:
+            raise ValueError("No hay DataFrame cargado. Use cargar_csv() primero.")
+
+        df = self.__df.copy()
+
+        # Filtro por condición (si aplica)
+        if condicion is not None:
+            if "condicion" not in df.columns:
+                raise KeyError("La columna 'condicion' no existe en el DataFrame.")
+            df = df[df["condicion"] == condicion].copy()
+
+        # Determinar columnas a usar
+        if columnas is None:
+            cols_num = df.select_dtypes(include=[np.number]).columns.tolist()
+        else:
+            if isinstance(columnas, str):
+                columnas = [columnas]
+            cols_num = [c for c in columnas if c in df.columns]
+
+        if not cols_num:
+            raise ValueError(
+                "No se encontraron columnas numéricas válidas para resumir."
+            )
+
+        # Forzar a numérico y conservar solo las columnas requeridas (+ group_by si aplica)
+        keep_cols = cols_num + (
+            [group_by] if group_by is not None and group_by in df.columns else []
+        )
+        work = df[keep_cols].copy()
+        for c in cols_num:
+            work[c] = pd.to_numeric(work[c], errors="coerce")
+
+        # Estadísticos solicitados
+        stats = stats or ["mean", "std", "min", "q25", "q50", "q75", "max"]
+
+        # Mapeo de funciones
+        func_map = {
+            "count": lambda s: s.count(),
+            "mean": lambda s: s.mean(),
+            "std": lambda s: s.std(ddof=1),
+            "min": lambda s: s.min(),
+            "q25": lambda s: s.quantile(0.25),
+            "q50": lambda s: s.quantile(0.50),
+            "q75": lambda s: s.quantile(0.75),
+            "max": lambda s: s.max(),
+        }
+        bad = [k for k in stats if k not in func_map]
+        if bad:
+            raise ValueError(f"Estadísticos no soportados: {bad}")
+
+        def summarize(frame: pd.DataFrame) -> pd.DataFrame:
+            out = {}
+            for col in cols_num:
+                ser = frame[col]
+                out[col] = {k: func_map[k](ser) for k in stats}
+            # filas=columnas, columnas=estadísticos
+            return pd.DataFrame(out).T
+
+        if group_by is None or group_by not in work.columns:
+            return summarize(work)
+        else:
+            tablas = {}
+            for nivel, sub in work.groupby(group_by, dropna=False):
+                tablas[str(nivel)] = summarize(sub)
+            return tablas
+
+    def promedio_ponderado(
+        self, variable, peso, condicion=None, filtro=None, valor_filtro=None
+    ):
+        """Calcula el promedio ponderado de una columna según otra como peso.
+
+        Parámetros
+        ----------
+        variable : str
+            Nombre de la columna sobre la que se calcula el promedio.
+        peso : str
+            Nombre de la columna a usar como ponderador.
+        condicion : str | None
+            Si se indica, filtra la columna 'condicion' por ese valor.
+        filtro : str | None
+            Nombre de otra columna para aplicar un filtro.
+        valor_filtro : cualquier tipo
+            Valor a conservar en la columna `filtro`.
+
+        Retorna
+        -------
+        float:
+            Promedio ponderado calculado.
+        """
+        if self.__df is None:
+            raise ValueError("No hay DataFrame cargado. Use cargar_csv() primero.")
+
+        df = self.__df.copy()
+
+        # Filtrar por condición (si aplica)
+        if condicion is not None and "condicion" in df.columns:
+            df = df[df["condicion"] == condicion]
+
+        # Filtro adicional (si aplica)
+        if filtro is not None and valor_filtro is not None and filtro in df.columns:
+            df = df[df[filtro] == valor_filtro]
+
+        # Mantener solo columnas necesarias
+        if variable not in df.columns or peso not in df.columns:
+            raise KeyError(
+                f"Columnas requeridas '{variable}' o '{peso}' no existen en el DataFrame."
+            )
+
+        df = df[[variable, peso]].dropna()
+        df[variable] = pd.to_numeric(df[variable], errors="coerce")
+        df[peso] = pd.to_numeric(df[peso], errors="coerce")
+        df = df.dropna()
+
+        if df.empty:
+            return np.nan
+
+        return (df[variable] * df[peso]).sum() / df[peso].sum()

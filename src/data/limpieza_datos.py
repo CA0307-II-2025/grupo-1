@@ -39,6 +39,16 @@ traducciones = {
 df = df.rename(columns=traducciones)
 
 ld.df = df
+ld.escalar_columnas(
+    [
+        "desempleo",
+        "poblacion_urbana",
+        "privacion_critica",
+        "poblacion_menor_14",
+        "hogares_monomarentales",
+    ],
+    0.01,
+)
 
 # Guardar resultado
 ld.guardar("data/clean/datos_limpios.csv")
