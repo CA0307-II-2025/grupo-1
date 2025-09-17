@@ -58,13 +58,13 @@ El formato para cada estudiante debe ser
 - ¿Hay algo que me está bloqueando?: no
 
 ### Julián Soto:
-- ¿Qué hice ayer?: participación en la reunión para la división de tareas. 
-- ¿Qué haré hoy?: estructurar la realización de las tareas asignadas, en el esquema semanal. 
+- ¿Qué hice ayer?: participación en la reunión para la división de tareas.
+- ¿Qué haré hoy?: estructurar la realización de las tareas asignadas, en el esquema semanal.
 •⁠  ⁠*¿Hay algo que me está bloqueando?*: No
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*:  nos reunimos para repartir las tareas de cada uno 
-•⁠  ⁠*¿Qué haré hoy?*: planeo comenzar a trabajar en los antecedentes 
+•⁠  ⁠*¿Qué hice ayer?*:  nos reunimos para repartir las tareas de cada uno
+•⁠  ⁠*¿Qué haré hoy?*: planeo comenzar a trabajar en los antecedentes
 •⁠  ⁠*¿Hay algo que me está bloqueando?*: no
 
 
@@ -73,21 +73,21 @@ El formato para cada estudiante debe ser
 ### Paola Espinoza Hernández:
 - ¿Qué hice ayer?:
 - ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?:  
+- ¿Hay algo que me está bloqueando?:
 
 ### José Carlos Quintero:
-- ¿Qué hice ayer?: 
+- ¿Qué hice ayer?:
 - ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?: 
+- ¿Hay algo que me está bloqueando?:
 
 ### Julián Soto:
 - ¿Qué hice ayer?:
 - ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?: 
+- ¿Hay algo que me está bloqueando?:
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*: 
-•⁠  ⁠*¿Qué haré hoy?*: 
+•⁠  ⁠*¿Qué hice ayer?*:
+•⁠  ⁠*¿Qué haré hoy?*:
 •⁠  ⁠*¿Hay algo que me está bloqueando?*:
 
 
@@ -97,21 +97,21 @@ El formato para cada estudiante debe ser
 ### Paola Espinoza Hernández:
 - ¿Qué hice ayer?:
 - ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?:  
+- ¿Hay algo que me está bloqueando?:
 
 ### José Carlos Quintero:
-- ¿Qué hice ayer?: 
+- ¿Qué hice ayer?:
 - ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?: 
+- ¿Hay algo que me está bloqueando?:
 
 ### Julián Soto:
 - ¿Qué hice ayer?:
 - ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?: 
+- ¿Hay algo que me está bloqueando?:
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*: 
-•⁠  ⁠*¿Qué haré hoy?*: 
+•⁠  ⁠*¿Qué hice ayer?*:
+•⁠  ⁠*¿Qué haré hoy?*:
 •⁠  ⁠*¿Hay algo que me está bloqueando?*:
 
 # 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
