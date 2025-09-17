@@ -2,7 +2,7 @@
 
 ## 🎯  Objetivo del Sprint:
 
- _Declarar la meta del sprint en 1-2 frases (ej: "Tener datos limpios y un análisis descriptivo inicial completado")._
+ Análisis descriptivo exploratorio y avance en metología y antecendentes
 
 ## 😃  Historias de usuario
 
@@ -13,8 +13,8 @@
 
 
 ## 🔜  Plan de alto nivel:
-- *Semana 1:* _Tareas principales (ej: Ingesta de datos, Setup entorno CI)._
-- *Semana 2:* _Tareas principales (ej: Implementar modelo y validar, preparar demo)._
+- *Semana 1:* _Investigación y borradores
+- *Semana 2:* _Resumen descriptivo, metodología y antecedentes
 
 
 ## 🥇  Criterios de aceptación del Sprint:
@@ -45,29 +45,74 @@ El formato para cada estudiante debe ser
 
 
 
-##  Fecha: YYYY-MM-DD
+##  Fecha: 2025-09-09
 
-### Estudiante A:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Paola Espinoza Hernández:
+- ¿Qué hice ayer?: Reunirme con mis compañeros para planear las acciones del sprint
+- ¿Qué haré hoy?: Planear mi plan de acción
+- ¿Hay algo que me está bloqueando?:  No
 
-### Estudiante B:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### José Carlos Quintero:
+- ¿Qué hice ayer?: pensar en cómo encaminar mejor el tema
+- ¿Qué haré hoy?: empezar con el análisis descriptivo de los datos
+- ¿Hay algo que me está bloqueando?: no
 
-### Estudiante C:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Julián Soto:
+- ¿Qué hice ayer?: participación en la reunión para la división de tareas. 
+- ¿Qué haré hoy?: estructurar la realización de las tareas asignadas, en el esquema semanal. 
+•⁠  ⁠*¿Hay algo que me está bloqueando?*: No
 
-### Estudiante D:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*:  nos reunimos para repartir las tareas de cada uno 
+•⁠  ⁠*¿Qué haré hoy?*: planeo comenzar a trabajar en los antecedentes 
+•⁠  ⁠*¿Hay algo que me está bloqueando?*: no
 
 
+##  Fecha: 2025-09-12
+
+### Paola Espinoza Hernández:
+- ¿Qué hice ayer?:
+- ¿Qué haré hoy?:
+- ¿Hay algo que me está bloqueando?:  
+
+### José Carlos Quintero:
+- ¿Qué hice ayer?: 
+- ¿Qué haré hoy?:
+- ¿Hay algo que me está bloqueando?: 
+
+### Julián Soto:
+- ¿Qué hice ayer?:
+- ¿Qué haré hoy?:
+- ¿Hay algo que me está bloqueando?: 
+
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: 
+•⁠  ⁠*¿Qué haré hoy?*: 
+•⁠  ⁠*¿Hay algo que me está bloqueando?*:
+
+
+
+##  Fecha: 2025-09-17
+
+### Paola Espinoza Hernández:
+- ¿Qué hice ayer?:
+- ¿Qué haré hoy?:
+- ¿Hay algo que me está bloqueando?:  
+
+### José Carlos Quintero:
+- ¿Qué hice ayer?: 
+- ¿Qué haré hoy?:
+- ¿Hay algo que me está bloqueando?: 
+
+### Julián Soto:
+- ¿Qué hice ayer?:
+- ¿Qué haré hoy?:
+- ¿Hay algo que me está bloqueando?: 
+
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: 
+•⁠  ⁠*¿Qué haré hoy?*: 
+•⁠  ⁠*¿Hay algo que me está bloqueando?*:
 
 # 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
 
