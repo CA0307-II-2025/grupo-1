@@ -23,9 +23,10 @@
 
 
 ## 📌  Asignación de tareas inicial
-- *Persona A:* Historia 1
-- *Persona B:* Historia 2
-- *Persona C:* documentación
+- *José Carlos Quintero:* resumen descriptivo
+- *Paola Espinoza:* resumen descriptivo
+- *Julián Soto:* metodología
+- *María Paula Jiménez:* antecedentes
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
