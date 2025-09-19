@@ -30,8 +30,7 @@
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
-- **Bloqueo:** _No tenemos la base de datos limpia.
-- **Solución** _Crear una historia solo para limpiar la base de datos_.
+- **Bloqueo:** _Falta de tiempo.
 
 
 
@@ -72,48 +71,49 @@ El formato para cada estudiante debe ser
 ##  Fecha: 2025-09-12
 
 ### Paola Espinoza Hernández:
-- ¿Qué hice ayer?:
-- ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?:
+- ¿Qué hice ayer?: analizar las acciones a realizar
+- ¿Qué haré hoy?: investigar sobre mapas
+- ¿Hay algo que me está bloqueando?:  poco tiempo
 
 ### José Carlos Quintero:
-- ¿Qué hice ayer?:
+- ¿Qué hice ayer?: 
 - ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?:
+- ¿Hay algo que me está bloqueando?: 
 
 ### Julián Soto:
-- ¿Qué hice ayer?:
-- ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?:
+- ¿Qué hice ayer?: avanzar con la estructuración de las tareas asignadas para este sprint. 
+- ¿Qué haré hoy?: iniciar con una comparación metodológica de los distintos modelos propuestos.  
+- ¿Hay algo que me está bloqueando?: no
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*:
-•⁠  ⁠*¿Qué haré hoy?*:
-•⁠  ⁠*¿Hay algo que me está bloqueando?*:
+•⁠  ⁠*¿Qué hice ayer?*: analizar las actividades por completar
+•⁠  ⁠*¿Qué haré hoy?*: avanzar lo más posible con los antecedentes 
+•⁠  ⁠*¿Hay algo que me está bloqueando?*:no
 
 
 
 ##  Fecha: 2025-09-17
 
 ### Paola Espinoza Hernández:
-- ¿Qué hice ayer?:
-- ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?:
+- ¿Qué hice ayer?: investigar mapas
+- ¿Qué haré hoy?: actualizar el dashboard con un mapa más bonito
+- ¿Hay algo que me está bloqueando?:  no
 
 ### José Carlos Quintero:
-- ¿Qué hice ayer?:
-- ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?:
+- ¿Qué hice ayer?: investigar sobre la metodología de la investigación 
+- ¿Qué haré hoy?: redactar una parte del análisis exploratorio de la base de datos
+- ¿Hay algo que me está bloqueando?: no
 
 ### Julián Soto:
-- ¿Qué hice ayer?:
-- ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?:
+- ¿Qué hice ayer?: continuación con la comparación metodológica de distintos modelos. 
+- ¿Qué haré hoy?: valorar la inclusión de modelos alternativos en la comparación metodológica. 
+- ¿Hay algo que me está bloqueando?: poca disponibilidad de tiempo 
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*:
-•⁠  ⁠*¿Qué haré hoy?*:
-•⁠  ⁠*¿Hay algo que me está bloqueando?*:
+•⁠  ⁠*¿Qué hice ayer?*: empecé a hacer el canva de la presentación del sprint3
+•⁠  ⁠*¿Qué haré hoy?*: planeo terminar los antecedentes 
+•⁠  ⁠*¿Hay algo que me está bloqueando?*:no
+
 
 # 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
 
