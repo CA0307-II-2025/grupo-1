@@ -1,5 +1,4 @@
 # app.py
-import json
 import dash
 from dash import dcc, html
 import plotly.graph_objs as go
@@ -10,27 +9,29 @@ CR_LONGITUDE = -83.7534
 CR_ZOOM = 7
 mapbox_style = ["open-street-map", "carto-positron", "carto-darkmatter"]
 
+
 def create_map_cr_basico():
     fig = go.Figure()
 
     # (Opcional) un marcador en San José
-    fig.add_trace(go.Scattermapbox(
-        lat=[9.9281], lon=[-84.0907],
-        mode="markers",
-        marker=dict(size=10),
-        name="San José"
-    ))
+    fig.add_trace(
+        go.Scattermapbox(
+            lat=[9.9281],
+            lon=[-84.0907],
+            mode="markers",
+            marker=dict(size=10),
+            name="San José",
+        )
+    )
 
     fig.update_layout(
-        mapbox_style=mapbox_style[1],             # "carto-positron"
+        mapbox_style=mapbox_style[1],  # "carto-positron"
         mapbox_zoom=CR_ZOOM,
         mapbox_center={"lat": CR_LATITUDE, "lon": CR_LONGITUDE},
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
         height=600,
     )
     return fig
-
-
 
 
 # Inicializar Dash
