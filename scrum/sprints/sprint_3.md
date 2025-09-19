@@ -76,18 +76,18 @@ El formato para cada estudiante debe ser
 - ¿Hay algo que me está bloqueando?:  poco tiempo
 
 ### José Carlos Quintero:
-- ¿Qué hice ayer?: 
+- ¿Qué hice ayer?:
 - ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?: 
+- ¿Hay algo que me está bloqueando?:
 
 ### Julián Soto:
-- ¿Qué hice ayer?: avanzar con la estructuración de las tareas asignadas para este sprint. 
-- ¿Qué haré hoy?: iniciar con una comparación metodológica de los distintos modelos propuestos.  
+- ¿Qué hice ayer?: avanzar con la estructuración de las tareas asignadas para este sprint.
+- ¿Qué haré hoy?: iniciar con una comparación metodológica de los distintos modelos propuestos.
 - ¿Hay algo que me está bloqueando?: no
 
 ### María Paula Jiménez:
 •⁠  ⁠*¿Qué hice ayer?*: analizar las actividades por completar
-•⁠  ⁠*¿Qué haré hoy?*: avanzar lo más posible con los antecedentes 
+•⁠  ⁠*¿Qué haré hoy?*: avanzar lo más posible con los antecedentes
 •⁠  ⁠*¿Hay algo que me está bloqueando?*:no
 
 
@@ -100,18 +100,18 @@ El formato para cada estudiante debe ser
 - ¿Hay algo que me está bloqueando?:  no
 
 ### José Carlos Quintero:
-- ¿Qué hice ayer?: investigar sobre la metodología de la investigación 
+- ¿Qué hice ayer?: investigar sobre la metodología de la investigación
 - ¿Qué haré hoy?: redactar una parte del análisis exploratorio de la base de datos
 - ¿Hay algo que me está bloqueando?: no
 
 ### Julián Soto:
-- ¿Qué hice ayer?: continuación con la comparación metodológica de distintos modelos. 
-- ¿Qué haré hoy?: valorar la inclusión de modelos alternativos en la comparación metodológica. 
-- ¿Hay algo que me está bloqueando?: poca disponibilidad de tiempo 
+- ¿Qué hice ayer?: continuación con la comparación metodológica de distintos modelos.
+- ¿Qué haré hoy?: valorar la inclusión de modelos alternativos en la comparación metodológica.
+- ¿Hay algo que me está bloqueando?: poca disponibilidad de tiempo
 
 ### María Paula Jiménez:
 •⁠  ⁠*¿Qué hice ayer?*: empecé a hacer el canva de la presentación del sprint3
-•⁠  ⁠*¿Qué haré hoy?*: planeo terminar los antecedentes 
+•⁠  ⁠*¿Qué haré hoy?*: planeo terminar los antecedentes
 •⁠  ⁠*¿Hay algo que me está bloqueando?*:no
 
 
