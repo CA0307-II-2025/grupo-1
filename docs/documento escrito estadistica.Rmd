@@ -23,6 +23,17 @@ nocite: '@*'
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
+## Objetivos
+*Objetivo general*
+
+Estimar la distribución posterior de la prevalencia de sobrepeso y obesidad infantil en Costa Rica mediante métodos bayesianos computacionales, con el fin de evaluar la variabilidad territorial y la incertidumbre asociada a las estimaciones.
+
+*Objetivos específicos*
+
+1. Calcular la distribución posterior de la prevalencia de sobrepeso y de obesidad en cada provincia (y eventualmente en cantones o distritos) a partir de un modelo binomial bayesiano.
+2. Comparar los resultados obtenidos entre diferentes unidades territoriales, analizando medias posteriores e intervalos de credibilidad.
+3. Visualizar los resultados mediante mapas y gráficos que representen tanto la prevalencia estimada como la incertidumbre posterior.
+
 ## Introducción / Antecendetes
 
 El sobrepeso y la obesidad infantil se han establecido en las últimas décadas como una de las principales problemáticas de salud pública a nivel mundial. En tan solo cuatro décadas, la cantidad de niños y adolescentes en edad escolar con obesidad se multiplicó por más de diez, pasando de 11 millones a 124 millones, y se calculó que alrededor de 216 millones tenían sobrepeso según estimaciones del 2016. (WHO, 2018). Entre los efectos tempranos de estas afecciones se incluyen complicaciones respiratorias, alteraciones metabólicas y problemas psicosociales, mientras que en la adultez se asocia con mayor riesgo de enfermedades crónicas, discapacidad y mortalidad prematura (Gamboa-Gamboa et al., 2021).
@@ -31,6 +42,8 @@ La evidencia científica en Costa Rica ha informado de la magnitud del problema 
 Por su parte, Nuñez-Rivas et al. (2022) aportaron referencias nacionales de índice de masa corporal (IMC) y circunferencia de cintura (CC) para estudiantes de 7 a 17 años, mostrando que el 16,3% de los escolares tenían obesidad y el 26,2% sobrepeso. Sus hallazgos mostraron contradicciones con los patrones internacionales, lo que evidencia que el uso exclusivo de referencias externas podría distorsionar la prevalencia real en el país. Esto confirma que contar con curvas nacionales de crecimiento son una herramienta fundamental para el monitoreo y diseño de estrategias de salud pública.
 En el ámbito regional, Hernández-Vásquez et al. (2016) evidenciaron en Perú cómo el sobrepeso y la obesidad infantil se concentran en distritos urbanos y costeros, mientras que las zonas andinas y amazónicas registran menores prevalencias. Dicho patrón geográfico refleja la transición nutricional que caracteriza a América Latina, donde coexisten problemas de desnutrición y exceso de peso, situación que hace más compleja la planificación de políticas públicas.
 De manera más específica para Costa Rica, Gómez et al. (2023) aplicaron un modelo espacial bayesiano para estimar la prevalencia distrital de obesidad infantil, encontrando asociaciones significativas con factores educativos, económicos y demográficos. Entre los resultados se identificó una relación no lineal con la escolaridad promedio, así como una mayor prevalencia en distritos urbanos, cabeceras de provincia, zonas turísticas y fronterizas con Panamá. Estos hallazgos muestran que los entornos sociales y territoriales influyen de manera decisiva en la distribución del sobrepeso y la obesidad infantil.
+
+*Palabras clave:* Costa Rica, sobrepeso, obesidad
 
 
 ## Marco Teórico (Preliminar)
