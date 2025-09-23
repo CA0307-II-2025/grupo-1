@@ -7,9 +7,9 @@ sys.path.append(os.path.join(os.getcwd(), "src/data"))
 from LimpiadorDatos import LimpiadorDatos
 
 rutas = {
-    "sobrepeso": "data/raw/base_sobrepeso.csv",
-    "obesidad": "data/raw/base_obesidad.csv",
-    "combinada": "data/raw/base_combinada.csv",
+    "sobrepeso": "../../data/raw/base_sobrepeso.csv",
+    "obesidad": "../../data/raw/base_obesidad.csv",
+    "combinada": "../../data/raw/base_combinada.csv",
 }
 
 ld = LimpiadorDatos(rutas)
@@ -49,8 +49,10 @@ ld.escalar_columnas(
     ],
     0.01,
 )
+ld.quitar_comas(['subtotal'])
+ld.quitar_nas()
 
 # Guardar resultado
-ld.guardar("data/clean/datos_limpios.csv")
+ld.guardar("../../data/clean/datos_limpios.csv")
 
 print(df.head())
