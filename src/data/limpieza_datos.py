@@ -49,7 +49,7 @@ ld.escalar_columnas(
     ],
     0.01,
 )
-ld.quitar_comas(['subtotal'])
+ld.quitar_comas(["subtotal"])
 ld.quitar_nas()
 
 # Guardar resultado

@@ -152,4 +152,3 @@ El formato para cada estudiante debe ser
 
 ## :pencil: Acciones concretas  para el próximo sprint
 **Refinar historias en refinamiento semanal** – Hacer la creación de historias con más anticipación y agregar criterios de aceptación más detallados.
-

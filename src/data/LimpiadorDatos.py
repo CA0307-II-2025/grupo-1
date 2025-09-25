@@ -235,14 +235,15 @@ class LimpiadorDatos:
             self.__df[col] = pd.to_numeric(self.__df[col], errors="coerce") * factor
 
         return self.__df
-    
+
     def quitar_comas(self, cols):
         for c in cols:
             self.__df[c] = (
-                self.__df[c].astype(str)
-                       .str.replace(",", "", regex=False)
-                       .pipe(pd.to_numeric, errors="coerce")
+                self.__df[c]
+                .astype(str)
+                .str.replace(",", "", regex=False)
+                .pipe(pd.to_numeric, errors="coerce")
             )
-    
+
     def quitar_nas(self):
         self.__df = self.__df.dropna()
