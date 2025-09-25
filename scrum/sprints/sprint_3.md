@@ -6,10 +6,10 @@
 
 ## 😃  Historias de usuario
 
-- HU# - "Título de la Historia" (Estimación: Y pts) – *Criterios de aceptación confirmados.*
-- HU# - ...
-*(Listar las historias del backlog que el equipo se compromete a completar este sprint, con sus IDs y breve nombre.)*
-
+- HU28 - "Como analista/investigador quiero redactar el marco teórico y enlazar la bibliografía para sustentar el proyecto con evidencia científica" (Estimación: 5 pts) – *Criterios de aceptación confirmados.*
+- HU62 - "Datos convertidos al formato tidy" (Estimación: 3 pts) – *Criterios de aceptación confirmados.*
+- HU60 - "Como analista de datos quiero crear métodos para análisis estadístico descriptivo" (Estimación: 8 pts) – *Criterios de aceptación confirmados.*
+- HU61 - "Creación de la presentación para el sprint3" (Estimación: 2 pts) – *Criterios de aceptación confirmados.*
 
 
 ## 🔜  Plan de alto nivel:
@@ -18,9 +18,9 @@
 
 
 ## 🥇  Criterios de aceptación del Sprint:
-- [ ] _Todas las historias listadas completadas y aceptadas por el profesor._
-- [ ] _El código limpia automáticamente la base de datos._
-
+- [ ] _los datos están en formato tidy adecuadamente para análisis._
+- [ ] _Los antecedentes están terminados._
+- [ ] _Hay métodos para análisis estadístico descriptivo._
 
 ## 📌  Asignación de tareas inicial
 - *José Carlos Quintero:* resumen descriptivo
@@ -60,12 +60,12 @@ El formato para cada estudiante debe ser
 ### Julián Soto:
 - ¿Qué hice ayer?: participación en la reunión para la división de tareas.
 - ¿Qué haré hoy?: estructurar la realización de las tareas asignadas, en el esquema semanal.
-•⁠  ⁠*¿Hay algo que me está bloqueando?*: No
+-⁠ ¿Hay algo que me está bloqueando?: No
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*:  nos reunimos para repartir las tareas de cada uno
-•⁠  ⁠*¿Qué haré hoy?*: planeo comenzar a trabajar en los antecedentes
-•⁠  ⁠*¿Hay algo que me está bloqueando?*: no
+-⁠  ⁠¿Qué hice ayer?:  nos reunimos para repartir las tareas de cada uno
+-⁠  ⁠¿Qué haré hoy?: planeo comenzar a trabajar en los antecedentes
+-  ⁠¿Hay algo que me está bloqueando?: no
 
 
 ##  Fecha: 2025-09-12
@@ -73,12 +73,12 @@ El formato para cada estudiante debe ser
 ### Paola Espinoza Hernández:
 - ¿Qué hice ayer?: analizar las acciones a realizar
 - ¿Qué haré hoy?: investigar sobre mapas
-- ¿Hay algo que me está bloqueando?:  poco tiempo
+- ¿Hay algo que me está bloqueando?: poco tiempo
 
 ### José Carlos Quintero:
-- ¿Qué hice ayer?:
-- ¿Qué haré hoy?:
-- ¿Hay algo que me está bloqueando?:
+- ¿Qué hice ayer?: revisar por encima la base de datos
+- ¿Qué haré hoy?: realizar cambios que considere necesarios
+- ¿Hay algo que me está bloqueando?: no
 
 ### Julián Soto:
 - ¿Qué hice ayer?: avanzar con la estructuración de las tareas asignadas para este sprint.
@@ -86,9 +86,9 @@ El formato para cada estudiante debe ser
 - ¿Hay algo que me está bloqueando?: no
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*: analizar las actividades por completar
-•⁠  ⁠*¿Qué haré hoy?*: avanzar lo más posible con los antecedentes
-•⁠  ⁠*¿Hay algo que me está bloqueando?*:no
+-  ⁠¿Qué hice ayer?: analizar las actividades por completar
+-⁠  ⁠¿Qué haré hoy?: avanzar lo más posible con los antecedentes
+-⁠  ⁠¿Hay algo que me está bloqueando?:no
 
 
 
@@ -110,9 +110,9 @@ El formato para cada estudiante debe ser
 - ¿Hay algo que me está bloqueando?: poca disponibilidad de tiempo
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*: empecé a hacer el canva de la presentación del sprint3
-•⁠  ⁠*¿Qué haré hoy?*: planeo terminar los antecedentes
-•⁠  ⁠*¿Hay algo que me está bloqueando?*:no
+-⁠  ⁠¿Qué hice ayer?: empecé a hacer el canva de la presentación del sprint3
+-  ⁠¿Qué haré hoy?: planeo terminar los antecedentes
+-⁠  ⁠¿Hay algo que me está bloqueando?:no
 
 
 # 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
@@ -121,8 +121,9 @@ El formato para cada estudiante debe ser
 
 ## 📈  Resultado mostrado
 
-- *Funcionalidad A:* (ej: "Carga automática de dataset desde CSV en base de datos completada").
-- *Funcionalidad B:* (ej: "Gráficos descriptivos generados dinámicamente").
+- *Funcionalidad A:* ("Antecendetes terminados enlazando la bibliografía").
+- *Funcionalidad B:* ("Métodos para análisis estadístico descriptivo").
+- *Funcionalidad C:* ("Análisis exploratorio de la base de datos").
 
 
 ## :arrows_counterclockwise:  Retroalimentación
@@ -132,27 +133,23 @@ El formato para cada estudiante debe ser
 
 
 ## ✔️  Criterios de aceptación cumplidos:
-- [] _Historias 1, 2, 3. completadas. Falta la historia 4.
-- [x] Carga automática de la base de datos.
+- [] _Historias 28, 60, 61, 62. completadas.
 
 
 # 🔙  Retrospective – Fecha: YYYY-MM-DD
 
 ## :white_check_mark: Qué salió bien
-1.  _Colaboración en el equipo_ Logramos terminar el sprint a tiempo.
-1.  _Usamos commits convencionales correctamente y no hubo errores_
-1.  Documentación actualizada al día evitó retrabajo luego.
+1.  _Colaboración en el equipo:_ Logramos terminar el sprint a tiempo.
+2.  _Repartimiento de tareas:_ Se repartió tomando en cuenta los deseos de cada uno.
+3.  _Documentación actualizada:_ Se mantuvo al día, evitó retrabajo luego.
 
 
 
 ## :no_good: Qué podría mejorar
 
-- _Gestión de tiempo en Daily:_ a veces se extendieron a 20 min discutiendo detalles innecesarios.
-- _Claridad de criterios de aceptación:_ En HU2 inicialmente no estaba claro cómo validar "datos limpios". Mejoraremos definición de *Done* para tareas de datos.
-- _Distribución de carga:_ Persona A quedó sobrecargada con 3 historias. El próximo sprint se equilibrará asignación más temprano.
+- _Gestión de tiempo con las historias:_ La creación de las historias no se hicieron al inicio.
 
 
 ## :pencil: Acciones concretas  para el próximo sprint
-1. **Timebox en Daily** – SM usará temporizador de 15 min y cortará discusiones largas, anotándolas para after.
-2. **Refinar historias en refinamiento semanal** – Agregar criterios de aceptación más detallados, especialmente para historias técnicas (como limpieza de datos).
-3. **Balancear asignación tareas** – Implementar mini-plan al inicio del sprint donde cada dev toma carga similar; SM monitoreará que nadie tenga >40% de tareas.
+**Refinar historias en refinamiento semanal** – Hacer la creación de historias con más anticipación y agregar criterios de aceptación más detallados.
+
