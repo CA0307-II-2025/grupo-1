@@ -203,3 +203,47 @@ class LimpiadorDatos:
         """
         self.__df = self.__df.rename(columns={vieja: nueva})
         return self.__df
+
+    def escalar_columnas(self, columnas, factor=1.0):
+        """Escala los valores de una o varias columnas numéricas por un factor.
+
+        Parámetros
+        ----------
+        columnas : str | list[str]
+            Nombre(s) de columna(s) a escalar.
+        factor : float
+            Factor por el cual multiplicar las columnas.
+            Ejemplo: factor=0.01 convierte 10.45 en 0.1045.
+
+        Retorna
+        -------
+        pandas.DataFrame
+            DataFrame con las columnas escaladas.
+        """
+        if self.__df is None:
+            raise ValueError(
+                "No hay DataFrame cargado. Ejecute unir() o cargue un DataFrame."
+            )
+
+        if isinstance(columnas, str):
+            columnas = [columnas]
+
+        for col in columnas:
+            if col not in self.__df.columns:
+                raise KeyError(f"La columna '{col}' no existe en el DataFrame.")
+
+            self.__df[col] = pd.to_numeric(self.__df[col], errors="coerce") * factor
+
+        return self.__df
+
+    def quitar_comas(self, cols):
+        for c in cols:
+            self.__df[c] = (
+                self.__df[c]
+                .astype(str)
+                .str.replace(",", "", regex=False)
+                .pipe(pd.to_numeric, errors="coerce")
+            )
+
+    def quitar_nas(self):
+        self.__df = self.__df.dropna()

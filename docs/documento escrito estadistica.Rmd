@@ -23,10 +23,28 @@ nocite: '@*'
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
-## Introducción
+## Objetivos
+*Objetivo general*
+
+Estimar la distribución posterior de la prevalencia de sobrepeso y obesidad infantil en Costa Rica mediante métodos bayesianos computacionales, con el fin de evaluar la variabilidad territorial y la incertidumbre asociada a las estimaciones.
+
+*Objetivos específicos*
+
+1. Calcular la distribución posterior de la prevalencia de sobrepeso y de obesidad en cada provincia (y eventualmente en cantones o distritos) a partir de un modelo binomial bayesiano.
+2. Comparar los resultados obtenidos entre diferentes unidades territoriales, analizando medias posteriores e intervalos de credibilidad.
+3. Visualizar los resultados mediante mapas y gráficos que representen tanto la prevalencia estimada como la incertidumbre posterior.
+
+## Introducción / Antecendetes
 
 El sobrepeso y la obesidad infantil se han establecido en las últimas décadas como una de las principales problemáticas de salud pública a nivel mundial. En tan solo cuatro décadas, la cantidad de niños y adolescentes en edad escolar con obesidad se multiplicó por más de diez, pasando de 11 millones a 124 millones, y se calculó que alrededor de 216 millones tenían sobrepeso según estimaciones del 2016. (WHO, 2018). Entre los efectos tempranos de estas afecciones se incluyen complicaciones respiratorias, alteraciones metabólicas y problemas psicosociales, mientras que en la adultez se asocia con mayor riesgo de enfermedades crónicas, discapacidad y mortalidad prematura (Gamboa-Gamboa et al., 2021).
 En Costa Rica, los resultados del Censo Escolar de Peso y Talla 2016 revelaron que más de un tercio de la población infantil en edad escolar presenta sobrepeso u obesidad (Gomez et al., 2023), lo que muestra urgencia de comprender este fenómeno en su complejidad de factores. Del mismo modo en otros países de ingresos medios, el exceso de peso infantil no se distribuye de manera uniforme debido a factores demográficos, socioeconómicos y territoriales que influyen en la prevalencia y configuran escenarios particulares según la zona de residencia, el nivel de desarrollo del distrito o el tipo de centro educativo (Gamboa-Gamboa et al., 2021).
+La evidencia científica en Costa Rica ha informado de la magnitud del problema y de los factores que explican sus diferencias territoriales y sociales. El estudio de Gamboa-Gamboa et al. (2021) analizó más de 347,000 escolares del Censo Nacional de Peso/Talla 2016, revelando que el 34% de los niños presentaban exceso de peso, con mayor prevalencia en varones y en aquellos que asistían a escuelas privadas, vivían en zonas urbanas o en distritos con mayor desarrollo socioeconómico. Estos resultados contrastan con la tendencia vista en países desarrollados, donde la obesidad infantil se asocia más a niveles socioeconómicos bajos, lo que subraya la necesidad de comprender el fenómeno en su contexto nacional.
+Por su parte, Nuñez-Rivas et al. (2022) aportaron referencias nacionales de índice de masa corporal (IMC) y circunferencia de cintura (CC) para estudiantes de 7 a 17 años, mostrando que el 16,3% de los escolares tenían obesidad y el 26,2% sobrepeso. Sus hallazgos mostraron contradicciones con los patrones internacionales, lo que evidencia que el uso exclusivo de referencias externas podría distorsionar la prevalencia real en el país. Esto confirma que contar con curvas nacionales de crecimiento son una herramienta fundamental para el monitoreo y diseño de estrategias de salud pública.
+En el ámbito regional, Hernández-Vásquez et al. (2016) evidenciaron en Perú cómo el sobrepeso y la obesidad infantil se concentran en distritos urbanos y costeros, mientras que las zonas andinas y amazónicas registran menores prevalencias. Dicho patrón geográfico refleja la transición nutricional que caracteriza a América Latina, donde coexisten problemas de desnutrición y exceso de peso, situación que hace más compleja la planificación de políticas públicas.
+De manera más específica para Costa Rica, Gómez et al. (2023) aplicaron un modelo espacial bayesiano para estimar la prevalencia distrital de obesidad infantil, encontrando asociaciones significativas con factores educativos, económicos y demográficos. Entre los resultados se identificó una relación no lineal con la escolaridad promedio, así como una mayor prevalencia en distritos urbanos, cabeceras de provincia, zonas turísticas y fronterizas con Panamá. Estos hallazgos muestran que los entornos sociales y territoriales influyen de manera decisiva en la distribución del sobrepeso y la obesidad infantil.
+
+*Palabras clave:* Costa Rica, sobrepeso, obesidad
+
 
 ## Marco Teórico (Preliminar)
 
@@ -109,5 +127,26 @@ Las variables consideradas en el análisis se describen a continuación:
 - **ocupantes_por_hogar**: Promedio de personas que habitan en cada hogar del cantón.
 
 - **anos_escolaridad**: Promedio de años de escolaridad alcanzados por la población, indicador del nivel educativo.
+
+## Análisis exploratorio de la base de datos
+
+La base de datos empleada contiene indicadores socioeconómicos y demográficos por distrito, así como medidas de prevalencia de sobrepeso y obesidad infantil. La fuente primaria de información es el Primer Censo Escolar Peso/Talla del 2016, una iniciativa que recolectó datos antropométricos de 347,379 niños entre 6 y 12 años pertenecientes al sistema escolar público y privado de Costa Rica. La información se encuentra desagregada en unidades administrativas (provincias, cantones y distritos). Para este estudio se seleccionaron los distritos como unidad de análisis, con el fin de aumentar la granularidad y captar mejor la heterogeneidad socioeconómica a ese nivel. Además, se asociaron métricas provenientes del Censo 2011, logrando un total de 472 territorios considerados.
+
+En términos generales, la prevalencia combinada de sobrepeso y obesidad infantil muestra una media del 34%, con valores entre 13% y 56%, reflejando una variabilidad importante entre distritos. Al desagregar, la prevalencia de sobrepeso presenta un promedio de 20%, con una desviación estándar del 3% y un rango entre 6 y 33%, mientras que la prevalencia de obesidad registra un promedio de 14%, con desviación estándar del 4% y valores entre 0 y 33%. Estos resultados evidencian que, aunque ambas condiciones están presentes en magnitudes considerables, el sobrepeso es más frecuente que la obesidad, lo cual no es sorprendente al considerar que la obesidad se puede interpretar como un caso extremo de sobrepeso.
+
+Los años de escolaridad promedio por distrito se sitúan en 8.1 años, con una dispersión moderada (sd ≈ 1.5). La tasa de desempleo es baja en promedio (3%), pero con algunos distritos alcanzando valores cercanos a 9%. El porcentaje de hogares monomarentales ronda el 20% y la privación crítica promedio de los hogares se ubica en 29%, mostrando casos extremos de hasta 90% La población urbana evidencia una clara polarización: muchos distritos son predominantemente rurales (0%) o completamente urbanos (100%).
+
+Los histogramas permiten identificar distribuciones relativamente simétricas para variables como años de escolaridad, hogares monomarentales y ocupantes por hogar, mientras que otras como la población urbana y la privación crítica presentan asimetrías y valores extremos.
+
+En cuanto a las asociaciones bivariadas, se observan patrones relevantes:
+
+- Existe una relación positiva entre la prevalencia de sobrepeso/obesidad y los años de escolaridad promedio (los distritos con mayor escolaridad tienden a reportar mayor prevalencia).
+
+- La relación con la tasa de desempleo es débil y ligeramente negativa, indicando que este factor no parece estar fuertemente vinculado con la prevalencia.
+
+- El porcentaje de población urbana muestra una asociación positiva con la prevalencia, aunque con dispersión considerable.
+
+Finalmente, al comparar por provincia, la prevalencia combinada oscila entre 30% en Limón y 37% en Heredia, siendo esta última la más alta. Los boxplots confirman una mayor heterogeneidad en provincias como San José y Alajuela, mientras que Cartago y Guanacaste presentan distribuciones más concentradas.
+
 
 ## Referencias
