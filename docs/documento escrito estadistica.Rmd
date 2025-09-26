@@ -23,52 +23,91 @@ nocite: '@*'
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
-## Antecedentes
+## Introducción
 
 El sobrepeso y la obesidad infantil se han establecido en las últimas décadas como una de las principales problemáticas de salud pública a nivel mundial. En tan solo cuatro décadas, la cantidad de niños y adolescentes en edad escolar con obesidad se multiplicó por más de diez, pasando de 11 millones a 124 millones, y se calculó que alrededor de 216 millones tenían sobrepeso según estimaciones del 2016. (WHO, 2018). Entre los efectos tempranos de estas afecciones se incluyen complicaciones respiratorias, alteraciones metabólicas y problemas psicosociales, mientras que en la adultez se asocia con mayor riesgo de enfermedades crónicas, discapacidad y mortalidad prematura (Gamboa-Gamboa et al., 2021).
 En Costa Rica, los resultados del Censo Escolar de Peso y Talla 2016 revelaron que más de un tercio de la población infantil en edad escolar presenta sobrepeso u obesidad (Gomez et al., 2023), lo que muestra urgencia de comprender este fenómeno en su complejidad de factores. Del mismo modo en otros países de ingresos medios, el exceso de peso infantil no se distribuye de manera uniforme debido a factores demográficos, socioeconómicos y territoriales que influyen en la prevalencia y configuran escenarios particulares según la zona de residencia, el nivel de desarrollo del distrito o el tipo de centro educativo (Gamboa-Gamboa et al., 2021).
 
-## Artículos consultados
+## Marco Teórico (Preliminar)
 
-### *Species Distribution Modeling Using Spatial Point Processes: a Case Study of Sloths in Costa Rica*
+### 1. Modelado bayesiano espacial para mapeo de enfermedad
 
-**Descripción:** El artículo [@Moraga2020Sloth] propone la aplicación de técnicas de procesos puntuales, específicamente el ajuste de un modelo Log-Gaussiano Cox, para la estimación de la intensidad espacial de avistamientos de la especie de Osos Perezozos, Bradypus variegatus, en Costa Rica. Además, el estudio valora el efecto de variables climáticas en los patrones espaciales de esta especie
+El estudio de patrones geográficos de sobrepeso y obesidad mediante enfoques bayesianos espaciales permite estimar riesgos o prevalencias incorporando dependencia espacial y cuantificando la incertidumbre. En el contexto costarricense, se ha aplicado este enfoque para la prevalencia infantil, utilizando datos agregados a nivel distrital y complementando con variables socieconómicas, además de facilitar la visualización mediante un *dashboard* asociado al propio artículo. [@Gomez2023]
+
+### 2. Modelos espaciales y control de complejidad
+
+En el análisis espacial de enfermedades se emplean modelos jerárquicos que permiten separar efectos estructurados (dependencia espacial) y no estructurados (heterogeneidad), lo cual facilita la interpretación y el control de la complejidad. Este tipo de planteamientos provee una base formal para especificar hiperparámetros y para interpretar los componentes espaciales. [@Gelfand2010Handbook]
+
+### 3. Marcos jerárquicos con estructura/no estructura espacial
+
+El riesgo de obesidad puede modelarse en un esquema jerárquico que incorpore simultáneamente efectos estructurados (dependencia espacial) y no estructurados (heterogeneidad), en línea con modelos jerárquicos bayesianos aplicados en salud pública. [@Moraga2019Geospatial]
+
+### 4. Covariables relevantes y diagnóstico espacial exploratorio
+
+La literatura sobre obesidad infantil considera patrones de estilo de vida —por ejemplo, dieta, tiempo en pantalla, juego al aire libre, sueño y actividad física— y analiza su relación con el desarrollo del sobrepeso. Ello ilustra tanto la selección de covariables significativas como la incorporación de diagnósticos espaciales exploratorios. [@WHO2018]
+
+### 5. Comparaciones con modelos de sobredispersión
+
+En datos susceptibles de correlación espacial y conteo/tasas, es pertinente comparar modelos de sobredispersión con los modelos espaciales jerárquicos, utilizando criterios de comparación y diagnóstico. La evidencia empírica disponible muestra aplicaciones de estas comparaciones en contextos de salud pública. [@Moraga2020Sloth]
+
+### 6. Evidencia contextual: determinantes socieconómicos y referencias antropométricas
+
+En Costa Rica, se ha documentado la asociación entre nivel socieconómico (tipo de escuela, zona geográfica, nivel de desarrollo distrital) y exceso de peso en escolares, con una prevalencia total reportada del 34%, y mayor proporción en varones que en mujeres dentro de la muestra analizada. Además, se observa mayor probabilidad de exceso de peso en escuelas privadas, zonas urbanas y distritos más desarrollados. [@Gamboa2021]
+
+Como referencia antropométrica nacional, se han estimado percentiles de IMC y circunferencia de cintura en población infanto-juvenil costarricense, reportando 16.3% de obesidad y 26.2% de sobrepeso en la muestra estudiada, y señalando discrepancias con referencias internacionales que pueden conducir a sobreestimación si se usan de forma exclusiva. [@Nunez2022]
+
+### 7. Patrón espacial en la región: ejemplo del Perú
+
+El análisis espacial del sobrepeso y la obesidad infantil en Perú (2014) identifica concentraciones regionales y clústeres distritales, con mayores tasas en zonas urbanas costeras y menores en regiones andinas y amazónicas, en el contexto de una transición nutricional con coexistencia de desnutrición y exceso de peso. [@Hernandez2016]
+
+### 8. Fundamentos y referencias de estadística espacial
+
+Los fundamentos metodológicos de procesos puntuales y de modelos con efectos aleatorios espaciales se encuentran sistematizados en obras de referencia que sirven como base conceptual y técnica para los enfoques anteriores, incluyendo aplicaciones geoespaciales y de estadística espacial aplicada. [@Gelfand2010Handbook; @Moraga2019Geospatial; @Moraga2023SpatialStats]
+
+### 9. Síntesis operativa para el estudio propuesto
+
+- El uso de marcos jerárquicos espaciales ofrece una parametrización interpretable de la estructura espacial y una guía para fijar hiperparámetros. [@Gelfand2010Handbook]
+- La incorporación de efectos estructurados/no estructurados se alinea con desarrollos recientes aplicados al riesgo de obesidad. [@Moraga2019Geospatial]
+- La selección de covariables puede apoyarse en evidencia sobre estilos de vida y determinantes socieconómicos, junto con diagnóstico espacial exploratorio. [@WHO2018; @Gamboa2021]
+- La comparación con modelos de sobredispersión y la evaluación mediante criterios y diagnósticos son componentes metodológicos pertinentes. [@Moraga2020Sloth]
+- En el caso costarricense, existen datos distritales y un *dashboard* asociado al estudio que facilitan la integración de información socieconómica y la comunicación de resultados. [@Gomez2023]
+- Las referencias antropométricas nacionales pueden complementar o matizar las internacionales en la interpretación de resultados. [@Nunez2022]
+- Evidencia regional adicional (Perú) muestra la utilidad del análisis espacial para identificar clústeres y gradientes geográficos. [@Hernandez2016]
 
 
-**Datos:** La recopilación de avistamientos de esta especie, en Costa Rica, proviene del Sistema Global de Información sobre Biodiversidad (GBIF). Asimismo, con el propósito de incluir como variable climática la temperatura promedio anual según la zona geográfica, se acceden a datos de tipo ráster de la base WorldClim.
 
-**Relevancia:** En el contexto del proyecto del curso, la metodología planteada en el artículo resulta relevante por diversas razones. Primeramente, resalta la importancia del uso de técnicas estadísticas en áreas como la ecología, para el manejo y seguimiento de especies. También así, existe la apertura para replicar esta metodología para distintas especies presentes en Costa Rica, como es el caso del primate Cebus imitator, conocido coloquialmente como Mono Carablanca. Finalmente, el estudio incorpora la presentación de la información estadística a través de técnicas visuales compatibles con la creación de dashboards.
-
-
-### *Bayesian spatial modeling of childhood overweight and obesity prevalence in Costa Rica*
-
-**Descripción:** El artículo [@Gomez2023] emplea técnicas del modelado bayesiano espacial para el estudio de los patrones geográficos de la prevalencia de sobrepeso y obesidad infantil en Costa Rica, y su relación con variables socieconómicas.
-
-**Datos:** Como se indica en el artículo, se utilizaron datos del Censo de Peso y Talla del año 2016, agregados a nivel distrital. Asimismo, para la incorporación de variables socieconómicas se utilizaron datos del Censo Nacional 2011. Los datos pueden ser accesados directamente desde el dashboard del artículo [@Gomez2023].
-
-**Relevancia:** En el marco del curso, este artículo es una opción valiosa porque aplica modelado bayesiano espacial, lo que constituye una continuación de los contenidos de inferencia bayesiana que serán abordados en el curso. A la vez, ofrece una aplicación directa de técnicas estadísticas en salud pública, un ámbito de gran importancia a nivel nacional. Por su parte, la metodología planteada resulta idónea para la visualización de datos a través de dashboards.
-
-## Literatura consultada
-
-Se ha tomado como fuente principal el libro *Handbook of Spatial Statistics* [@Gelfand2010Handbook]. En el contexto de los artículos consultados, se ha dado enfásis a los capítulos del libro en los que se abordan modelos de procesos puntuales, y modelos con efectos aleatorios espaciales. A su vez, los libros [@Moraga2019Geospatial], [@Moraga2023SpatialStats] han sido utilizados como literatura completamentaria.
 
 ## Descripción de los datos
 
-La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón.
+La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica en el año 2016, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón.
+Las variables consideradas en el análisis se describen a continuación:
 
 - **distrito**: Nombre del distrito al que corresponde el registro.
+
 - **provincia**: Nombre de la provincia correspondiente.
+
 - **canton**: Nombre del cantón correspondiente. Representa la unidad territorial principal de análisis.
+
 - **condicion**: Clasificación de los casos según el estado nutricional: sobrepeso, obesidad o combinada.
+
 - **total**: Número total de casos combinados registrados por cantón, considerando todas las categorías de condición.
+
 - **subtotal**: Número de casos registrados por cantón dentro de cada categoría específica de condición.
+
 - **prevalencia**: Porcentaje de la población del cantón que presenta sobrepeso u obesidad.
+
 - **desempleo**: Porcentaje de personas desempleadas dentro del cantón.
+
 - **poblacion_urbana**: Porcentaje de la población que reside en áreas urbanas del cantón.
+
 - **privacion_critica**: Porcentaje de población en situación de privación crítica.
+
 - **poblacion_menor_14**: Porcentaje de personas menores de 14 años en la población total del cantón.
+
 - **hogares_monomarentales**: Porcentaje de hogares encabezados por un solo padre o madre.
+
 - **ocupantes_por_hogar**: Promedio de personas que habitan en cada hogar del cantón.
+
 - **anos_escolaridad**: Promedio de años de escolaridad alcanzados por la población, indicador del nivel educativo.
 
 ## Referencias
