@@ -97,7 +97,7 @@ Los fundamentos metodológicos de procesos puntuales y de modelos con efectos al
 
 ## Descripción de los datos
 
-La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica en el año 2016, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón.
+La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica en el año 2016, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón. Se descartaron los valores faltantes, pues complejizaban la implementación metodológica.
 Las variables consideradas en el análisis se describen a continuación:
 
 - **distrito**: Nombre del distrito al que corresponde el registro.
@@ -147,6 +147,19 @@ En cuanto a las asociaciones bivariadas, se observan patrones relevantes:
 - El porcentaje de población urbana muestra una asociación positiva con la prevalencia, aunque con dispersión considerable.
 
 Finalmente, al comparar por provincia, la prevalencia combinada oscila entre 30% en Limón y 37% en Heredia, siendo esta última la más alta. Los boxplots confirman una mayor heterogeneidad en provincias como San José y Alajuela, mientras que Cartago y Guanacaste presentan distribuciones más concentradas.
+
+## Implementación Metodológica
+Dada la naturaleza de los datos, la verosimilitud utilizada es una Binomial(total, p), y la previa a utilizar es Beta(1, 1). Con ello, se estima el p, es decir, la probabilidad de pertenecer a la categoría de obesidad o de sobrepeso, independientemente del cantón al que se pertenece. Así, se estima la prevalencia de obesidad y sobrepeso en Costa Rica. 
+Al hacer esto, se obtienen los siguientes resultados:
+### Autocorrelación
+Para el método de Metropolis-Hasting, en ambos casos, se obtuvo una alta correlación entre cada elemento de la cadena.
+![](../res/graficos/autocorr_obesidad.png)
+![](../res/graficos/autocorr_sobrepeso.png)
+### Histogramas
+Una vez finalizado el proceso, se realizaron histogramas para visualizar la distribución posterior obtenida a partir de esta metodología. Además, se presenta la media y el intervalo de confianza para cada categoría.
+![](../res/graficos/hist_post_obesidad.png)
+![](../res/graficos/hist_post_sobrepeso.png)
+
 
 
 ## Referencias
