@@ -229,7 +229,7 @@ def plot_autocorrelacion_global(
     ax.set_ylim(0, ymax)
 
     ax.set_autoscale_on(False)
-    ax.set_xlim(0, lags)
+    ax.set_xlim(-0.5, lags + 0.5)
     ax.margins(x=0)
 
     plt.xlim(0, lags)
