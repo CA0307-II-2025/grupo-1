@@ -188,7 +188,7 @@ def plot_distribucion_global(
 
     plt.tick_params(axis="both", labelsize=16)
     plt.legend(
-        fontsize=14,
+        fontsize=18,
         loc="upper center",
         bbox_to_anchor=(0.5, -0.25),
         ncol=2,
