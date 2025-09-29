@@ -103,7 +103,7 @@ def plot_camino_global(
     plt.tight_layout()
     sns.despine(top=True, right=True)
     if guardar_imagen:
-        nombre_archivo = f"res/graficos/camino_global_{parametro}.png"
+        nombre_archivo = f"../../res/graficos/camino_global_{parametro}.png"
         plt.savefig(nombre_archivo, dpi=300, bbox_inches="tight")
     plt.show()
 
@@ -194,7 +194,7 @@ def plot_distribucion_global(
     sns.despine(top=True, right=True)
 
     if guardar_imagen:
-        nombre_archivo = f"res/graficos/hist_post_{parametro}.png"
+        nombre_archivo = f"../../res/graficos/hist_post_{parametro}.png"
         plt.savefig(nombre_archivo, dpi=300, bbox_inches="tight")
     plt.show()
 
@@ -223,8 +223,16 @@ def plot_autocorrelacion_global(
     if p.size == 0:
         raise ValueError("No hay muestras válidas después del burn-in.")
 
-    plt.figure(figsize=figsize)
-    plot_acf(p, lags=lags, alpha=0.05)
+    fig, ax = plt.subplots(figsize=figsize)
+    plot_acf(p, lags=lags, alpha=0.05, ax=ax)
+    ymin, ymax = ax.get_ylim()
+    ax.set_ylim(0, ymax)
+
+    ax.set_autoscale_on(False)
+    ax.set_xlim(0, lags)
+    ax.margins(x=0)
+
+    plt.xlim(0, lags)
 
     plt.xlabel("Rezago", fontsize=16)
     plt.ylabel("Autocorrelación", fontsize=16)
@@ -235,14 +243,14 @@ def plot_autocorrelacion_global(
     sns.despine(top=True, right=True)
 
     if guardar_imagen:
-        nombre_archivo = f"res/graficos/autocorr_{parametro}.png"
+        nombre_archivo = f"../../res/graficos/autocorr_{parametro}.png"
         plt.savefig(nombre_archivo, dpi=300, bbox_inches="tight")
 
     plt.show()
 
 
 # pruebas
-df = pd.read_csv("data/clean/datos_limpios.csv")
+df = pd.read_csv("../../data/clean/datos_limpios.csv")
 df = df[df["total"].notna()]
 df = df[df["subtotal"].notna()]
 
