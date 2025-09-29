@@ -108,11 +108,11 @@ Las variables consideradas en el análisis se describen a continuación:
 
 - **condicion**: Clasificación de los casos según el estado nutricional: sobrepeso, obesidad o combinada.
 
-- **total**: Número total de casos combinados registrados por cantón, considerando todas las categorías de condición.
+- **total**: Total de personas observadas.
 
 - **subtotal**: Número de casos registrados por cantón dentro de cada categoría específica de condición.
 
-- **prevalencia**: Porcentaje de la población del cantón que presenta sobrepeso u obesidad.
+- **prevalencia**: Porcentaje de la población del cantón que presenta sobrepeso, obesidad o ambas.
 
 - **desempleo**: Porcentaje de personas desempleadas dentro del cantón.
 
