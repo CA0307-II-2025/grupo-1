@@ -185,12 +185,18 @@ def plot_distribucion_global(
     plt.title(
         f"Distribución posterior de la prevalencia de {parametro} infantil", fontsize=20
     )
-    plt.legend()
 
     plt.tick_params(axis="both", labelsize=16)
-    plt.legend(fontsize=14)
+    plt.legend(
+        fontsize=14,
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.25),
+        ncol=2,
+        frameon=False,
+    )
 
-    plt.tight_layout()
+
+    plt.tight_layout(rect=[0, 0.08, 1, 1])
     sns.despine(top=True, right=True)
 
     if guardar_imagen:
@@ -232,7 +238,7 @@ def plot_autocorrelacion_global(
     ax.set_xlim(-0.5, lags + 0.5)
     ax.margins(x=0)
 
-    plt.xlim(0, lags)
+    plt.xlim(-0.5, lags + 0.5)
 
     plt.xlabel("Rezago", fontsize=16)
     plt.ylabel("Autocorrelación", fontsize=16)
