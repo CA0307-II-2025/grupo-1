@@ -1,6 +1,7 @@
 # Funciones para carga y limpieza de datos
 import os
 import sys
+import pandas as pd
 
 sys.path.append(os.path.join(os.getcwd(), "src/data"))
 
@@ -51,6 +52,8 @@ ld.escalar_columnas(
 )
 ld.quitar_comas(["subtotal"])
 ld.quitar_nas()
+
+df["subtotal"] = pd.to_numeric(df["subtotal"], errors="coerce").astype("Int64")
 
 # Guardar resultado
 ld.guardar("../../data/clean/datos_limpios.csv")
