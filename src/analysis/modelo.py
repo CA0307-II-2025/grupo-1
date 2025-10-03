@@ -195,7 +195,6 @@ def plot_distribucion_global(
         frameon=False,
     )
 
-
     plt.tight_layout(rect=[0, 0.08, 1, 1])
     sns.despine(top=True, right=True)
 

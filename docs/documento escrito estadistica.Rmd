@@ -149,7 +149,7 @@ En cuanto a las asociaciones bivariadas, se observan patrones relevantes:
 Finalmente, al comparar por provincia, la prevalencia combinada oscila entre 30% en Limón y 37% en Heredia, siendo esta última la más alta. Los boxplots confirman una mayor heterogeneidad en provincias como San José y Alajuela, mientras que Cartago y Guanacaste presentan distribuciones más concentradas.
 
 ## Implementación Metodológica
-Dada la naturaleza de los datos, la verosimilitud utilizada es una Binomial(total, p), y la previa a utilizar es Beta(1, 1). Con ello, se estima el p, es decir, la probabilidad de pertenecer a la categoría de obesidad o de sobrepeso, independientemente del cantón al que se pertenece. Así, se estima la prevalencia de obesidad y sobrepeso en Costa Rica. 
+Dada la naturaleza de los datos, la verosimilitud utilizada es una Binomial(total, p), y la previa a utilizar es Beta(1, 1). Con ello, se estima el p, es decir, la probabilidad de pertenecer a la categoría de obesidad o de sobrepeso, independientemente del cantón al que se pertenece. Así, se estima la prevalencia de obesidad y sobrepeso en Costa Rica.
 Al hacer esto, se obtienen los siguientes resultados:
 ### Autocorrelación
 Para el método de Metropolis-Hasting, en ambos casos, se obtuvo una alta correlación entre cada elemento de la cadena.
