@@ -1,0 +1,176 @@
+---
+title: "Ajuste de modelos (Versión Preliminar Sprint 4)"
+author:
+  - "José Carlos Quintero"
+  - "Paola Espinoza"
+  - "Julián Soto"
+  - "María Paula Jiménez"
+date: "1 de setiembre de 2025"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+geometry: margin=1in
+header-includes:
+  - \renewcommand{\contentsname}{Tabla de contenidos}
+link-citations: true
+nocite: '@*'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(lme4)
+library(car)
+library(stats)
+
+library(texreg)
+
+
+```
+
+```{r, echo = FALSE, include = FALSE}
+datos <- readr::read_csv("datos_limpios.csv") # Actualiza la ruta
+
+sobrepeso <- datos %>% filter(condicion == "sobrepeso")
+
+```
+
+
+# Modelo de Regresión Binomial para prevalencia de sobrepeso, a nivel distrital.
+
+```{r, include = FALSE}
+
+# Modelo binomial preliminar
+modelo_binom <- glm(cbind(subtotal, total - subtotal) ~ desempleo + poblacion_urbana +
+                      privacion_critica + poblacion_menor_14 + hogares_monomarentales +
+                      ocupantes_por_hogar + anos_escolaridad,
+                    family = binomial, data = sobrepeso)
+summary(modelo_binom)
+# Ver deviance / grados de libertad
+
+deviance_dof = deviance(modelo_binom) / df.residual(modelo_binom)
+
+```
+
+
+## Especificación del modelo.
+
+Se ajustó un modelo de regresión binomial, con función de enlace logit, para modelar la prevalencia de sobrepeso en función de covariables sociodemográficas a nivel distrital. La variable respuesta fue el número de casos de sobrepeso (\(Y_i\)) en el distrito $i$-ésimo, con total de observaciones \(n_i\).
+
+\[
+Y_i \sim Binomial(n_i, \pi_i), \quad
+\text{logit}(\pi_i) = \beta_0 + \beta_1 X_{1i} + \cdots + \beta_p X_{pi}
+\]
+
+Las covariables incluidas: desempleo, población urbana, privación crítica, población menor de 14 años, hogares monomarentales, ocupantes por hogar y años de escolaridad.
+
+## Principales hallazgos.
+
+*Coeficientes significativos:* Desempleo, Población menor de 14 años, Ocupantes por hogar, Población urbana. *No significativos:* privación crítica, hogares monomarentales, años escolaridad.
+
+
+*Diagnósticos del modelo:*. El modelo binomial es significativo con respecto al modelo nulo, por lo que las covariables incluidas explican parte de la variabilidad. Sin embargo, los diagnósticos indican la presencia de sobredispersión, con la razón $\text{Deviance/dof}$ = `r round(deviance_dof,4)`. Por lo que el modelo no logra capturar en su totalidad la variabilidad de los datos.
+
+
+```{r, echo = FALSE}
+
+
+#texreg::texreg(modelo_binom, booktabs = TRUE, use.packages = FALSE)
+
+deviance_dof = deviance(modelo_binom) / df.residual(modelo_binom)
+
+
+```
+
+
+## Comentarios adicionales.
+
+Este modelo representa un primer acercamiento a modelar la variable de interés. Existen diversas alternativas. Se considera la siguiente.
+
+
+# Modelo Binomial Jerárquico con efectos aleatorios.
+
+En este análisis, los datos provienen de distritos, que constituyen la unidad de observación más pequeña. Sin embargo, dichos distritos podrían no ser completamente independientes entre sí, debido a que se encuentran organizados dentro de unidades geográficas mayores, como lo son los cantones y las provincias. Por lo que es posible que distritos pertenecientes a la misma unidad compartan condiciones sociales, económicas, culturales y ambientales. Por esta razón, resulta natural considerar modelos jerárquicos con efectos aleatorios que permitan capturar la variabilidad adicional atribuible a los niveles superiores.
+
+
+
+## Especificación del modelo.
+
+De forma análoga, sea \(Y_{ij}\) el número de casos de sobrepeso en el distrito \(i\) de la unidad \(j\) (cantón o provincia), con \(n_{ij}\) el total de individuos observados en dicho distrito. Se propone.
+
+\[
+Y_{ij} \sim \text{Binomial}(n_{ij}, \pi_{ij}), \qquad
+\text{logit}(\pi_{ij}) = \beta_0 + \mathbf{X}_{i}^\top \boldsymbol\beta + u_j,
+\]
+
+
+Donde \(u_{j}\) representa un efecto aleatorio de la unidad superior \(j\), y se asume, el modelo:
+
+\[
+u_j \sim \mathcal{N}(0, \sigma^2).
+\]
+
+Nótese que los efectos aleatorios se asumen normales con varianza común (de $\text{logit}(Y_{ij})$) por nivel.
+
+
+En este sentido, se aplicaron los tests de Levene y Fligner-Killen, para valorar esta hipótesis a nivel provincial. En el test Fligner-Killen, se rechaza al 5\% la hipótesis de igualdad de varianza de la logit prevalencia entre provincias, mientras que en el test de Levene no hay evidencia estadística suficiente para rechazar la hipótesis. A pesar de esto, procedemos con el ajuste del modelo para el caso provincial.
+
+```{r, include=FALSE}
+sobrepeso <- sobrepeso %>% mutate(prevalencia_logit = log(prevalencia/(1-prevalencia)))
+
+prov_var <- sobrepeso %>%
+  group_by(provincia) %>%
+  summarise(var_logit = var(prevalencia_logit, na.rm = TRUE),
+            n = n())
+```
+
+
+```{r, echo = FALSE}
+# Tests de comparación de varianzas entre grupos.
+car::leveneTest(prevalencia_logit ~ as.factor(provincia), data = sobrepeso, center = median)
+stats::fligner.test(prevalencia_logit ~ provincia, data = sobrepeso)
+```
+## Modelo Binomial Jerárquico a nivel provincial.
+
+
+```{r}
+
+# Modelo GLMM con intercepto aleatorio por provincia
+#modelo_glmm <- lme4::glmer(cbind(subtotal, total - subtotal) ~
+#                       desempleo + poblacion_urbana + privacion_critica +
+#                       poblacion_menor_14 + hogares_monomarentales +
+#                       ocupantes_por_hogar + anos_escolaridad +
+#                       (1 | provincia),
+#                     family = binomial, data = sobrepeso)
+
+#summary(modelo_glmm)
+```
+
+### Principales hallazgos.
+
+Pendiente.
+
+# Modelo Binomial Jerárquico Bayesiano con efectos aleatorios.
+
+Falta añadir comentario.
+
+## Especificación del modelo.
+
+En el caso jerárquico, el modelo bayesiano se plantea como:
+
+\[
+Y_{ij} \sim \text{Binomial}(n_{ij}, \pi_{ij}), \qquad
+\text{logit}(\pi_{ij}) = \beta_0 + \mathbf{X}_{i}^\top \boldsymbol\beta + u_j,
+\]
+
+Con efectos aleatorios:
+\[
+u_j \sim \mathcal{N}(0, \sigma_{u}^2).
+\]
+
+El componente bayesiano proviene de asumir distribuciones previas para los coeficientes
+fijos, \(\beta_k\), así como también, para la varianza del efecto aleatorio \(\sigma_{u} \).
+Este enfoque permite varianzas distintas por provincia o cantón de forma natural.
