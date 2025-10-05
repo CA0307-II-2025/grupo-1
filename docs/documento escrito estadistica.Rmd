@@ -134,7 +134,7 @@ La base de datos empleada contiene indicadores socioeconómicos y demográficos 
 
 En términos generales, la prevalencia combinada de sobrepeso y obesidad infantil muestra una media del 34%, con valores entre 13% y 56%, reflejando una variabilidad importante entre distritos. Al desagregar, la prevalencia de sobrepeso presenta un promedio de 20%, con una desviación estándar del 3% y un rango entre 6 y 33%, mientras que la prevalencia de obesidad registra un promedio de 14%, con desviación estándar del 4% y valores entre 0 y 33%. Estos resultados evidencian que, aunque ambas condiciones están presentes en magnitudes considerables, el sobrepeso es más frecuente que la obesidad, lo cual no es sorprendente al considerar que la obesidad se puede interpretar como un caso extremo de sobrepeso.
 
-Los años de escolaridad promedio por distrito se sitúan en 8.1 años, con una dispersión moderada (sd ≈ 1.5). La tasa de desempleo es baja en promedio (3%), pero con algunos distritos alcanzando valores cercanos a 9%. El porcentaje de hogares monomarentales ronda el 20% y la privación crítica promedio de los hogares se ubica en 29%, mostrando casos extremos de hasta 90% La población urbana evidencia una clara polarización: muchos distritos son predominantemente rurales (0%) o completamente urbanos (100%).
+Los años de escolaridad promedio por distrito se sitúan en 8.1 años, con una dispersión moderada (sd $\approx$ 1.5). La tasa de desempleo es baja en promedio (3%), pero con algunos distritos alcanzando valores cercanos a 9%. El porcentaje de hogares monomarentales ronda el 20% y la privación crítica promedio de los hogares se ubica en 29%, mostrando casos extremos de hasta 90% La población urbana evidencia una clara polarización: muchos distritos son predominantemente rurales (0%) o completamente urbanos (100%).
 
 Los histogramas permiten identificar distribuciones relativamente simétricas para variables como años de escolaridad, hogares monomarentales y ocupantes por hogar, mientras que otras como la población urbana y la privación crítica presentan asimetrías y valores extremos.
 
@@ -151,10 +151,12 @@ Finalmente, al comparar por provincia, la prevalencia combinada oscila entre 30%
 ## Implementación Metodológica
 Dada la naturaleza de los datos, la verosimilitud utilizada es una Binomial(total, p), y la previa a utilizar es Beta(1, 1). Con ello, se estima el p, es decir, la probabilidad de pertenecer a la categoría de obesidad o de sobrepeso, independientemente del cantón al que se pertenece. Así, se estima la prevalencia de obesidad y sobrepeso en Costa Rica.
 Al hacer esto, se obtienen los siguientes resultados:
+
 ### Autocorrelación
 Para el método de Metropolis-Hasting, en ambos casos, se obtuvo una alta correlación entre cada elemento de la cadena.
 ![](../res/graficos/autocorr_obesidad.png)
 ![](../res/graficos/autocorr_sobrepeso.png)
+
 ### Histogramas
 Una vez finalizado el proceso, se realizaron histogramas para visualizar la distribución posterior obtenida a partir de esta metodología. Además, se presenta la media y el intervalo de confianza para cada categoría.
 ![](../res/graficos/hist_post_obesidad.png)
