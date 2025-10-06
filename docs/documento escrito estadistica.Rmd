@@ -1,20 +1,26 @@
 ---
 title: "Reporte de Proyecto (Versión Preliminar)"
 author:
-  - "José Carlos Quintero"
-  - "Paola Espinoza"
-  - "Julián Soto"
-  - "María Paula Jiménez"
-date: "22 de agosto de 2025"
+- José Carlos Quintero
+- Paola Espinoza
+- Julián Soto
+- María Paula Jiménez
+date: "3 de octubre de 2025"
 output:
   pdf_document:
-    toc: true
-    number_sections: true
+    latex_engine: xelatex
+    toc: yes
+    number_sections: yes
+  html_document:
+    toc: yes
+    df_print: paged
 geometry: margin=1in
 header-includes:
-  - \renewcommand{\contentsname}{Tabla de contenidos}
+- \renewcommand{\contentsname}{Tabla de contenidos}
+- \usepackage{float}
+- \usepackage{booktabs}
 bibliography: bibliografía.bib
-link-citations: true
+link-citations: yes
 csl: apa.csl
 nocite: '@*'
 ---
@@ -23,7 +29,8 @@ nocite: '@*'
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
-## Objetivos
+
+# Objetivos
 *Objetivo general*
 
 Estimar la distribución posterior de la prevalencia de sobrepeso y obesidad infantil en Costa Rica mediante métodos bayesianos computacionales, con el fin de evaluar la variabilidad territorial y la incertidumbre asociada a las estimaciones.
@@ -34,55 +41,60 @@ Estimar la distribución posterior de la prevalencia de sobrepeso y obesidad inf
 2. Comparar los resultados obtenidos entre diferentes unidades territoriales, analizando medias posteriores e intervalos de credibilidad.
 3. Visualizar los resultados mediante mapas y gráficos que representen tanto la prevalencia estimada como la incertidumbre posterior.
 
-## Introducción / Antecendetes
+# Introducción / Antecendetes
 
 El sobrepeso y la obesidad infantil se han establecido en las últimas décadas como una de las principales problemáticas de salud pública a nivel mundial. En tan solo cuatro décadas, la cantidad de niños y adolescentes en edad escolar con obesidad se multiplicó por más de diez, pasando de 11 millones a 124 millones, y se calculó que alrededor de 216 millones tenían sobrepeso según estimaciones del 2016. (WHO, 2018). Entre los efectos tempranos de estas afecciones se incluyen complicaciones respiratorias, alteraciones metabólicas y problemas psicosociales, mientras que en la adultez se asocia con mayor riesgo de enfermedades crónicas, discapacidad y mortalidad prematura (Gamboa-Gamboa et al., 2021).
+
 En Costa Rica, los resultados del Censo Escolar de Peso y Talla 2016 revelaron que más de un tercio de la población infantil en edad escolar presenta sobrepeso u obesidad (Gomez et al., 2023), lo que muestra urgencia de comprender este fenómeno en su complejidad de factores. Del mismo modo en otros países de ingresos medios, el exceso de peso infantil no se distribuye de manera uniforme debido a factores demográficos, socioeconómicos y territoriales que influyen en la prevalencia y configuran escenarios particulares según la zona de residencia, el nivel de desarrollo del distrito o el tipo de centro educativo (Gamboa-Gamboa et al., 2021).
+
 La evidencia científica en Costa Rica ha informado de la magnitud del problema y de los factores que explican sus diferencias territoriales y sociales. El estudio de Gamboa-Gamboa et al. (2021) analizó más de 347,000 escolares del Censo Nacional de Peso/Talla 2016, revelando que el 34% de los niños presentaban exceso de peso, con mayor prevalencia en varones y en aquellos que asistían a escuelas privadas, vivían en zonas urbanas o en distritos con mayor desarrollo socioeconómico. Estos resultados contrastan con la tendencia vista en países desarrollados, donde la obesidad infantil se asocia más a niveles socioeconómicos bajos, lo que subraya la necesidad de comprender el fenómeno en su contexto nacional.
+
 Por su parte, Nuñez-Rivas et al. (2022) aportaron referencias nacionales de índice de masa corporal (IMC) y circunferencia de cintura (CC) para estudiantes de 7 a 17 años, mostrando que el 16,3% de los escolares tenían obesidad y el 26,2% sobrepeso. Sus hallazgos mostraron contradicciones con los patrones internacionales, lo que evidencia que el uso exclusivo de referencias externas podría distorsionar la prevalencia real en el país. Esto confirma que contar con curvas nacionales de crecimiento son una herramienta fundamental para el monitoreo y diseño de estrategias de salud pública.
+
 En el ámbito regional, Hernández-Vásquez et al. (2016) evidenciaron en Perú cómo el sobrepeso y la obesidad infantil se concentran en distritos urbanos y costeros, mientras que las zonas andinas y amazónicas registran menores prevalencias. Dicho patrón geográfico refleja la transición nutricional que caracteriza a América Latina, donde coexisten problemas de desnutrición y exceso de peso, situación que hace más compleja la planificación de políticas públicas.
+
 De manera más específica para Costa Rica, Gómez et al. (2023) aplicaron un modelo espacial bayesiano para estimar la prevalencia distrital de obesidad infantil, encontrando asociaciones significativas con factores educativos, económicos y demográficos. Entre los resultados se identificó una relación no lineal con la escolaridad promedio, así como una mayor prevalencia en distritos urbanos, cabeceras de provincia, zonas turísticas y fronterizas con Panamá. Estos hallazgos muestran que los entornos sociales y territoriales influyen de manera decisiva en la distribución del sobrepeso y la obesidad infantil.
 
 *Palabras clave:* Costa Rica, sobrepeso, obesidad
 
 
-## Marco Teórico (Preliminar)
+# Marco Teórico (Preliminar)
 
-### 1. Modelado bayesiano espacial para mapeo de enfermedad
+## 1. Modelado bayesiano espacial para mapeo de enfermedad
 
 El estudio de patrones geográficos de sobrepeso y obesidad mediante enfoques bayesianos espaciales permite estimar riesgos o prevalencias incorporando dependencia espacial y cuantificando la incertidumbre. En el contexto costarricense, se ha aplicado este enfoque para la prevalencia infantil, utilizando datos agregados a nivel distrital y complementando con variables socieconómicas, además de facilitar la visualización mediante un *dashboard* asociado al propio artículo. [@Gomez2023]
 
-### 2. Modelos espaciales y control de complejidad
+## 2. Modelos espaciales y control de complejidad
 
 En el análisis espacial de enfermedades se emplean modelos jerárquicos que permiten separar efectos estructurados (dependencia espacial) y no estructurados (heterogeneidad), lo cual facilita la interpretación y el control de la complejidad. Este tipo de planteamientos provee una base formal para especificar hiperparámetros y para interpretar los componentes espaciales. [@Gelfand2010Handbook]
 
-### 3. Marcos jerárquicos con estructura/no estructura espacial
+## 3. Marcos jerárquicos con estructura/no estructura espacial
 
 El riesgo de obesidad puede modelarse en un esquema jerárquico que incorpore simultáneamente efectos estructurados (dependencia espacial) y no estructurados (heterogeneidad), en línea con modelos jerárquicos bayesianos aplicados en salud pública. [@Moraga2019Geospatial]
 
-### 4. Covariables relevantes y diagnóstico espacial exploratorio
+## 4. Covariables relevantes y diagnóstico espacial exploratorio
 
 La literatura sobre obesidad infantil considera patrones de estilo de vida —por ejemplo, dieta, tiempo en pantalla, juego al aire libre, sueño y actividad física— y analiza su relación con el desarrollo del sobrepeso. Ello ilustra tanto la selección de covariables significativas como la incorporación de diagnósticos espaciales exploratorios. [@WHO2018]
 
-### 5. Comparaciones con modelos de sobredispersión
+## 5. Comparaciones con modelos de sobredispersión
 
 En datos susceptibles de correlación espacial y conteo/tasas, es pertinente comparar modelos de sobredispersión con los modelos espaciales jerárquicos, utilizando criterios de comparación y diagnóstico. La evidencia empírica disponible muestra aplicaciones de estas comparaciones en contextos de salud pública. [@Moraga2020Sloth]
 
-### 6. Evidencia contextual: determinantes socieconómicos y referencias antropométricas
+## 6. Evidencia contextual: determinantes socieconómicos y referencias antropométricas
 
 En Costa Rica, se ha documentado la asociación entre nivel socieconómico (tipo de escuela, zona geográfica, nivel de desarrollo distrital) y exceso de peso en escolares, con una prevalencia total reportada del 34%, y mayor proporción en varones que en mujeres dentro de la muestra analizada. Además, se observa mayor probabilidad de exceso de peso en escuelas privadas, zonas urbanas y distritos más desarrollados. [@Gamboa2021]
 
 Como referencia antropométrica nacional, se han estimado percentiles de IMC y circunferencia de cintura en población infanto-juvenil costarricense, reportando 16.3% de obesidad y 26.2% de sobrepeso en la muestra estudiada, y señalando discrepancias con referencias internacionales que pueden conducir a sobreestimación si se usan de forma exclusiva. [@Nunez2022]
 
-### 7. Patrón espacial en la región: ejemplo del Perú
+## 7. Patrón espacial en la región: ejemplo del Perú
 
 El análisis espacial del sobrepeso y la obesidad infantil en Perú (2014) identifica concentraciones regionales y clústeres distritales, con mayores tasas en zonas urbanas costeras y menores en regiones andinas y amazónicas, en el contexto de una transición nutricional con coexistencia de desnutrición y exceso de peso. [@Hernandez2016]
 
-### 8. Fundamentos y referencias de estadística espacial
+## 8. Fundamentos y referencias de estadística espacial
 
 Los fundamentos metodológicos de procesos puntuales y de modelos con efectos aleatorios espaciales se encuentran sistematizados en obras de referencia que sirven como base conceptual y técnica para los enfoques anteriores, incluyendo aplicaciones geoespaciales y de estadística espacial aplicada. [@Gelfand2010Handbook; @Moraga2019Geospatial; @Moraga2023SpatialStats]
 
-### 9. Síntesis operativa para el estudio propuesto
+## 9. Síntesis operativa para el estudio propuesto
 
 - El uso de marcos jerárquicos espaciales ofrece una parametrización interpretable de la estructura espacial y una guía para fijar hiperparámetros. [@Gelfand2010Handbook]
 - La incorporación de efectos estructurados/no estructurados se alinea con desarrollos recientes aplicados al riesgo de obesidad. [@Moraga2019Geospatial]
@@ -95,7 +107,7 @@ Los fundamentos metodológicos de procesos puntuales y de modelos con efectos al
 
 
 
-## Descripción de los datos
+# Descripción de los datos
 
 La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica en el año 2016, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón. Se descartaron los valores faltantes, pues complejizaban la implementación metodológica.
 Las variables consideradas en el análisis se describen a continuación:
@@ -128,7 +140,7 @@ Las variables consideradas en el análisis se describen a continuación:
 
 - **anos_escolaridad**: Promedio de años de escolaridad alcanzados por la población, indicador del nivel educativo.
 
-## Análisis exploratorio de la base de datos
+# Análisis exploratorio de la base de datos
 
 La base de datos empleada contiene indicadores socioeconómicos y demográficos por distrito, así como medidas de prevalencia de sobrepeso y obesidad infantil. La fuente primaria de información es el Primer Censo Escolar Peso/Talla del 2016, una iniciativa que recolectó datos antropométricos de 347,379 niños entre 6 y 12 años pertenecientes al sistema escolar público y privado de Costa Rica. La información se encuentra desagregada en unidades administrativas (provincias, cantones y distritos). Para este estudio se seleccionaron los distritos como unidad de análisis, con el fin de aumentar la granularidad y captar mejor la heterogeneidad socioeconómica a ese nivel. Además, se asociaron métricas provenientes del Censo 2011, logrando un total de 472 territorios considerados.
 
@@ -148,18 +160,93 @@ En cuanto a las asociaciones bivariadas, se observan patrones relevantes:
 
 Finalmente, al comparar por provincia, la prevalencia combinada oscila entre 30% en Limón y 37% en Heredia, siendo esta última la más alta. Los boxplots confirman una mayor heterogeneidad en provincias como San José y Alajuela, mientras que Cartago y Guanacaste presentan distribuciones más concentradas.
 
-## Implementación Metodológica
-Dada la naturaleza de los datos, la verosimilitud utilizada es una Binomial(total, p), y la previa a utilizar es Beta(1, 1). Con ello, se estima el p, es decir, la probabilidad de pertenecer a la categoría de obesidad o de sobrepeso, independientemente del cantón al que se pertenece. Así, se estima la prevalencia de obesidad y sobrepeso en Costa Rica.
-Al hacer esto, se obtienen los siguientes resultados:
+# Implementación Metodológica (preliminar)
+
+## Enfoque Bayesiano
+Dada la naturaleza de los datos, se modela el número total de casos observados en cada categoría (sobrepeso y obesidad, respectivamente) mediante una distribución $Y \sim \text{Binom}(N,p)$, donde $Y$ es el número total de casos, N el tamaño de la muestra y $p$ la probabilidad de pertenecer a la categoría de sobrepeso (o bien, obesidad) independientemente de la pertenencia cantonal o distrital. Desde un enfoque bayesiano, se asigna una distribución previa $\pi \sim \text{Beta}(1,1)$. De esta forma, se estima la prevalencia de obesidad y sobrepeso infantil en Costa Rica, a través del algoritmo Metropolis-Hastings.
+
+<!--Al hacer esto, se obtienen los siguientes resultados:
+%%,de forma preliminar mente estimar la prevala verosimilitud utilizada es una Binomial(total, p), y la previa a utilizar %es %Beta(1, 1). Con ello, se estima el p, es decir, la probabilidad de pertenecer a la categoría de obesidad o de %%sobrepeso, %independientemente del cantón al que se pertenece. Así, -->
+
 ### Autocorrelación
-Para el método de Metropolis-Hasting, en ambos casos, se obtuvo una alta correlación entre cada elemento de la cadena.
-![](../res/graficos/autocorr_obesidad.png)
-![](../res/graficos/autocorr_sobrepeso.png)
+Para el método de Metropolis-Hasting, en ambos casos, se obtuvo una alta autocorrelación entre los elementos de la cadena, como se aprecia en las siguientes figuras.
+
+```{r fig-autocorr_obesidad, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
+knitr::include_graphics("../res/graficos/autocorr_obesidad.png")
+```
+
+```{r fig-autocorr_sobrepeso, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
+knitr::include_graphics("../res/graficos/autocorr_sobrepeso.png")
+```
+
 ### Histogramas
 Una vez finalizado el proceso, se realizaron histogramas para visualizar la distribución posterior obtenida a partir de esta metodología. Además, se presenta la media y el intervalo de confianza para cada categoría.
-![](../res/graficos/hist_post_obesidad.png)
-![](../res/graficos/hist_post_sobrepeso.png)
+
+```{r fig-sobpreso, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
+knitr::include_graphics("../res/graficos/hist_post_sobrepeso.png")
+```
 
 
+
+```{r fig-obesidad, echo=FALSE,fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de obesidad infantil"}
+knitr::include_graphics("../res/graficos/hist_post_obesidad.png")
+```
+
+
+## Modelo de Regresión Binomial para prevalencia de sobrepeso, a nivel distrital.
+
+Por su parte, se ajustó también un modelo de regresión binomial, con función de enlace logit, para modelar la prevalencia de sobrepeso en función de covariables sociodemográficas a nivel distrital. Específicamente, se considera como variable de respuesta, $Y_{i}$, la cantidad de casos observados de sobrepeso en el $i$-ésimo distrito, con una muestra total de \(n_i\):
+
+\[
+Y_i \sim Binomial(n_i, \pi_i), \quad
+\text{logit}(\mathbb{E}(Y_{i}|\mathbf{X})) = \beta_0 + \beta_1 X_{1i} + \cdots + \beta_p X_{pi}
+\]
+
+Se incluyen las covariables: desempleo, población urbana, privación crítica, población menor de 14 años, hogares monomarentales, ocupantes por hogar y años de escolaridad. En la siguiente figura se presenta un resumen de las estimaciones de los coeficientes del modelo.
+
+\begin{table}[h]
+\centering
+\caption{Resumen de los coeficientes del modelo binomial.}
+\label{tab:coef_binom}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Variable} & \textbf{Estimate} & \textbf{Std. Error} & \textbf{z value} & \textbf{Pr(>|z|)} \\
+\midrule
+(Intercept)              & -1.540 & 0.1279 & -12.042 & $< 2\text{e-}16$ *** \\
+desempleo                & -2.897 & 0.5001 & -5.793  & $6.93\text{e-}09$ *** \\
+población\_urbana        &  0.059 & 0.0246 &  2.420  & 0.0155 * \\
+privación\_critica       & -0.125 & 0.0789 & -1.592  & 0.1114 \\
+población\_menor\_14     & -0.940 & 0.2175 & -4.321  & $1.55\text{e-}05$ *** \\
+hogares\_monomarentales  & -0.009 & 0.1401 & -0.068  & 0.9457 \\
+ocupantes\_por\_hogar    &  0.105 & 0.0234 &  4.507  & $6.58\text{e-}06$ *** \\
+años\_escolaridad        &  0.012 & 0.0077 &  1.590  & 0.1117 \\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\footnotesize{Signif. codes: \textbf{0} ‘***’ \textbf{0.001} ‘**’ \textbf{0.01} ‘*’ \textbf{0.05} ‘.’ \textbf{0.1} ‘ ’ \textbf{1}}
+\end{table}
+
+En el modelo, resultan estadísticamente significativas las covariables de Desempleo, Población menor de 14 años, Ocupantes por hogar y Población urbana.Asimismo, el modelo es significativo con respecto al modelo nulo, por lo que las covariables incluidas explican parte de la variabilidad. Sin embargo, los diagnósticos indican la presencia de sobredispersión, con la razón $\text{Deviance/dof} = 1.914$. Por lo que el modelo no logra capturar en su totalidad la variabilidad de los datos.
+
+## Modelo de Regresión Binomial Jerárquico.
+
+En este estudio, la información se dispone a nivel distrital, la unidad geográficas más desagregada disponible. No obstante, los distritos están anidados dentro de cantones y provincias. Como lo señala la literatura consultada, es razonable asumir la existencia de correlación entre observaciones de una misma unidad geográfica superior. Por esta razón, se plantea el uso de modelos jerárquicos con efectos aleatorios que permitan incorporar la variablidad entre niveles
+
+De forma análoga, sea \(Y_{ij}\) el número de casos de sobrepeso en el distrito \(i\) perteneciente a la unidad geográfica \(j\) (cantón o provincia), y  \(n_{ij}\) el total de individuos observados en dicho distrito. Se propone el siguiente modelo:
+
+\[
+Y_{ij} \sim \text{Binomial}(n_{ij}, \pi_{ij}), \qquad
+\text{logit}(\mathbb{E}(\pi_{ij}|\mathbf{X}) = \beta_0 + \mathbf{X}_{i}^\top \boldsymbol\beta + u_j,
+\]
+
+
+donde \(u_{j}\) representa el efecto aleatorio asociado a la unidad geográfica superior $j$. Se asume que estos efectos aleatorios siguen una distribución normal con media cero y varianza común:
+\[
+u_j \sim \mathcal{N}(0, \sigma^2).
+\]
+
+En este sentido, se aplicaron los tests de Levene y Fligner-Killen, para valorar la hipótesis de igualdad de varianzas a nivel provincial. En el test Fligner-Killen, se rechaza al 5\% la hipótesis de igualdad de varianza de la logit prevalencia entre provincias, mientras que en el test de Levene no hay evidencia estadística suficiente para rechazar la hipótesis.
+
+El ajuste del modelo será realizado en la siguiente entrega.
 
 ## Referencias
