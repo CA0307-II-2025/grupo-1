@@ -32,7 +32,7 @@ library(texreg)
 ```
 
 ```{r, echo = FALSE, include = FALSE}
-datos <- readr::read_csv("datos_limpios.csv") # Actualiza la ruta
+datos <- readr::read_csv("../data/clean/datos_limpios.csv") # Actualiza la ruta
 
 sobrepeso <- datos %>% filter(condicion == "sobrepeso")
 
@@ -99,22 +99,18 @@ En este análisis, los datos provienen de distritos, que constituyen la unidad d
 
 ## Especificación del modelo.
 
-De forma análoga, sea \(Y_{ij}\) el número de casos de sobrepeso en el distrito \(i\) de la unidad \(j\) (cantón o provincia), con \(n_{ij}\) el total de individuos observados en dicho distrito. Se propone.
+De forma análoga, sea \(Y_{ij}\) el número de casos de sobrepeso en el distrito \(i\) perteneciente a la unidad geográfica \(j\) (cantón o provincia), y  \(n_{ij}\) el total de individuos observados en dicho distrito. Se propon el siguiente modelo:
 
 \[
 Y_{ij} \sim \text{Binomial}(n_{ij}, \pi_{ij}), \qquad
-\text{logit}(\pi_{ij}) = \beta_0 + \mathbf{X}_{i}^\top \boldsymbol\beta + u_j,
+\text{logit}(\mathbb{E}(\pi_{ij}|\mathbf{X}) = \beta_0 + \mathbf{X}_{i}^\top \boldsymbol\beta + u_j,
 \]
 
 
-Donde \(u_{j}\) representa un efecto aleatorio de la unidad superior \(j\), y se asume, el modelo:
-
+donde \(u_{j}\) representa el efecto aleatorio asociado a la unidad geográfica superior $j$. Se asume que estos efectos aleatorios siguen una distribución normal con media cero y varianza común:
 \[
 u_j \sim \mathcal{N}(0, \sigma^2).
 \]
-
-Nótese que los efectos aleatorios se asumen normales con varianza común (de $\text{logit}(Y_{ij})$) por nivel.
-
 
 En este sentido, se aplicaron los tests de Levene y Fligner-Killen, para valorar esta hipótesis a nivel provincial. En el test Fligner-Killen, se rechaza al 5\% la hipótesis de igualdad de varianza de la logit prevalencia entre provincias, mientras que en el test de Levene no hay evidencia estadística suficiente para rechazar la hipótesis. A pesar de esto, procedemos con el ajuste del modelo para el caso provincial.
 
