@@ -253,7 +253,7 @@ El objetivo principal es combinar información sociodemográfica y territorial p
 
 La metodología parte de una preparación de datos donde se filtran los registros según la condición de interés (por ejemplo, obesidad), se eliminan observaciones sin exposición (totales igual a cero) y se construyen las variables de respuesta `y` (casos observados) y `n` (población total). Además, se seleccionan y estandarizan variables sociodemográficas como desempleo, escolaridad, población urbana o número de ocupantes por hogar. Estas covariables se normalizan para que todas tengan media cero y desviación estándar uno, asegurando que los coeficientes del modelo sean comparables.
 
-El modelo jerárquico utilizado es una regresión binomial con enlace logit, formulada como:  
+El modelo jerárquico utilizado es una regresión binomial con enlace logit, formulada como:
 $$
 y_i \sim \text{Binomial}(n_i, p_i), \quad \text{logit}(p_i) = \alpha + X_i \beta + u_j
 $$
