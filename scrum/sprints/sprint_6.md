@@ -2,48 +2,43 @@
 
 ## 🎯  Objetivo del Sprint:
 
- _Declarar la meta del sprint en 1-2 frases (ej: "Tener datos limpios y un análisis descriptivo inicial completado")._
+ Completar el análisis, generar los resultados finales, y documentarlos, junto a su respectiva metodología.
 
 ## 😃  Historias de usuario
+- HU# 94- "Como investigador, quiero redactar el apartado de resultados para presentar las estimaciones de prevalencia y las distribuciones posteriores obtenidas" (Estimación: 5 pts) – *Dado un esqueleto de informe y el repositorio con resultados, cuando se lea el documento, entonces se obtendrá un informe reproducible con resultados, diagnósticos y conclusiones.*
+- HU# 93- "Como investigador, quiero redactar el apartado de metodología para documentar el enfoque bayesiano y los procedimientos de simulación utilizados" (Estimación: 5 pts) - *Dado que se está elaborando el informe final, cuando el equipo consulte el apartado de Metodología, entonces encontrará una descripción clara, completa y coherente del modelo binomial jerárquico con sus priors, la justificación del uso de simulación por falta de conjugación y el procedimiento Metrópolis-Hastings explicado con pseudocódigo y pautas de replicación.
+- HU# 100- "Como analista de datos quiero implementar el modelo estadístico seleccionado para obtener estimaciones y predicciones reproducibles" (Estimación: 8 pts) – *Dada una configuración de modelo versionada, cuando ejecute el entrenamiento desde cero, entonces se generarán artefactos y predicciones reproducibles en rutas acordadas.*
+- HU# 104- "Como analista de datos quiero calcular y reportar métricas de desempeño para verificar el ajuste del modelo" (Estimación: 5 pts) - *Dadas las predicciones del modelo, cuando ejecute el evaluador de métricas, entonces se calcularán y guardarán métricas clave y comparativas*
 
-- HU# - "Título de la Historia" (Estimación: Y pts) – *Criterios de aceptación confirmados.*
-- HU# - ...
-*(Listar las historias del backlog que el equipo se compromete a completar este sprint, con sus IDs y breve nombre.)*
 
 
 
 ## 🔜  Plan de alto nivel:
-- *Semana 1:* _Tareas principales (ej: Ingesta de datos, Setup entorno CI)._
-- *Semana 2:* _Tareas principales (ej: Implementar modelo y validar, preparar demo)._
+- *Semana 1:* Especificar los detalles finales del modelo a utilizar.
+- *Semana 2:* Generar los resultados, e incluirlos en el documento final.
 
 
 ## 🥇  Criterios de aceptación del Sprint:
-- [ ] _Todas las historias listadas completadas y aceptadas por el profesor._
-- [ ] _El código limpia automáticamente la base de datos._
+- [ ] Se especifica el modelo seleccionado en el documento final
+- [ ] Se obtuvieron estimaciones reproducibles
+- [ ] Los resultados se encuentran en el documento final
 
 
 ## 📌  Asignación de tareas inicial
-- *Persona A:* Historia 1
-- *Persona B:* Historia 2
-- *Persona C:* documentación
+- *Paola Espinoza:* Historia 100 y 104
+- *José Carlos:* Historia 100 y 104
+- *Julián Soto:* Historia 93 y 94
+- *Paula Jiménez:* Historia 93 y 94
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
-- **Bloqueo:** _No tenemos la base de datos limpia.
-- **Solución** _Crear una historia solo para limpiar la base de datos_.
+- **Bloqueo:** No hemos redactado la metodología.
+- **Solución** Crear una historia que especifique lo que debe colocarse en ella.
 
 
 
 
 # ⏳  Daily
-
-El formato para cada estudiante debe ser
-
-- **¿Qué hice ayer?**: _Describir brevemente las tareas completadas ayer, vinculadas a historias (ej: "Implementé la función de limpieza y escribí test para valores faltantes")._
-- **¿Qué haré hoy?**: _Enumerar foco de hoy (ej: "Integrar resultados descriptivos en el reporte y comenzar prueba de hipótesis")._
-- **¿Hay algo que me está bloqueando?**: _Listar obstáculos o dependencias (ej: "Falta confirmar el rango de años con PO" o "La librería X está dando un bug")._
-
-
 
 ##  Fecha: YYYY-MM-DD
 
@@ -69,7 +64,7 @@ El formato para cada estudiante debe ser
 
 
 
-# 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
+# 🔍   Revisión en clase (Fecha: 2025-10-31)
 
 
 

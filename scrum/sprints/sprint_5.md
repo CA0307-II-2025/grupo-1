@@ -6,9 +6,8 @@
 
 ## 😃  Historias de usuario
 
-- HU# - "Título de la Historia" (Estimación: Y pts) – *Criterios de aceptación confirmados.*
-- HU# - ...
-*(Listar las historias del backlog que el equipo se compromete a completar este sprint, con sus IDs y breve nombre.)*
+- HU#94 - "Como investigador, quiero redactar el apartado de resultados para presentar las estimaciones de prevalencia y las distribuciones posteriores obtenidas" (Estimación: 5 pts) – *Dado un esqueleto de informe y el repositorio con resultados, cuando se lea el documento, entonces se obtendrá un informe reproducible con resultados, diagnósticos y conclusiones.*
+- HU# 93- "Como investigador, quiero redactar el apartado de metodología para documentar el enfoque bayesiano y los procedimientos de simulación utilizados" (Estimación: 5 pts) - *Dado que se está elaborando el informe final, cuando el equipo consulte el apartado de Metodología, entonces encontrará una descripción clara, completa y coherente del modelo binomial jerárquico con sus priors, la justificación del uso de simulación por falta de conjugación y el procedimiento Metrópolis-Hastings explicado con pseudocódigo y pautas de replicación.
 
 
 
