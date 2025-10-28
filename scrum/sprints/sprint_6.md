@@ -81,8 +81,9 @@
 
 
 ## ✔️  Criterios de aceptación cumplidos:
-- [] _Historias 1, 2, 3. completadas. Falta la historia 4.
-- [x] Carga automática de la base de datos.
+- [ ] Se especifica el modelo seleccionado en el documento final
+- [ ] Se obtuvieron estimaciones reproducibles
+- [ ] Los resultados se encuentran en el documento final
 
 
 # 🔙  Retrospective – Fecha: YYYY-MM-DD
@@ -96,12 +97,8 @@
 
 ## :no_good: Qué podría mejorar
 
-- _Gestión de tiempo en Daily:_ a veces se extendieron a 20 min discutiendo detalles innecesarios.
-- _Claridad de criterios de aceptación:_ En HU2 inicialmente no estaba claro cómo validar "datos limpios". Mejoraremos definición de *Done* para tareas de datos.
-- _Distribución de carga:_ Persona A quedó sobrecargada con 3 historias. El próximo sprint se equilibrará asignación más temprano.
+- _Gestión de tiempo_: Podríamos asignar mejor la distribución de tareas durante el sprint.
 
 
 ## :pencil: Acciones concretas  para el próximo sprint
-1. **Timebox en Daily** – SM usará temporizador de 15 min y cortará discusiones largas, anotándolas para after.
-2. **Refinar historias en refinamiento semanal** – Agregar criterios de aceptación más detallados, especialmente para historias técnicas (como limpieza de datos).
-3. **Balancear asignación tareas** – Implementar mini-plan al inicio del sprint donde cada dev toma carga similar; SM monitoreará que nadie tenga >40% de tareas.
+1. **Gestión de tiempo**: Se presionará a los integrantes a mantener actualizadas las tareas pequeñas realizadas.
