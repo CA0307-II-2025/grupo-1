@@ -2,7 +2,7 @@
 
 ## 🎯  Objetivo del Sprint:
 
- _Declarar la meta del sprint en 1-2 frases (ej: "Tener datos limpios y un análisis descriptivo inicial completado")._
+Definir la metodología exacta a seguir, incluyendo la manera en que se asignarán los pesos a la jrarquía; para luego presentar los resultados.
 
 ## 😃  Historias de usuario
 
@@ -12,100 +12,112 @@
 
 
 ## 🔜  Plan de alto nivel:
-- *Semana 1:* _Tareas principales (ej: Ingesta de datos, Setup entorno CI)._
-- *Semana 2:* _Tareas principales (ej: Implementar modelo y validar, preparar demo)._
+- *Semana 1:* Analizar los datos y posibles metodologías.
+- *Semana 2:* Probar y consultar distintas metodologías con los datos a utilizar.
 
 
 ## 🥇  Criterios de aceptación del Sprint:
-- [ ] _Todas las historias listadas completadas y aceptadas por el profesor._
-- [ ] _El código limpia automáticamente la base de datos._
+- [ ] Se analizaron los datos.
+- [ ] Se investigan posibles metodologías.
+- [ ] Se realizan resultados preliminares.
 
 
 ## 📌  Asignación de tareas inicial
-- *Persona A:* Historia 1
-- *Persona B:* Historia 2
-- *Persona C:* documentación
+- *Paola Espinoza:* Historia 93 y 94
+- *José Carlos:* Historia 93 y 94
+- *Julián Soto:* Historia 93 y 94
+- *Paula Jiménez:* Historia 93 y 94
 
 ## 🚫 Posibles bloqueos o impedimentos conocidos
 
-- **Bloqueo:** _No tenemos la base de datos limpia.
-- **Solución** _Crear una historia solo para limpiar la base de datos_.
+- **Bloqueo:** La metodología exacta no está completamente definida.
+- **Solución** Definir la metodología de acuerdo a los datos y las recomendaciones del profesor.
 
 
 
 
 # ⏳  Daily
 
-El formato para cada estudiante debe ser
+##  Fecha: 2025-10-14
 
-- **¿Qué hice ayer?**: _Describir brevemente las tareas completadas ayer, vinculadas a historias (ej: "Implementé la función de limpieza y escribí test para valores faltantes")._
-- **¿Qué haré hoy?**: _Enumerar foco de hoy (ej: "Integrar resultados descriptivos en el reporte y comenzar prueba de hipótesis")._
-- **¿Hay algo que me está bloqueando?**: _Listar obstáculos o dependencias (ej: "Falta confirmar el rango de años con PO" o "La librería X está dando un bug")._
+### Paola Espinoza Hernández:
+- *¿Qué hice ayer?*: Investigar sobre segmentación a nivel social
+- *¿Qué haré hoy?*: Revisar la metodología a utilizar
+- *¿Hay algo que me está bloqueando?*:  no
 
+### José Carlos Quintero:
+- *¿Qué hice ayer?*: investigar cómo aplicar el algoritmo de metrópolis hastings para modelar la posterior de la prevalencia de sobrepeso y obesidad
+- *¿Qué haré hoy?*: implementar dicho código 
+- *¿Hay algo que me está bloqueando?*: no
 
+### Julián Soto:
+- *¿Qué hice ayer?*: discutir la asignación de tareas del sprint con el grupo de trabajo. 
+- *¿Qué haré hoy?*: revisitar la metodología consultada. 
+- *¿Hay algo que me está bloqueando?*: no
 
-##  Fecha: YYYY-MM-DD
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: examinar las tareas por realizar
+•⁠  ⁠*¿Qué haré hoy?*: trabajar en la redacción de resultados 
+•⁠  ⁠*¿Hay algo que me está bloqueando?*: no
 
-### Estudiante A:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+##  Fecha: 2025-10-16
 
-### Estudiante B:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Paola Espinoza Hernández:
+- *¿Qué hice ayer?*: arreglar un pull request
+- *¿Qué haré hoy?*: redactar documento escrito
+- *¿Hay algo que me está bloqueando?*:  no
 
-### Estudiante C:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### José Carlos Quintero:
+- *¿Qué hice ayer?*: generar resultados (gráficos) a partir del modelo
+- *¿Qué haré hoy?*: investigar más a fondo sobre la metodologia 
+- *¿Hay algo que me está bloqueando?*: no
 
-### Estudiante D:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Julián Soto:
+- *¿Qué hice ayer?*: intentar arreglar un pull request
+- *¿Qué haré hoy?*: preparar los datos para generar un mapa  geográfico con la prevalencia de obesidad por distrito. 
+- *¿Hay algo que me está bloqueando?*: no
+
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: estudiar la metodología 
+•⁠  ⁠*¿Qué haré hoy?*: hacer la presentación del sprint 
+•⁠  ⁠*¿Hay algo que me está bloqueando?*: no
 
 
 
 # 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
 
-
-
 ## 📈  Resultado mostrado
 
-- *Funcionalidad A:* (ej: "Carga automática de dataset desde CSV en base de datos completada").
-- *Funcionalidad B:* (ej: "Gráficos descriptivos generados dinámicamente").
+- *Funcionalidad A:* Modelo Logit-Binomial.
+- *Funcionalidad B:* Resultados preliminares: Se prefiere la no jerarquización.
 
 
 ## :arrows_counterclockwise:  Retroalimentación
 
-- **Profesor**:
-- **Compañeros:**
+- **Profesor**: Dado que el modelo no tuvo cambios sigificativos al incluir la jerarquización, se pueden probar otras jerarquizaciones.
+- **Compañeros:** Debemos definir si jerarquizar y cómo.
 
 
 ## ✔️  Criterios de aceptación cumplidos:
-- [] _Historias 1, 2, 3. completadas. Falta la historia 4.
-- [x] Carga automática de la base de datos.
+- [] Tenemos resultados preliminares, falta plasmarlos en el documento escrito.
+- [ ] Se analizaron los datos.
+- [ ] Se investigan posibles metodologías.
+- [ ] Se realizan resultados preliminares.
 
 
-# 🔙  Retrospective – Fecha: YYYY-MM-DD
+# 🔙  Retrospective – Fecha: 2025-10-17
 
 ## :white_check_mark: Qué salió bien
 1.  _Colaboración en el equipo_ Logramos terminar el sprint a tiempo.
-1.  _Usamos commits convencionales correctamente y no hubo errores_
-1.  Documentación actualizada al día evitó retrabajo luego.
+2.  _Usamos commits convencionales correctamente y no hubo errores_
 
 
 
 ## :no_good: Qué podría mejorar
 
-- _Gestión de tiempo en Daily:_ a veces se extendieron a 20 min discutiendo detalles innecesarios.
-- _Claridad de criterios de aceptación:_ En HU2 inicialmente no estaba claro cómo validar "datos limpios". Mejoraremos definición de *Done* para tareas de datos.
-- _Distribución de carga:_ Persona A quedó sobrecargada con 3 historias. El próximo sprint se equilibrará asignación más temprano.
+- _Claridad en metodología_: Debemos definir la metodología a utilizar.
 
 
 ## :pencil: Acciones concretas  para el próximo sprint
-1. **Timebox en Daily** – SM usará temporizador de 15 min y cortará discusiones largas, anotándolas para after.
-2. **Refinar historias en refinamiento semanal** – Agregar criterios de aceptación más detallados, especialmente para historias técnicas (como limpieza de datos).
-3. **Balancear asignación tareas** – Implementar mini-plan al inicio del sprint donde cada dev toma carga similar; SM monitoreará que nadie tenga >40% de tareas.
+
+1. **Actualizar el backlog**: Se mantendrá actualizado el backlog, de modo que al profesor se le facilite seguir nuestro hilo de trabajo.
