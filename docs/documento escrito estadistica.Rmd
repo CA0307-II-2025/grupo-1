@@ -257,7 +257,7 @@ El modelo jerárquico utilizado es una regresión binomial con enlace logit, for
 $$
 y_i \sim \text{Binomial}(n_i, p_i), \quad \text{logit}(p_i) = \alpha + X_i \beta + u_j
 $$
-donde $u_j$ representa un efecto aleatorio provincial que captura la variabilidad no explicada por las covariables entre provincias. Este término jerárquico permite incorporar la estructura territorial en la estimación. Debido a la poca información previa disponible, se utilizaron previas débiles para los parámetros $\alpha, $\beta$ y $\sigma_u$ (desviación de los efectos provinciales).
+donde $u_j$ representa un efecto aleatorio provincial que captura la variabilidad no explicada por las covariables entre provincias. Este término jerárquico permite incorporar la estructura territorial en la estimación. Debido a la poca información previa disponible, se utilizaron previas débiles (en la escala logit) para los parámetros $\alpha, $\beta$ y $\sigma_u$ (desviación de los efectos provinciales).
 
 La inferencia bayesiana se implementa con el paquete `PyMC`, que aplica técnicas de muestreo MCMC (Markov Chain Monte Carlo) para generar miles de simulaciones de la distribución posterior de los parámetros. El script ejecuta cuatro modelos principales: dos jerárquicos (con efectos provinciales) y dos no jerárquicos (sin efectos provinciales), tanto para obesidad como para sobrepeso, lo que permite evaluar el aporte de la estructura jerárquica en la explicación de la variabilidad y la precisión de las estimaciones.
 
