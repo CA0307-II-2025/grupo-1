@@ -263,4 +263,116 @@ La inferencia bayesiana se implementa con el paquete `PyMC`, que aplica técnica
 
 Finalmente, el documento produce resúmenes y visualizaciones de las distribuciones posteriores. A partir de los valores simulados de $p_i$, se calculan las medias, medianas e intervalos de credibilidad al 95 % para cada distrito. Además, se obtienen estimaciones agregadas por provincia y para el país en general. Estas distribuciones se representan mediante histogramas y curvas de densidad suavizadas.
 
+## Metodología
+
+### Fuente de información
+
+El análisis se sustenta en la base utilizada en el estudio de @Gamboa2021, construida a partir del Censo Escolar de Peso y Talla 2016 del Ministerio de Educación Pública de Costa Rica y variables complementarias de origen censal.
+La estructura de esta base permite modelar, bajo un enfoque probabilístico binomial, el número de escolares con sobrepeso u obesidad en cada distrito del país.
+
+### Población de estudio
+
+La población está compuesta por niños y niñas matriculados en escuelas públicas y privadas costarricenses con registros antropométricos válidos. Cada observación representa un distrito educativo, agregando información sobre la cantidad de menores evaluados y aquellos con exceso de peso.
+
+### Contexto temporal y espacial de los datos
+
+Los datos corresponden al año 2016 y se organizan espacialmente por distrito y provincia.
+
+### Métodos
+
+#### Enfoque general y estructura del modelo
+
+El estudio aplicó un modelo binomial con enlace logit, cuya formulación es:
+
+$$
+\text{logit}(p_i) = \alpha + X_i^{\top}\beta
+$$
+
+donde $\alpha$ es el intercepto global y $\beta$ el vector de coeficientes asociados a las covariables estandarizadas.
+Los parámetros fueron estimados bajo un enfoque bayesiano, utilizando distribuciones previas débiles:
+
+$$
+\alpha, \beta_j \sim \mathcal{N}(0, 5)
+$$
+En el script usado, este modelo se implementa en la función `fit_model_binomial_logit()`
+El bloque correspondiente define explícitamente la verosimilitud binomial (`pm.Binomial("y_obs", n=n, p=p, observed=y)`) y el enlace logit (`pm.math.sigmoid(lin)`), en coherencia con el planteamiento teórico.
+
+#### Algoritmo de muestreo: NUTS
+
+La inferencia bayesiana se realizó mediante el **No-U-Turn Sampler (NUTS)**, un algoritmo de tipo Hamiltonian Monte Carlo (HMC) que elimina la necesidad de fijar manualmente la longitud de trayectoria de las simulaciones.
+
+Según @HoffmanGelman2014, NUTS “detecta de manera automática cuándo una trayectoria en el espacio de parámetros comienza a invertir su dirección (‘no-u-turn’), deteniendo el muestreo y garantizando un recorrido eficiente sin redundancia” (p. 3).
+Esta propiedad lo convierte en una extensión adaptativa del método HMC, que aprovecha la información del gradiente de la verosimilitud para explorar con mayor eficiencia la distribución posterior.
+
+En la práctica, NUTS emplea un integrador de salto (*leapfrog integrator*) para simular el movimiento de una partícula en el espacio de parámetros, guiada por el gradiente del logaritmo de la densidad posterior.
+Cada iteración genera una trayectoria que se expande dinámicamente hasta alcanzar el punto donde la dirección del momento cambia de signo, condición en la que el algoritmo detiene la expansión (p. 10).
+Esto garantiza que las cadenas no realicen trayectorias excesivamente largas ni cortas, evitando la autocorrelación elevada y mejorando la eficiencia del muestreo.
+
+### Implementación en el script `modelo_jerarquico.py`
+
+El muestreo NUTS fue ejecutado mediante la función `pm.sample()` del paquete PyMC, la cual implementa el algoritmo descrito por Hoffman y Gelman.
+El bloque de código responsable de este proceso se encuentra en la función `fit_model_binomial_logit()` y adopta los siguientes parámetros:
+
+```{r}
+#| eval: false
+
+trace = pm.sample(
+    draws=2000,
+    tune=1000,
+    target_accept=0.9,
+    chains=4,
+    cores=4)
+
+```
+
+
+Cada elemento responde a una decisión metodológica específica:
+
+- `draws=2000` y `tune=1000`: establecen 2000 muestras posteriores por cadena y 1000 iteraciones de ajuste (“burn-in”), de modo que el algoritmo pueda adaptar el tamaño de paso y la masa inercial antes de comenzar el muestreo efectivo.
+@HoffmanGelman2014 recomiendan una fase de adaptation inicial en la que NUTS ajusta de forma iterativa el parámetro $\epsilon$ (step size) para alcanzar una tasa de aceptación deseada.
+
+- `target_accept=0.9`: controla el criterio de aceptación de propuestas. Valores más altos reducen el riesgo de divergencias a costa de un mayor número de evaluaciones del gradiente, tal como se sugiere en la literatura sobre tuning adaptativo.
+
+- `chains=4 y cores=4`: especifican la ejecución paralela de cuatro cadenas independientes, lo que permite evaluar la convergencia de manera robusta mediante el diagnóstico $\hat{R}$ de Gelman-Rubin.
+
+El flujo completo implementado en `run_with_csv()` vincula estas funciones de la siguiente manera:
+
+- Lectura y filtrado de datos (`prep_data()`), generando las matrices $y$, $n$ y $X_z$
+
+- Ajuste del modelo logit-binomial mediante `fit_model_binomial_logit()` sin estructura jerárquica.
+
+- Muestreo NUTS mediante `pm.sample()` con los parámetros descritos.
+
+- Resumen de resultados (`posterior_summary_by_row()`), donde se calculan la media posterior y los intervalos de credibilidad del 95 %.
+
+Este procedimiento traduce la teoría del muestreo hamiltoniano a una aplicación empírica concreta, cumpliendo con el principio de exploración eficiente del espacio posterior al que hace referencia @HoffmanGelman2014.
+
+## Resultados
+
+Los resultados obtenidos a partir del modelo binomial con enlace logit y muestreo NUTS evidencian un patrón claro en la distribución de la prevalencia de obesidad y sobrepeso infantil en Costa Rica, tanto a nivel nacional como provincial. En el plano nacional, la media posterior estimada para obesidad fue de 0.14143, con un intervalo de credibilidad del 95% entre 0.14023 y 0.14254. En el caso del sobrepeso, la media posterior fue de 0.19848, con un intervalo de credibilidad del 95% entre 0.19715 y 0.19983. Estos resultados, cuando se suman, permiten inferir que aproximadamente un 34% de la población infantil escolar del país presenta exceso de peso, cifra que confirma la magnitud del problema de salud pública y se encuentra alineada con las tendencias observadas en contextos internacionales. La Organización Mundial de la Salud @WHO2025 señala que “childhood obesity has become one of the most serious public health challenges of the 21st century”, al estimar que más de 390 millones de niños y adolescentes de entre 5 y 19 años en el mundo tienen sobrepeso u obesidad. Esta cifra global se sitúa en torno al 20% de esa población, lo que significa que Costa Rica presenta una proporción ligeramente superior al promedio global, aunque en consonancia con otros países de ingreso medio y urbano consolidado.
+
+El modelo, basado en inferencia bayesiana con el algoritmo No-U-Turn Sampler (NUTS), generó distribuciones posteriores estables para cada provincia. En el caso de la obesidad, los resultados revelan un gradiente centro–periferia: San José, Heredia y Cartago muestran las mayores prevalencias medias (0.14870, 0.14804 y 0.14584 respectivamente), mientras que Guanacaste, Puntarenas y Limón presentan los valores más bajos (0.13516, 0.13037 y 0.12788). Este patrón se repite para el sobrepeso, con Heredia, Cartago y San José nuevamente en los primeros lugares (0.20765, 0.20648 y 0.20435 respectivamente) y Guanacaste y Puntarenas en los últimos (0.19067 y 0.18830). Las distribuciones posteriores provinciales presentan intervalos estrechos, lo que indica un grado alto de precisión en las estimaciones y una variabilidad relativamente moderada entre territorios.
+
+Estos hallazgos coinciden con los resultados del análisis espacial bayesiano de @Gomez2023, quienes observaron que “las prevalencias más altas de sobrepeso y obesidad infantil se concentran en el Valle Central, en distritos cabecera de provincia y en zonas urbanizadas de mayor desarrollo económico”. Esta coherencia espacial reafirma que las condiciones urbanas y socioeconómicas más favorables, lejos de representar un factor protector, se asocian con mayores tasas de exceso de peso en las etapas iniciales de la transición nutricional. @Hernandez2016 observaron un fenómeno análogo en Perú, al documentar que “la obesidad infantil predomina en las zonas urbanas y la región costera del país, mientras que las regiones andinas y amazónicas registran prevalencias significativamente menores”. La similitud entre ambos países, pese a sus diferencias contextuales, refuerza la noción de que el exceso de peso infantil tiende a concentrarse en territorios con mayor desarrollo económico y urbano, en parte debido al acceso a alimentos ultraprocesados, al incremento del sedentarismo y a la reconfiguración de los entornos alimentarios.
+
+La consistencia de las distribuciones posteriores nacionales y provinciales también se confirma cuando se comparan con las referencias antropométricas nacionales publicadas por @Nunez2022. En su estudio, los autores reportaron que “la prevalencia combinada de sobrepeso y obesidad alcanzó el 42.5% en escolares costarricenses, siendo la obesidad el principal problema nutricional de la niñez del país”. Aunque el presente modelo arroja una cifra ligeramente menor (≈34%), la diferencia se explica por la distinta definición de la muestra (nuestro estudio se limita a niños de 6-12 años medidos en el censo escolar) y por el uso de un enfoque probabilístico bayesiano que estima la prevalencia ajustada a covariables sociodemográficas. De cualquier modo, ambos resultados confirman que el exceso de peso en la infancia costarricense ha alcanzado niveles alarmantes y sostenidos en el tiempo.
+
+A nivel global, los resultados nacionales obtenidos aquí se sitúan dentro del rango descrito por la evidencia más reciente. El Global Burden of Disease 2025 reportó que “the global prevalence of overweight and obesity among children and adolescents doubled between 1990 and 2021, with obesity alone tripling during that period” @GBD2025. Esa misma fuente proyecta que “by 2050, approximately 15% of younger children (5–14) and 14% of older adolescents (15–24) worldwide will have obesity”. En comparación, la prevalencia nacional de obesidad infantil en Costa Rica (14%) coincide exactamente con la estimación global proyectada, lo cual indica que el país se encuentra en plena convergencia con las tendencias internacionales. Esta coincidencia, sin embargo, no debe interpretarse como una normalización del fenómeno, sino como una señal de que la problemática ha adquirido rasgos estructurales similares a los observados en países de ingreso alto.
+
+El World Obesity Atlas 2023 advierte que “childhood obesity could double from 2020 levels by 2035, reaching nearly 400 million children globally” @WorldObesity2023, lo que enmarca las cifras nacionales dentro de una tendencia mundial en expansión. Del mismo modo, @Zhang2024, en su metaanálisis publicado en JAMA Pediatrics, subrayan que “approximately one in five children and adolescents worldwide are now overweight or obese, a prevalence driven by combined behavioral, environmental, and socioeconomic factors”. Los resultados del presente estudio, que sitúan el sobrepeso en torno al 20%, reproducen con notable exactitud esa proporción, evidenciando la vigencia de los determinantes globales en el contexto costarricense.
+
+A nivel institucional, las interpretaciones coinciden. La Organización Mundial de la Salud enfatiza que “the fundamental cause of obesity and overweight is an energy imbalance between calories consumed and calories expended” @WHO2025, una definición que engloba la interacción entre dieta, actividad física y entorno urbano. Por su parte, @UNICEF2023 describe la actual situación como “a global trap of unhealthy, ultra-processed foods combined with declining physical activity among children”, alertando sobre el papel del entorno alimentario industrializado. La convergencia de estas explicaciones con la distribución espacial de los resultados —prevalencias mayores en provincias urbanas y menores en costeras— sugiere que los procesos de urbanización y modernización alimentaria costarricenses han replicado las condiciones de ese “trap” descrito por UNICEF, especialmente en el área metropolitana central.
+
+El análisis de los intervalos de credibilidad por provincia muestra que, aunque las diferencias absolutas son de pocos puntos porcentuales, la tendencia centro-periferia es sistemática y estadísticamente robusta. Heredia y San José se destacan con valores promedio de obesidad cercanos a 0.148 y sobrepeso superiores a 0.20, mientras que Puntarenas y Limón descienden a valores medios de 0.13 y 0.19, respectivamente. @Gomez2023 señalan que “el modelo bayesiano espacial confirmó la existencia de un patrón heterogéneo, con distritos de mayor riesgo en las zonas más urbanas del país”, lo que refuerza la interpretación de que el exceso de peso infantil se concentra en territorios de mayor densidad urbana y desarrollo económico. Esta diferenciación espacial también puede explicarse parcialmente por variaciones en la disponibilidad de alimentos frescos, la estructura de transporte y la exposición a publicidad alimentaria. Como sostiene la OMS, “urbanization and the shift towards more sedentary forms of recreation and work contribute significantly to rising obesity rates” @WHO2025.
+
+Desde un punto de vista demográfico, los resultados revelan que la prevalencia combinada (sobrepeso + obesidad) ronda el 34%, lo que coloca a Costa Rica por encima del promedio latinoamericano y muy cerca de la media observada en países de la OCDE. El informe del @CDC2022 informa que “in the United States, the prevalence of obesity among children and adolescents aged 2–19 years was 19.7% in 2017–2020”, una cifra similar a la obtenida en nuestro estudio para obesidad infantil (14%). A pesar de las diferencias estructurales entre países, esta coincidencia cuantitativa sugiere que Costa Rica enfrenta un desafío sanitario comparable al de naciones desarrolladas, pero con recursos y capacidades institucionales más limitadas. En este sentido, los hallazgos se suman a la preocupación expresada por la OMS cuando advierte que “without intervention, the prevalence of obesity will continue to rise, leading to severe health and economic consequences” @WHO2025.
+
+Si bien los resultados principales se refieren a la prevalencia provincial, el análisis posterior del modelo permite identificar consistencia interna entre sobrepeso y obesidad: las provincias con mayor sobrepeso tienden también a mostrar mayor obesidad, lo que evidencia la continuidad epidemiológica entre ambas condiciones. Esta continuidad es coherente con lo descrito en el Global Burden of Disease 2025, donde se advierte que “overweight in childhood frequently tracks into adult obesity, amplifying the long-term disease burden” @GBD2025. En este sentido, las estimaciones provinciales aquí presentadas no solo reflejan un estado actual, sino también el potencial acumulativo de riesgo futuro para la salud de la población infantil costarricense.
+
+A pesar de las diferencias territoriales, el modelo muestra que la variabilidad interprovincial es relativamente limitada. Esto puede interpretarse como evidencia de un fenómeno generalizado a escala nacional, sustentado por determinantes compartidos: patrones alimentarios densos en energía, alta exposición a alimentos ultraprocesados y disminución progresiva de la actividad física. En la línea de @UNICEF2023, “the environments in which children live increasingly promote consumption of unhealthy foods and discourage physical activity”. Tal afirmación describe con precisión las condiciones observadas en las zonas metropolitanas costarricenses, donde la urbanización rápida y la densidad de establecimientos de comida rápida se han incrementado de forma sostenida durante las dos últimas décadas.
+
+Los resultados nacionales y provinciales obtenidos confirman, por tanto, la existencia de una problemática estructural de salud pública en evolución. La convergencia con los hallazgos internacionales y regionales respalda la validez de las estimaciones del modelo y evidencia que el exceso de peso infantil costarricense forma parte de un fenómeno global de gran escala. Como sintetiza el @WorldObesity2023, “without bold policy action, no country is on track to meet the WHO target of halting the rise in obesity by 2025”. En este sentido, las estimaciones de este estudio no solo proporcionan una base empírica robusta para comprender la magnitud del problema en Costa Rica, sino también un punto de partida para el diseño de intervenciones públicas y escolares basadas en evidencia.
+
+Finalmente, aunque el modelo aplicado es no jerárquico, los resultados obtenidos presentan consistencia y precisión aceptables en todos los niveles geográficos. La implementación del muestreo NUTS permitió explorar adecuadamente la distribución posterior de los parámetros, reduciendo la autocorrelación entre cadenas y garantizando convergencia. Esta estabilidad estadística refuerza la confianza en los valores reportados y su utilidad para la comparación con futuras estimaciones. No obstante, la literatura metodológica de @Gomez2023 recomienda, para etapas posteriores, incorporar componentes espaciales jerárquicos o modelos BYM2 que permitan captar dependencia geográfica residual y afinar las estimaciones provinciales en zonas con escasa información. En la actualidad, el modelo presentado proporciona una lectura clara, coherente y bien fundamentada del estado de la obesidad y el sobrepeso infantil en Costa Rica, situando al país dentro de la tendencia ascendente que preocupa a la comunidad internacional de salud pública.
+
 ## Referencias
