@@ -47,17 +47,17 @@ Definir la metodología exacta a seguir, incluyendo la manera en que se asignar�
 
 ### José Carlos Quintero:
 - *¿Qué hice ayer?*: investigar cómo aplicar el algoritmo de metrópolis hastings para modelar la posterior de la prevalencia de sobrepeso y obesidad
-- *¿Qué haré hoy?*: implementar dicho código 
+- *¿Qué haré hoy?*: implementar dicho código
 - *¿Hay algo que me está bloqueando?*: no
 
 ### Julián Soto:
-- *¿Qué hice ayer?*: discutir la asignación de tareas del sprint con el grupo de trabajo. 
-- *¿Qué haré hoy?*: revisitar la metodología consultada. 
+- *¿Qué hice ayer?*: discutir la asignación de tareas del sprint con el grupo de trabajo.
+- *¿Qué haré hoy?*: revisitar la metodología consultada.
 - *¿Hay algo que me está bloqueando?*: no
 
 ### María Paula Jiménez:
 •⁠  ⁠*¿Qué hice ayer?*: examinar las tareas por realizar
-•⁠  ⁠*¿Qué haré hoy?*: trabajar en la redacción de resultados 
+•⁠  ⁠*¿Qué haré hoy?*: trabajar en la redacción de resultados
 •⁠  ⁠*¿Hay algo que me está bloqueando?*: no
 
 ##  Fecha: 2025-10-16
@@ -69,17 +69,17 @@ Definir la metodología exacta a seguir, incluyendo la manera en que se asignar�
 
 ### José Carlos Quintero:
 - *¿Qué hice ayer?*: generar resultados (gráficos) a partir del modelo
-- *¿Qué haré hoy?*: investigar más a fondo sobre la metodologia 
+- *¿Qué haré hoy?*: investigar más a fondo sobre la metodologia
 - *¿Hay algo que me está bloqueando?*: no
 
 ### Julián Soto:
 - *¿Qué hice ayer?*: intentar arreglar un pull request
-- *¿Qué haré hoy?*: preparar los datos para generar un mapa  geográfico con la prevalencia de obesidad por distrito. 
+- *¿Qué haré hoy?*: preparar los datos para generar un mapa  geográfico con la prevalencia de obesidad por distrito.
 - *¿Hay algo que me está bloqueando?*: no
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*: estudiar la metodología 
-•⁠  ⁠*¿Qué haré hoy?*: hacer la presentación del sprint 
+•⁠  ⁠*¿Qué hice ayer?*: estudiar la metodología
+•⁠  ⁠*¿Qué haré hoy?*: hacer la presentación del sprint
 •⁠  ⁠*¿Hay algo que me está bloqueando?*: no
 
 
