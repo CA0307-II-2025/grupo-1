@@ -109,7 +109,7 @@ def fit_model_binomial_logit(
     tune=1000,
     target_accept=0.9,
     chains=4,
-    cores=1,
+    cores=4,
     random_seed=42,
 ):
     """
@@ -173,7 +173,7 @@ def posterior_summary_by_row(trace, meta, var_name="p", q=(0.025, 0.5, 0.975)):
 
 
 def run_with_csv(
-    csv_path="data/clean/datos_limpios.csv",
+    csv_path="../../data/clean/datos_limpios.csv",
     condicion="obesidad",
     provincia_col="provincia",
     distrito_col="distrito",
@@ -389,7 +389,7 @@ def save_posterior_prevalence_figs(
 if __name__ == "__main__":
     # modelo jerarquico - obesidad
     trace, resumen, meta = run_with_csv(
-        csv_path="data/clean/datos_limpios.csv",
+        csv_path="../../data/clean/datos_limpios.csv",
         condicion="obesidad",
         provincia_col="provincia",
         distrito_col="distrito",
@@ -412,7 +412,7 @@ if __name__ == "__main__":
 
     # modelo jerarquico - sobrepeso
     trace_sob, resumen_sob, meta_sob = run_with_csv(
-        csv_path="data/clean/datos_limpios.csv",
+        csv_path="../../data/clean/datos_limpios.csv",
         condicion="sobrepeso",
         provincia_col="provincia",
         distrito_col="distrito",
@@ -435,7 +435,7 @@ if __name__ == "__main__":
 
     # modelo no jerarquico - obesidad
     trace_2, resumen_2, meta_2 = run_with_csv(
-        csv_path="data/clean/datos_limpios.csv",
+        csv_path="../../data/clean/datos_limpios.csv",
         condicion="obesidad",
         provincia_col="provincia",
         distrito_col="distrito",
@@ -458,7 +458,7 @@ if __name__ == "__main__":
 
     # modelo no jerarquico - sobrepeso
     trace_2_sob, resumen_2_sob, meta_2_sob = run_with_csv(
-        csv_path="data/clean/datos_limpios.csv",
+        csv_path="../../data/clean/datos_limpios.csv",
         condicion="sobrepeso",
         provincia_col="provincia",
         distrito_col="distrito",
@@ -484,7 +484,7 @@ if __name__ == "__main__":
         trace,
         meta,
         condicion_label="obesidad",
-        outdir="res/graficos/graficos_simulados/obesidad",
+        outdir="../../res/graficos/graficos_simulados/obesidad",
         province_order=[
             "SAN JOSE",
             "ALAJUELA",
@@ -500,7 +500,7 @@ if __name__ == "__main__":
         trace_sob,
         meta_sob,
         condicion_label="sobrepeso",
-        outdir="res/graficos/graficos_simulados/sobrepeso",
+        outdir="../../res/graficos/graficos_simulados/sobrepeso",
         province_order=[
             "SAN JOSE",
             "ALAJUELA",
@@ -517,7 +517,7 @@ if __name__ == "__main__":
         trace_2,
         meta_2,
         condicion_label="obesidad",
-        outdir="res/graficos/graficos_simulados_no_jer/obesidad",
+        outdir="../../res/graficos/graficos_simulados_no_jer/obesidad",
         province_order=[
             "SAN JOSE",
             "ALAJUELA",
@@ -533,7 +533,7 @@ if __name__ == "__main__":
         trace_2_sob,
         meta_2_sob,
         condicion_label="sobrepeso",
-        outdir="res/graficos/graficos_simulados_no_jer/sobrepeso",
+        outdir="../../res/graficos/graficos_simulados_no_jer/sobrepeso",
         province_order=[
             "SAN JOSE",
             "ALAJUELA",
