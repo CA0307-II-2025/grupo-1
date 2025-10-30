@@ -180,10 +180,10 @@ def plot_distribucion_global(
     )
 
     # ejes y título
-    plt.xlabel(f"Prevalencia de {parametro}", fontsize=20)
-    plt.ylabel("Densidad posterior", fontsize=20)
+    plt.xlabel("")
+    plt.ylabel("")
     plt.title(
-        f"Distribución posterior de la prevalencia de {parametro} infantil", fontsize=20
+        f"Densidad posterior de la prevalencia de {parametro} infantil", fontsize=20
     )
 
     plt.tick_params(axis="both", labelsize=16)
