@@ -49,6 +49,68 @@ Este panorama motiva la siguiente pregunta de investigación: ¿cómo se distrib
 
 *Palabras clave:* Costa Rica, sobrepeso, obesidad
 
+# Metodología
+## Descripción de los datos
+
+La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica en el año 2016, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón. Se descartaron los valores faltantes, pues complejizaban la implementación metodológica.
+Las variables consideradas en el análisis se describen a continuación:
+
+- **distrito**: Nombre del distrito al que corresponde el registro.
+
+- **provincia**: Nombre de la provincia correspondiente.
+
+- **canton**: Nombre del cantón correspondiente. Representa la unidad territorial principal de análisis.
+
+- **condicion**: Clasificación de los casos según el estado nutricional: sobrepeso, obesidad o combinada.
+
+- **total**: Total de personas observadas.
+
+- **subtotal**: Número de casos registrados por cantón dentro de cada categoría específica de condición.
+
+- **prevalencia**: Porcentaje de la población del cantón que presenta sobrepeso, obesidad o ambas.
+
+- **desempleo**: Porcentaje de personas desempleadas dentro del cantón.
+
+- **poblacion_urbana**: Porcentaje de la población que reside en áreas urbanas del cantón.
+
+- **privacion_critica**: Porcentaje de población en situación de privación crítica.
+
+- **poblacion_menor_14**: Porcentaje de personas menores de 14 años en la población total del cantón.
+
+- **hogares_monomarentales**: Porcentaje de hogares encabezados por un solo padre o madre.
+
+- **ocupantes_por_hogar**: Promedio de personas que habitan en cada hogar del cantón.
+
+- **anos_escolaridad**: Promedio de años de escolaridad alcanzados por la población, indicador del nivel educativo.
+
+## Análisis exploratorio de la base de datos
+
+La base de datos empleada contiene indicadores socioeconómicos y demográficos por distrito, así como medidas de prevalencia de sobrepeso y obesidad infantil. La fuente primaria de información es el Primer Censo Escolar Peso/Talla del 2016, una iniciativa que recolectó datos antropométricos de 347,379 niños entre 6 y 12 años pertenecientes al sistema escolar público y privado de Costa Rica. La información se encuentra desagregada en unidades administrativas (provincias, cantones y distritos). Para este estudio se seleccionaron las provincias como unidad de análisis.
+
+En términos generales, la prevalencia combinada de sobrepeso y obesidad infantil muestra una media del 34%, con valores entre 13% y 56%, reflejando una variabilidad importante entre distritos. Al desagregar, la prevalencia de sobrepeso presenta un promedio de 20%, con una desviación estándar del 3% y un rango entre 6 y 33%, mientras que la prevalencia de obesidad registra un promedio de 14%, con desviación estándar del 4% y valores entre 0 y 33%. Estos resultados evidencian que, aunque ambas condiciones están presentes en magnitudes considerables, el sobrepeso es más frecuente que la obesidad, lo cual no es sorprendente al considerar que la obesidad se puede interpretar como un caso extremo de sobrepeso.
+
+Los años de escolaridad promedio por distrito se sitúan en 8.1 años, con una dispersión moderada (sd ≈ 1.5). La tasa de desempleo es baja en promedio (3%), pero con algunos distritos alcanzando valores cercanos a 9%. El porcentaje de hogares monomarentales ronda el 20% y la privación crítica promedio de los hogares se ubica en 29%, mostrando casos extremos de hasta 90% La población urbana evidencia una clara polarización: muchos distritos son predominantemente rurales (0%) o completamente urbanos (100%).
+
+Los histogramas permiten identificar distribuciones relativamente simétricas para variables como años de escolaridad, hogares monomarentales y ocupantes por hogar, mientras que otras como la población urbana y la privación crítica presentan asimetrías y valores extremos.
+
+En cuanto a las asociaciones bivariadas, se observan patrones relevantes:
+
+- Existe una relación positiva entre la prevalencia de sobrepeso/obesidad y los años de escolaridad promedio (los distritos con mayor escolaridad tienden a reportar mayor prevalencia).
+
+- La relación con la tasa de desempleo es débil y ligeramente negativa, indicando que este factor no parece estar fuertemente vinculado con la prevalencia.
+
+- El porcentaje de población urbana muestra una asociación positiva con la prevalencia, aunque con dispersión considerable.
+
+Finalmente, al comparar por provincia, la prevalencia combinada oscila entre 30% en Limón y 37% en Heredia, siendo esta última la más alta. Los boxplots confirman una mayor heterogeneidad en provincias como San José y Alajuela, mientras que Cartago y Guanacaste presentan distribuciones más concentradas.
+
+
+
+
+
+
+
+
+
 
 ## Marco Teórico (Preliminar)
 
@@ -99,58 +161,7 @@ Los fundamentos metodológicos de procesos puntuales y de modelos con efectos al
 
 
 
-## Descripción de los datos
 
-La base de datos utilizada en este estudio contiene información sobre la prevalencia de sobrepeso y obesidad en distintos cantones de Costa Rica en el año 2016, junto con variables sociodemográficas y económicas relevantes. Los datos permiten analizar la distribución de la obesidad en la población y explorar posibles relaciones con factores sociales, educativos y de condiciones de vida en cada cantón. Se descartaron los valores faltantes, pues complejizaban la implementación metodológica.
-Las variables consideradas en el análisis se describen a continuación:
-
-- **distrito**: Nombre del distrito al que corresponde el registro.
-
-- **provincia**: Nombre de la provincia correspondiente.
-
-- **canton**: Nombre del cantón correspondiente. Representa la unidad territorial principal de análisis.
-
-- **condicion**: Clasificación de los casos según el estado nutricional: sobrepeso, obesidad o combinada.
-
-- **total**: Total de personas observadas.
-
-- **subtotal**: Número de casos registrados por cantón dentro de cada categoría específica de condición.
-
-- **prevalencia**: Porcentaje de la población del cantón que presenta sobrepeso, obesidad o ambas.
-
-- **desempleo**: Porcentaje de personas desempleadas dentro del cantón.
-
-- **poblacion_urbana**: Porcentaje de la población que reside en áreas urbanas del cantón.
-
-- **privacion_critica**: Porcentaje de población en situación de privación crítica.
-
-- **poblacion_menor_14**: Porcentaje de personas menores de 14 años en la población total del cantón.
-
-- **hogares_monomarentales**: Porcentaje de hogares encabezados por un solo padre o madre.
-
-- **ocupantes_por_hogar**: Promedio de personas que habitan en cada hogar del cantón.
-
-- **anos_escolaridad**: Promedio de años de escolaridad alcanzados por la población, indicador del nivel educativo.
-
-## Análisis exploratorio de la base de datos
-
-La base de datos empleada contiene indicadores socioeconómicos y demográficos por distrito, así como medidas de prevalencia de sobrepeso y obesidad infantil. La fuente primaria de información es el Primer Censo Escolar Peso/Talla del 2016, una iniciativa que recolectó datos antropométricos de 347,379 niños entre 6 y 12 años pertenecientes al sistema escolar público y privado de Costa Rica. La información se encuentra desagregada en unidades administrativas (provincias, cantones y distritos). Para este estudio se seleccionaron los distritos como unidad de análisis, con el fin de aumentar la granularidad y captar mejor la heterogeneidad socioeconómica a ese nivel. Además, se asociaron métricas provenientes del Censo 2011, logrando un total de 472 territorios considerados.
-
-En términos generales, la prevalencia combinada de sobrepeso y obesidad infantil muestra una media del 34%, con valores entre 13% y 56%, reflejando una variabilidad importante entre distritos. Al desagregar, la prevalencia de sobrepeso presenta un promedio de 20%, con una desviación estándar del 3% y un rango entre 6 y 33%, mientras que la prevalencia de obesidad registra un promedio de 14%, con desviación estándar del 4% y valores entre 0 y 33%. Estos resultados evidencian que, aunque ambas condiciones están presentes en magnitudes considerables, el sobrepeso es más frecuente que la obesidad, lo cual no es sorprendente al considerar que la obesidad se puede interpretar como un caso extremo de sobrepeso.
-
-Los años de escolaridad promedio por distrito se sitúan en 8.1 años, con una dispersión moderada (sd ≈ 1.5). La tasa de desempleo es baja en promedio (3%), pero con algunos distritos alcanzando valores cercanos a 9%. El porcentaje de hogares monomarentales ronda el 20% y la privación crítica promedio de los hogares se ubica en 29%, mostrando casos extremos de hasta 90% La población urbana evidencia una clara polarización: muchos distritos son predominantemente rurales (0%) o completamente urbanos (100%).
-
-Los histogramas permiten identificar distribuciones relativamente simétricas para variables como años de escolaridad, hogares monomarentales y ocupantes por hogar, mientras que otras como la población urbana y la privación crítica presentan asimetrías y valores extremos.
-
-En cuanto a las asociaciones bivariadas, se observan patrones relevantes:
-
-- Existe una relación positiva entre la prevalencia de sobrepeso/obesidad y los años de escolaridad promedio (los distritos con mayor escolaridad tienden a reportar mayor prevalencia).
-
-- La relación con la tasa de desempleo es débil y ligeramente negativa, indicando que este factor no parece estar fuertemente vinculado con la prevalencia.
-
-- El porcentaje de población urbana muestra una asociación positiva con la prevalencia, aunque con dispersión considerable.
-
-Finalmente, al comparar por provincia, la prevalencia combinada oscila entre 30% en Limón y 37% en Heredia, siendo esta última la más alta. Los boxplots confirman una mayor heterogeneidad en provincias como San José y Alajuela, mientras que Cartago y Guanacaste presentan distribuciones más concentradas.
 
 ## Implementación Metodológica (preliminar)
 
