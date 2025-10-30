@@ -109,7 +109,7 @@ def fit_model_binomial_logit(
     tune=1000,
     target_accept=0.9,
     chains=4,
-    cores=1,
+    cores=4,
     random_seed=42,
 ):
     """
@@ -158,11 +158,10 @@ def posterior_summary_by_row(trace, meta, var_name="p", q=(0.025, 0.5, 0.975)):
     """
     Devuelve un DataFrame con la media e IC para la probabilidad p por fila (distrito).
     """
-    p_draws = (
-        trace.posterior[var_name].stack(sample=("chain", "draw")).values
-    )  # shape: [N, S]
-    mean = p_draws.mean(axis=1)
-    qlo, qmd, qhi = np.quantile(p_draws, q, axis=1)
+    p = trace.posterior[var_name].values   # (chains, draws, N)
+    p2d = p.reshape(-1, p.shape[-1])       # (S, N)
+    mean = p2d.mean(axis=0)                # (N,)
+    qlo, qmd, qhi = np.quantile(p2d, q, axis=0)
 
     out = meta["df"].copy()
     out["p_mean"] = mean
@@ -173,7 +172,7 @@ def posterior_summary_by_row(trace, meta, var_name="p", q=(0.025, 0.5, 0.975)):
 
 
 def run_with_csv(
-    csv_path="data/clean/datos_limpios.csv",
+    csv_path="../data/clean/datos_limpios.csv",
     condicion="obesidad",
     provincia_col="provincia",
     distrito_col="distrito",
@@ -235,6 +234,8 @@ def run_with_csv(
 
 
 def _ensure_dir(path: str):
+    if not path:  # "", None, etc.
+        return
     os.makedirs(path, exist_ok=True)
 
 
@@ -319,7 +320,7 @@ def save_posterior_prevalence_figs(
     trace,
     meta,
     condicion_label: str,
-    outdir: str = "res/graficos",
+    outdir: str = "../res/graficos",
     province_order=None,
     bins: int = 50,
 ):
@@ -381,61 +382,107 @@ def save_posterior_prevalence_figs(
             bins=bins,
             kde_factor=2,
         )
+        
+        
+def _plot_posterior_1d_ax(
+    ax,
+    draws: np.ndarray,
+    title: str,
+    xlabel: str = None,
+    bins: int = 50,
+    kde_factor=2,
+):
+    draws = np.asarray(draws, dtype=float)
+    mean = draws.mean()
+    hdi_low, hdi_high = az.hdi(draws, hdi_prob=0.95)
+
+    ax.hist(draws, bins=bins, density=True, color="#d9d9d9", edgecolor="none")
+    if _HAS_SCIPY:
+        xs = np.linspace(draws.min(), draws.max(), 400)
+        kde = gaussian_kde(draws, bw_method=lambda s: s.scotts_factor() * kde_factor)
+        ax.plot(xs, kde(xs), lw=2.2)
+
+    ax.axvline(mean, lw=2.5)
+    ax.axvline(hdi_low, lw=1.6, ls="--")
+    ax.axvline(hdi_high, lw=1.6, ls="--")
+    ax.set_title(title, fontsize=14)
+    if xlabel:
+        ax.set_xlabel(xlabel, fontsize=12)
+    ax.set_ylabel("Densidad posterior", fontsize=11)
 
 
-# ---------------------------
-# Entrypoint seguro para Windows
-# ---------------------------
+def save_posterior_prevalence_mosaic(
+    trace,
+    meta,
+    condicion_label: str,
+    outdir: str = "../res/graficos",
+    province_order=None,
+    bins: int = 60,
+    ncols: int = 4,
+    width_per_col: float = 5.6,
+    height_per_row: float = 4.4,
+    dpi: int = 220,
+):
+    # (chains, draws, N) -> (S, N)
+    p = trace.posterior["p"].values
+    S = p.shape[0] * p.shape[1]
+    p2d = p.reshape(S, p.shape[-1])
+
+    dfm = meta["df"]
+    provincias = dfm["provincia"].astype(str).to_numpy()
+    n_i = dfm["total"].to_numpy(dtype=float)
+    provs = np.unique(provincias) if province_order is None else np.array(province_order)
+
+    nplots = len(provs)
+    nrows = int(np.ceil(nplots / ncols))
+    fig_w = width_per_col * ncols
+    fig_h = height_per_row * nrows
+
+    fig, axes = plt.subplots(nrows, ncols, figsize=(fig_w, fig_h))
+    axes = np.atleast_2d(axes).ravel()
+
+    for i, prov in enumerate(provs):
+        ax = axes[i]
+        mask = provincias == prov
+        if not np.any(mask):
+            ax.axis("off")
+            continue
+        draws_prov = _weighted_draws(p2d[:, mask], n_i[mask])
+        _plot_posterior_1d_ax(
+            ax,
+            draws_prov,
+            title=prov.title(),  # “SAN JOSE” -> “San Jose”
+            xlabel=f"Prevalencia de {condicion_label}",
+            bins=bins,
+            kde_factor=2,
+        )
+
+    # Desactiva ejes sobrantes
+    for j in range(nplots, nrows * ncols):
+        axes[j].axis("off")
+
+    fig.suptitle(
+        f"Distribuciones posteriores de la prevalencia de {condicion_label} por provincia",
+        fontsize=18,
+        y=0.995,
+    )
+    fig.tight_layout(rect=[0, 0, 1, 0.97])
+
+    _ensure_dir(outdir)
+    outfile = os.path.join(
+        outdir, f"mosaico_posterior_prevalencia_{condicion_label}_provincias.png"
+    )
+    fig.savefig(outfile, dpi=dpi, bbox_inches="tight")
+    plt.close(fig)
+    print("Guardado:", outfile)
+
+
+
+
 if __name__ == "__main__":
-    # modelo jerarquico - obesidad
-    trace, resumen, meta = run_with_csv(
-        csv_path="data/clean/datos_limpios.csv",
-        condicion="obesidad",
-        provincia_col="provincia",
-        distrito_col="distrito",
-        vars_dem=(
-            "desempleo",
-            "poblacion_urbana",
-            "privacion_critica",
-            "poblacion_menor_14",
-            "hogares_monomarentales",
-            "ocupantes_por_hogar",
-            "anos_escolaridad",
-        ),
-        incluye_provincia=True,
-        draws=2000,
-        tune=1000,
-        chains=4,
-        cores=4,
-        seed=2025,
-    )
-
-    # modelo jerarquico - sobrepeso
-    trace_sob, resumen_sob, meta_sob = run_with_csv(
-        csv_path="data/clean/datos_limpios.csv",
-        condicion="sobrepeso",
-        provincia_col="provincia",
-        distrito_col="distrito",
-        vars_dem=(
-            "desempleo",
-            "poblacion_urbana",
-            "privacion_critica",
-            "poblacion_menor_14",
-            "hogares_monomarentales",
-            "ocupantes_por_hogar",
-            "anos_escolaridad",
-        ),
-        incluye_provincia=True,
-        draws=2000,
-        tune=1000,
-        chains=4,
-        cores=4,
-        seed=2025,
-    )
-
-    # modelo no jerarquico - obesidad
+    # modelo no jerárquico - obesidad (fast settings para probar)
     trace_2, resumen_2, meta_2 = run_with_csv(
-        csv_path="data/clean/datos_limpios.csv",
+        csv_path="../data/clean/datos_limpios.csv",
         condicion="obesidad",
         provincia_col="provincia",
         distrito_col="distrito",
@@ -449,16 +496,16 @@ if __name__ == "__main__":
             "anos_escolaridad",
         ),
         incluye_provincia=False,
-        draws=2000,
-        tune=1000,
-        chains=4,
-        cores=4,
+        draws=100,
+        tune=100,
+        chains=2,
+        cores=1,
         seed=2025,
     )
 
-    # modelo no jerarquico - sobrepeso
+    # modelo no jerárquico - sobrepeso (fast settings para probar)
     trace_2_sob, resumen_2_sob, meta_2_sob = run_with_csv(
-        csv_path="data/clean/datos_limpios.csv",
+        csv_path="../data/clean/datos_limpios.csv",
         condicion="sobrepeso",
         provincia_col="provincia",
         distrito_col="distrito",
@@ -472,77 +519,39 @@ if __name__ == "__main__":
             "anos_escolaridad",
         ),
         incluye_provincia=False,
-        draws=2000,
-        tune=1000,
-        chains=4,
-        cores=4,
+        draws=100,
+        tune=100,
+        chains=2,
+        cores=1,
         seed=2025,
     )
 
-    # ===== guardar gráficos país + provincias =====
-    save_posterior_prevalence_figs(
-        trace,
-        meta,
-        condicion_label="obesidad",
-        outdir="res/graficos/graficos_simulados/obesidad",
-        province_order=[
-            "SAN JOSE",
-            "ALAJUELA",
-            "CARTAGO",
-            "HEREDIA",
-            "GUANACASTE",
-            "PUNTARENAS",
-            "LIMON",
-        ],  # opcional
-        bins=60,
-    )
-    save_posterior_prevalence_figs(
-        trace_sob,
-        meta_sob,
-        condicion_label="sobrepeso",
-        outdir="res/graficos/graficos_simulados/sobrepeso",
-        province_order=[
-            "SAN JOSE",
-            "ALAJUELA",
-            "CARTAGO",
-            "HEREDIA",
-            "GUANACASTE",
-            "PUNTARENAS",
-            "LIMON",
-        ],  # opcional
-        bins=60,
-    )
+    # ----- Guardar mosaicos (ajusta rutas si quieres) -----
+    outdir_ob = ""
+    outdir_sb = ""
 
-    save_posterior_prevalence_figs(
+    save_posterior_prevalence_mosaic(
         trace_2,
         meta_2,
         condicion_label="obesidad",
-        outdir="res/graficos/graficos_simulados_no_jer/obesidad",
-        province_order=[
-            "SAN JOSE",
-            "ALAJUELA",
-            "CARTAGO",
-            "HEREDIA",
-            "GUANACASTE",
-            "PUNTARENAS",
-            "LIMON",
-        ],  # opcional
+        outdir=outdir_ob,
+        province_order=["SAN JOSE","ALAJUELA","CARTAGO","HEREDIA","GUANACASTE","PUNTARENAS","LIMON"],
         bins=60,
+        ncols=2,             # 4x2 (7 provincias + 1 hueco)
+        width_per_col=5.8,
+        height_per_row=4.6
     )
-    save_posterior_prevalence_figs(
+
+    save_posterior_prevalence_mosaic(
         trace_2_sob,
         meta_2_sob,
         condicion_label="sobrepeso",
-        outdir="res/graficos/graficos_simulados_no_jer/sobrepeso",
-        province_order=[
-            "SAN JOSE",
-            "ALAJUELA",
-            "CARTAGO",
-            "HEREDIA",
-            "GUANACASTE",
-            "PUNTARENAS",
-            "LIMON",
-        ],  # opcional
+        outdir=outdir_sb,
+        province_order=["SAN JOSE","ALAJUELA","CARTAGO","HEREDIA","GUANACASTE","PUNTARENAS","LIMON"],
         bins=60,
+        ncols=2,
+        width_per_col=5.8,
+        height_per_row=4.6
     )
-    print("Gráficos guardados en res/graficos/graficos_simulados")
+
+    print("Listo. Mosaicos guardados.")
