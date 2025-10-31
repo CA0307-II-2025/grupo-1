@@ -6,7 +6,7 @@
 
 ## 😃  Historias de usuario
 - HU# 94- "Como investigador, quiero redactar el apartado de resultados para presentar las estimaciones de prevalencia y las distribuciones posteriores obtenidas" (Estimación: 5 pts) – *Dado un esqueleto de informe y el repositorio con resultados, cuando se lea el documento, entonces se obtendrá un informe reproducible con resultados, diagnósticos y conclusiones.*
-- HU# 93- "Como investigador, quiero redactar el apartado de metodología para documentar el enfoque bayesiano y los procedimientos de simulación utilizados" (Estimación: 5 pts) - *Dado que se está elaborando el informe final, cuando el equipo consulte el apartado de Metodología, entonces encontrará una descripción clara, completa y coherente del modelo binomial jerárquico con sus priors, la justificación del uso de simulación por falta de conjugación y el procedimiento Metrópolis-Hastings explicado con pseudocódigo y pautas de replicación.
+- HU# 93- "Como investigador, quiero redactar el apartado de metodología para documentar el enfoque bayesiano y los procedimientos de simulación utilizados" (Estimación: 5 pts) - *Dado que se está elaborando el informe final, cuando el equipo consulte el apartado de Metodología, entonces encontrará una descripción clara, completa y coherente del modelo binomial jerárquico con sus priors, la justificación del uso de simulación por falta de conjugación y el procedimiento utilizado explicado con pseudocódigo y pautas de replicación.
 - HU# 100- "Como analista de datos quiero implementar el modelo estadístico seleccionado para obtener estimaciones y predicciones reproducibles" (Estimación: 8 pts) – *Dada una configuración de modelo versionada, cuando ejecute el entrenamiento desde cero, entonces se generarán artefactos y predicciones reproducibles en rutas acordadas.*
 - HU# 104- "Como analista de datos quiero calcular y reportar métricas de desempeño para verificar el ajuste del modelo" (Estimación: 5 pts) - *Dadas las predicciones del modelo, cuando ejecute el evaluador de métricas, entonces se calcularán y guardarán métricas clave y comparativas*
 
@@ -40,27 +40,49 @@
 
 # ⏳  Daily
 
-##  Fecha: YYYY-MM-DD
+##  Fecha: 2025-10-25
 
-### Estudiante A:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Paola Espinoza Hernández:
+- *¿Qué hice ayer?*: Asignar las tareas a realizar en este sprint
+- *¿Qué haré hoy?*: Llenar los documentos del sprint, y empezar los resultados
+- *¿Hay algo que me está bloqueando?*:  no
 
-### Estudiante B:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### José Carlos Quintero:
+- *¿Qué hice ayer?*: investigar sobre la metodologia utilizada
+- *¿Qué haré hoy?*: investigar fuentes para apoyar metodologia y resultados
+- *¿Hay algo que me está bloqueando?*: no
 
-### Estudiante C:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Julián Soto:
+- *¿Qué hice ayer?*: revisar las tareas asignadas por realizar en este sprint
+- *¿Qué haré hoy?*: investigar sobre la implementación del modelo utilizado.  
+- *¿Hay algo que me está bloqueando?*: no
 
-### Estudiante D:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: evalué las tareas programadas para este sprint.
+•⁠  ⁠*¿Qué haré hoy?*: estudiaré la metodología de implementación del modelo empleado.
+•⁠  ⁠*¿Hay algo que me está bloqueando?*: no
+
+##  Fecha: 2025-10-28
+
+### Paola Espinoza Hernández:
+- *¿Qué hice ayer?*: Llenar los documentos del sprint y revisar el documento escrito
+- *¿Qué haré hoy?*: Rellenar el dashboard con la información disponible
+- *¿Hay algo que me está bloqueando?*:  los resultados finales no están listos
+
+### José Carlos Quintero:
+- *¿Qué hice ayer?*: investigar fuentes para apoyar metodologia y resultados
+- *¿Qué haré hoy?*: redactar parte de metodologia y resultados
+- *¿Hay algo que me está bloqueando?*: no
+
+### Julián Soto:
+- *¿Qué hice ayer?*: comenzar con la descripción de los algoritmos empleados
+- *¿Qué haré hoy?*: Lectura detallada del documento escrito. 
+- *¿Hay algo que me está bloqueando?*:
+
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: trabajar en los resultados 
+•⁠  ⁠*¿Qué haré hoy?*: terminar la presentación
+•⁠  ⁠*¿Hay algo que me está bloqueando?*: no
 
 
 
@@ -70,14 +92,14 @@
 
 ## 📈  Resultado mostrado
 
-- *Funcionalidad A:* (ej: "Carga automática de dataset desde CSV en base de datos completada").
-- *Funcionalidad B:* (ej: "Gráficos descriptivos generados dinámicamente").
+- *Presentación de resultados:* Incluimos gráficos de resultados, y su explicación.
+- *Redacción de Conclusiones:* Se redactaron las conclusiones.
 
 
 ## :arrows_counterclockwise:  Retroalimentación
 
 - **Profesor**:
-- **Compañeros:**
+- **Compañeros:** Nos falta completar la metodología, con el fundamento teórico de los métodos utilizados.
 
 
 ## ✔️  Criterios de aceptación cumplidos:
