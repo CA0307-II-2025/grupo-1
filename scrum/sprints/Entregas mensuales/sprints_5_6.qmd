@@ -1,0 +1,263 @@
+---
+title: "Sprints 5 y 6"
+format:
+  pdf: default
+lang: es
+---
+
+# Sprint 5
+
+# 📆  Planificación
+
+## 🎯  Objetivo del Sprint:
+
+Definir la metodología exacta a seguir, incluyendo la manera en que se asignarán los pesos a la jrarquía; para luego presentar los resultados.
+
+## 😃  Historias de usuario
+
+- HU#94 - "Como investigador, quiero redactar el apartado de resultados para presentar las estimaciones de prevalencia y las distribuciones posteriores obtenidas" (Estimación: 5 pts) – *Dado un esqueleto de informe y el repositorio con resultados, cuando se lea el documento, entonces se obtendrá un informe reproducible con resultados, diagnósticos y conclusiones.*
+- HU# 93- "Como investigador, quiero redactar el apartado de metodología para documentar el enfoque bayesiano y los procedimientos de simulación utilizados" (Estimación: 5 pts) - *Dado que se está elaborando el informe final, cuando el equipo consulte el apartado de Metodología, entonces encontrará una descripción clara, completa y coherente del modelo binomial jerárquico con sus priors, la justificación del uso de simulación por falta de conjugación y el procedimiento Metrópolis-Hastings explicado con pseudocódigo y pautas de replicación.
+
+
+
+## 🔜  Plan de alto nivel:
+- *Semana 1:* Analizar los datos y posibles metodologías.
+- *Semana 2:* Probar y consultar distintas metodologías con los datos a utilizar.
+
+
+## 🥇  Criterios de aceptación del Sprint:
+- [ ] Se analizaron los datos.
+- [ ] Se investigan posibles metodologías.
+- [ ] Se realizan resultados preliminares.
+
+
+## 📌  Asignación de tareas inicial
+- *Paola Espinoza:* Historia 93 y 94
+- *José Carlos:* Historia 93 y 94
+- *Julián Soto:* Historia 93 y 94
+- *Paula Jiménez:* Historia 93 y 94
+
+## 🚫 Posibles bloqueos o impedimentos conocidos
+
+- **Bloqueo:** La metodología exacta no está completamente definida.
+- **Solución** Definir la metodología de acuerdo a los datos y las recomendaciones del profesor.
+
+
+
+
+# ⏳  Daily
+
+##  Fecha: 2025-10-14
+
+### Paola Espinoza Hernández:
+- *¿Qué hice ayer?*: Investigar sobre segmentación a nivel social
+- *¿Qué haré hoy?*: Revisar la metodología a utilizar
+- *¿Hay algo que me está bloqueando?*:  no
+
+### José Carlos Quintero:
+- *¿Qué hice ayer?*: investigar cómo aplicar el algoritmo de metrópolis hastings para modelar la posterior de la prevalencia de sobrepeso y obesidad
+- *¿Qué haré hoy?*: implementar dicho código
+- *¿Hay algo que me está bloqueando?*: no
+
+### Julián Soto:
+- *¿Qué hice ayer?*: discutir la asignación de tareas del sprint con el grupo de trabajo.
+- *¿Qué haré hoy?*: revisitar la metodología consultada.
+- *¿Hay algo que me está bloqueando?*: no
+
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: examinar las tareas por realizar
+•⁠  ⁠*¿Qué haré hoy?*: trabajar en la redacción de resultados
+•⁠  ⁠*¿Hay algo que me está bloqueando?*: no
+
+##  Fecha: 2025-10-16
+
+### Paola Espinoza Hernández:
+- *¿Qué hice ayer?*: arreglar un pull request
+- *¿Qué haré hoy?*: redactar documento escrito
+- *¿Hay algo que me está bloqueando?*:  no
+
+### José Carlos Quintero:
+- *¿Qué hice ayer?*: generar resultados (gráficos) a partir del modelo
+- *¿Qué haré hoy?*: investigar más a fondo sobre la metodologia
+- *¿Hay algo que me está bloqueando?*: no
+
+### Julián Soto:
+- *¿Qué hice ayer?*: intentar arreglar un pull request
+- *¿Qué haré hoy?*: preparar los datos para generar un mapa  geográfico con la prevalencia de obesidad por distrito.
+- *¿Hay algo que me está bloqueando?*: no
+
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: estudiar la metodología
+•⁠  ⁠*¿Qué haré hoy?*: hacer la presentación del sprint
+•⁠  ⁠*¿Hay algo que me está bloqueando?*: no
+
+
+
+# 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
+
+## 📈  Resultado mostrado
+
+- *Funcionalidad A:* Modelo Logit-Binomial.
+- *Funcionalidad B:* Resultados preliminares: Se prefiere la no jerarquización.
+
+
+## :arrows_counterclockwise:  Retroalimentación
+
+- **Profesor**: Dado que el modelo no tuvo cambios sigificativos al incluir la jerarquización, se pueden probar otras jerarquizaciones.
+- **Compañeros:** Debemos definir si jerarquizar y cómo.
+
+
+## ✔️  Criterios de aceptación cumplidos:
+- [ ] Tenemos resultados preliminares, falta plasmarlos en el documento escrito.
+- [ ] Se analizaron los datos.
+- [ ] Se investigan posibles metodologías.
+- [ ] Se realizan resultados preliminares.
+
+
+# 🔙  Retrospective – Fecha: 2025-10-17
+
+## :white_check_mark: Qué salió bien
+1.  _Colaboración en el equipo_ Logramos terminar el sprint a tiempo.
+2.  _Usamos commits convencionales correctamente y no hubo errores_
+
+
+
+## :no_good: Qué podría mejorar
+
+- _Claridad en metodología_: Debemos definir la metodología a utilizar.
+
+
+## :pencil: Acciones concretas  para el próximo sprint
+
+1. **Actualizar el backlog**: Se mantendrá actualizado el backlog, de modo que al profesor se le facilite seguir nuestro hilo de trabajo.
+
+
+# Sprint 6
+
+# 📆  Planificación
+
+## 🎯  Objetivo del Sprint:
+
+ Completar el análisis, generar los resultados finales, y documentarlos, junto a su respectiva metodología.
+
+## 😃  Historias de usuario
+- HU# 94- "Como investigador, quiero redactar el apartado de resultados para presentar las estimaciones de prevalencia y las distribuciones posteriores obtenidas" (Estimación: 5 pts) – *Dado un esqueleto de informe y el repositorio con resultados, cuando se lea el documento, entonces se obtendrá un informe reproducible con resultados, diagnósticos y conclusiones.*
+- HU# 93- "Como investigador, quiero redactar el apartado de metodología para documentar el enfoque bayesiano y los procedimientos de simulación utilizados" (Estimación: 5 pts) - *Dado que se está elaborando el informe final, cuando el equipo consulte el apartado de Metodología, entonces encontrará una descripción clara, completa y coherente del modelo binomial jerárquico con sus priors, la justificación del uso de simulación por falta de conjugación y el procedimiento utilizado explicado con pseudocódigo y pautas de replicación.
+- HU# 100- "Como analista de datos quiero implementar el modelo estadístico seleccionado para obtener estimaciones y predicciones reproducibles" (Estimación: 8 pts) – *Dada una configuración de modelo versionada, cuando ejecute el entrenamiento desde cero, entonces se generarán artefactos y predicciones reproducibles en rutas acordadas.*
+- HU# 104- "Como analista de datos quiero calcular y reportar métricas de desempeño para verificar el ajuste del modelo" (Estimación: 5 pts) - *Dadas las predicciones del modelo, cuando ejecute el evaluador de métricas, entonces se calcularán y guardarán métricas clave y comparativas*
+
+
+
+
+## 🔜  Plan de alto nivel:
+- *Semana 1:* Especificar los detalles finales del modelo a utilizar.
+- *Semana 2:* Generar los resultados, e incluirlos en el documento final.
+
+
+## 🥇  Criterios de aceptación del Sprint:
+- [ ] Se especifica el modelo seleccionado en el documento final
+- [ ] Se obtuvieron estimaciones reproducibles
+- [ ] Los resultados se encuentran en el documento final
+
+
+## 📌  Asignación de tareas inicial
+- *Paola Espinoza:* Historia 100 y 104
+- *José Carlos:* Historia 100 y 104
+- *Julián Soto:* Historia 93 y 94
+- *Paula Jiménez:* Historia 93 y 94
+
+## 🚫 Posibles bloqueos o impedimentos conocidos
+
+- **Bloqueo:** No hemos redactado la metodología.
+- **Solución** Crear una historia que especifique lo que debe colocarse en ella.
+
+
+
+
+# ⏳  Daily
+
+##  Fecha: 2025-10-25
+
+### Paola Espinoza Hernández:
+- *¿Qué hice ayer?*: Asignar las tareas a realizar en este sprint
+- *¿Qué haré hoy?*: Llenar los documentos del sprint, y empezar los resultados
+- *¿Hay algo que me está bloqueando?*:  no
+
+### José Carlos Quintero:
+- *¿Qué hice ayer?*: investigar sobre la metodologia utilizada
+- *¿Qué haré hoy?*: investigar fuentes para apoyar metodologia y resultados
+- *¿Hay algo que me está bloqueando?*: no
+
+### Julián Soto:
+- *¿Qué hice ayer?*: revisar las tareas asignadas por realizar en este sprint
+- *¿Qué haré hoy?*: investigar sobre la implementación del modelo utilizado.
+- *¿Hay algo que me está bloqueando?*: no
+
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: evalué las tareas programadas para este sprint.
+•⁠  ⁠*¿Qué haré hoy?*: estudiaré la metodología de implementación del modelo empleado.
+•⁠  ⁠*¿Hay algo que me está bloqueando?*: no
+
+##  Fecha: 2025-10-28
+
+### Paola Espinoza Hernández:
+- *¿Qué hice ayer?*: Llenar los documentos del sprint y revisar el documento escrito
+- *¿Qué haré hoy?*: Rellenar el dashboard con la información disponible
+- *¿Hay algo que me está bloqueando?*:  los resultados finales no están listos
+
+### José Carlos Quintero:
+- *¿Qué hice ayer?*: investigar fuentes para apoyar metodologia y resultados
+- *¿Qué haré hoy?*: redactar parte de metodologia y resultados
+- *¿Hay algo que me está bloqueando?*: no
+
+### Julián Soto:
+- *¿Qué hice ayer?*: comenzar con la descripción de los algoritmos empleados
+- *¿Qué haré hoy?*: Lectura detallada del documento escrito.
+- *¿Hay algo que me está bloqueando?*:
+
+### María Paula Jiménez:
+•⁠  ⁠*¿Qué hice ayer?*: trabajar en los resultados
+•⁠  ⁠*¿Qué haré hoy?*: terminar la presentación
+•⁠  ⁠*¿Hay algo que me está bloqueando?*: no
+
+
+
+# 🔍   Revisión en clase (Fecha: 2025-10-31)
+
+
+
+## 📈  Resultado mostrado
+
+- *Presentación de resultados:* Incluimos gráficos de resultados, y su explicación.
+- *Redacción de Conclusiones:* Se redactaron las conclusiones.
+
+
+## :arrows_counterclockwise:  Retroalimentación
+
+- **Profesor**:
+- **Compañeros:** Nos falta completar la metodología, con el fundamento teórico de los métodos utilizados.
+
+
+## ✔️  Criterios de aceptación cumplidos:
+- [ ] Se especifica el modelo seleccionado en el documento final
+- [ ] Se obtuvieron estimaciones reproducibles
+- [ ] Los resultados se encuentran en el documento final
+
+
+# 🔙  Retrospective – Fecha: YYYY-MM-DD
+
+## :white_check_mark: Qué salió bien
+1.  _Colaboración en el equipo_ Logramos terminar el sprint a tiempo.
+1.  _Usamos commits convencionales correctamente y no hubo errores_
+1.  Documentación actualizada al día evitó retrabajo luego.
+
+
+
+## :no_good: Qué podría mejorar
+
+- _Gestión de tiempo_: Podríamos asignar mejor la distribución de tareas durante el sprint.
+
+
+## :pencil: Acciones concretas  para el próximo sprint
+1. **Gestión de tiempo**: Se presionará a los integrantes a mantener actualizadas las tareas pequeñas realizadas.
+
