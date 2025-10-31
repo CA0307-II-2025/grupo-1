@@ -383,56 +383,187 @@ def save_posterior_prevalence_figs(
         )
 
 
+# ============================
+# Para la validacion del modelo
+# ============================
+
+
+def evaluar_convergencia(trace):
+    """Evalúa métricas de convergencia del muestreo NUTS.
+
+    Parámetros
+    ----------
+    trace : arviz.InferenceData
+        Objeto posterior devuelto por PyMC vía pm.sample().
+
+    Retorna
+    -------
+    dict:
+        Un diccionario con R-hat máximo, ESS efectivo mínimo y número total de draws por cadena.
+    """
+    resumen = az.summary(trace, round_to=None)
+    rhat_max = resumen["r_hat"].max()
+    ess_bulk_min = resumen["ess_bulk"].min()
+    ess_tail_min = resumen["ess_tail"].min()
+
+    # draws por cadena: inferible desde dims de trace.posterior
+    n_chains = trace.posterior.dims["chain"]
+    n_draws = trace.posterior.dims["draw"]
+
+    out = {
+        "rhat_max": float(rhat_max),
+        "ess_bulk_min": float(ess_bulk_min),
+        "ess_tail_min": float(ess_tail_min),
+        "n_chains": int(n_chains),
+        "n_draws_per_chain": int(n_draws),
+    }
+    return out
+
+
+def evaluar_error_puntual(trace, meta, var_name="p"):
+    """Mide el error promedio entre lo observado y la media posterior esperada por distrito.
+
+    Parámetros
+    ----------
+    trace : arviz.InferenceData
+        Objeto posterior que contiene la variable 'p' (probabilidades p_i).
+    meta : dict
+        Metadatos devueltos por prep_data. Debe incluir meta["df"] con columnas
+        'subtotal' (casos positivos) y 'total' (tamaño muestral).
+    var_name : str
+        Nombre de la variable posterior con probabilidades (por defecto 'p').
+
+    Retorna
+    -------
+    dict:
+        Métricas tipo RMSE y MAE entre:
+        - la proporción observada y
+        - la probabilidad posterior esperada (media de p_i).
+    """
+    dfm = meta["df"].copy()
+    y_obs = dfm["subtotal"].to_numpy(dtype=float)
+    n_obs = dfm["total"].to_numpy(dtype=float)
+    prop_obs = y_obs / n_obs  # proporción observada empírica
+
+    # extraer draws de p (chain, draw, distrito)
+    p_draws = trace.posterior[var_name].stack(sample=("chain", "draw")).values  # (N, S)
+    p_mean = p_draws.mean(axis=1)  # esperanza posterior E[p_i | data]
+
+    # errores
+    diff = p_mean - prop_obs
+    mae = np.mean(np.abs(diff))
+    rmse = np.sqrt(np.mean(diff**2))
+
+    out = {
+        "mae_prop": float(mae),
+        "rmse_prop": float(rmse),
+    }
+    return out
+
+
+def evaluar_cobertura_predictiva(trace, meta, var_name="p", nivel=0.95, rng_seed=123):
+    """Evalúa la calibración del modelo usando la predicción posterior (posterior predictive coverage).
+
+    En lugar de comparar la proporción observada con el intervalo creíble de p_i,
+    esta función compara la proporción observada con el rango de resultados que el
+    modelo habría podido generar, incorporando el ruido binomial de muestreo.
+
+    Parámetros
+    ----------
+    trace : arviz.InferenceData
+        Objeto posterior que contiene la variable 'p' (probabilidades p_i).
+    meta : dict
+        Metadatos devueltos por prep_data. Debe incluir meta["df"] con
+        'subtotal' (éxitos observados) y 'total' (n_i).
+    var_name : str
+        Nombre de la variable posterior con las probabilidades p_i (por defecto 'p').
+    nivel : float
+        Nivel del intervalo de credibilidad predictiva que se va a evaluar (por defecto 0.95).
+    rng_seed : int
+        Semilla para la simulación aleatoria.
+
+    Retorna
+    -------
+    dict:
+        coverage_level:
+            El nivel objetivo del intervalo (por ejemplo 0.95).
+        empirical_coverage:
+            Proporción de distritos en que la tasa observada cae dentro del
+            intervalo predictivo posterior.
+        n_distritos:
+            Número de distritos evaluados.
+    """
+    rng = np.random.default_rng(rng_seed)
+
+    dfm = meta["df"].copy()
+    y_obs = dfm["subtotal"].to_numpy(dtype=float)
+    n_obs = dfm["total"].to_numpy(dtype=float)
+    prop_obs = y_obs / n_obs  # proporción empírica observada
+
+    # Extraer draws de p: posterior['p'] tiene dims (chain, draw, distrito)
+    # stack -> matriz (N, S) donde S = chain*draw
+    p_draws = (
+        trace.posterior[var_name].stack(sample=("chain", "draw")).values
+    )  # shape (N, S)
+    N, S = p_draws.shape
+
+    # Simular y_rep ~ Binomial(n_i, p_draw) para cada distrito i y cada draw s
+    # Esto da una matriz (N, S) de conteos simulados
+    # Nota: usamos broadcasting sobre n_obs
+    y_rep = rng.binomial(n=n_obs[:, None].astype(int), p=p_draws)
+    prop_rep = y_rep / n_obs[:, None]  # proporciones simuladas bajo el modelo
+
+    alpha = (1 - nivel) / 2.0
+    low = np.quantile(prop_rep, alpha, axis=1)
+    high = np.quantile(prop_rep, 1 - alpha, axis=1)
+
+    inside = (prop_obs >= low) & (prop_obs <= high)
+    coverage = inside.mean()
+
+    return {
+        "coverage_level": float(nivel),
+        "empirical_coverage": float(coverage),
+        "n_distritos": int(N),
+    }
+
+
+def resumen_diagnostico_modelo(trace, meta, var_name="p"):
+    """Genera un resumen integrado de desempeño y diagnóstico del modelo.
+
+    Parámetros
+    ----------
+    trace : arviz.InferenceData
+        Posterior resultante de pm.sample().
+    meta : dict
+        Metadatos de prep_data.
+    var_name : str
+        Nombre de la variable de probabilidad posterior por distrito (por defecto 'p').
+
+    Retorna
+    -------
+    dict:
+        Diccionario con:
+        - métricas de convergencia MCMC
+        - métricas de ajuste predictivo global (WAIC / LOO)
+        - métricas de error puntual (MAE / RMSE)
+        - calibración de incertidumbre (cobertura posterior)
+    """
+    conv = evaluar_convergencia(trace)
+    err = evaluar_error_puntual(trace, meta, var_name=var_name)
+    cov_pred = evaluar_cobertura_predictiva(trace, meta, var_name=var_name)
+
+    out = {
+        "convergencia": conv,
+        "error_puntual": err,
+        "cobertura predictiva": cov_pred,
+    }
+    return out
+
+
 # ---------------------------
 # Entrypoint seguro para Windows
 # ---------------------------
 if __name__ == "__main__":
-    # modelo jerarquico - obesidad
-    trace, resumen, meta = run_with_csv(
-        csv_path="../../data/clean/datos_limpios.csv",
-        condicion="obesidad",
-        provincia_col="provincia",
-        distrito_col="distrito",
-        vars_dem=(
-            "desempleo",
-            "poblacion_urbana",
-            "privacion_critica",
-            "poblacion_menor_14",
-            "hogares_monomarentales",
-            "ocupantes_por_hogar",
-            "anos_escolaridad",
-        ),
-        incluye_provincia=True,
-        draws=2000,
-        tune=1000,
-        chains=4,
-        cores=4,
-        seed=2025,
-    )
-
-    # modelo jerarquico - sobrepeso
-    trace_sob, resumen_sob, meta_sob = run_with_csv(
-        csv_path="../../data/clean/datos_limpios.csv",
-        condicion="sobrepeso",
-        provincia_col="provincia",
-        distrito_col="distrito",
-        vars_dem=(
-            "desempleo",
-            "poblacion_urbana",
-            "privacion_critica",
-            "poblacion_menor_14",
-            "hogares_monomarentales",
-            "ocupantes_por_hogar",
-            "anos_escolaridad",
-        ),
-        incluye_provincia=True,
-        draws=2000,
-        tune=1000,
-        chains=4,
-        cores=4,
-        seed=2025,
-    )
-
     # modelo no jerarquico - obesidad
     trace_2, resumen_2, meta_2 = run_with_csv(
         csv_path="../../data/clean/datos_limpios.csv",
@@ -480,38 +611,6 @@ if __name__ == "__main__":
     )
 
     # ===== guardar gráficos país + provincias =====
-    save_posterior_prevalence_figs(
-        trace,
-        meta,
-        condicion_label="obesidad",
-        outdir="../../res/graficos/graficos_simulados/obesidad",
-        province_order=[
-            "SAN JOSE",
-            "ALAJUELA",
-            "CARTAGO",
-            "HEREDIA",
-            "GUANACASTE",
-            "PUNTARENAS",
-            "LIMON",
-        ],  # opcional
-        bins=60,
-    )
-    save_posterior_prevalence_figs(
-        trace_sob,
-        meta_sob,
-        condicion_label="sobrepeso",
-        outdir="../../res/graficos/graficos_simulados/sobrepeso",
-        province_order=[
-            "SAN JOSE",
-            "ALAJUELA",
-            "CARTAGO",
-            "HEREDIA",
-            "GUANACASTE",
-            "PUNTARENAS",
-            "LIMON",
-        ],  # opcional
-        bins=60,
-    )
 
     save_posterior_prevalence_figs(
         trace_2,
@@ -526,7 +625,7 @@ if __name__ == "__main__":
             "GUANACASTE",
             "PUNTARENAS",
             "LIMON",
-        ],  # opcional
+        ],
         bins=60,
     )
     save_posterior_prevalence_figs(
@@ -542,7 +641,15 @@ if __name__ == "__main__":
             "GUANACASTE",
             "PUNTARENAS",
             "LIMON",
-        ],  # opcional
+        ],
         bins=60,
     )
     print("Gráficos guardados en res/graficos/graficos_simulados")
+
+    # validacion
+
+    diag_obesidad = resumen_diagnostico_modelo(trace_2, meta_2)
+    print(diag_obesidad)
+
+    diag_sobrepeso = resumen_diagnostico_modelo(trace_2_sob, meta_2_sob)
+    print(diag_sobrepeso)
