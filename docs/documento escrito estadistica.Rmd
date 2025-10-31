@@ -143,7 +143,7 @@ El No-U-Turn Sampler (NUTS) es una extensión adaptativa de HMC que elimina la n
 
 El modelo logit-binomial describe conteos de “éxitos” \(y_i\) sobre exposiciones \(n_i\) mediante una verosimilitud binomial y un enlace logit para la probabilidad \(p_i\):
 \[
-y_i \sim \mathrm{Binomial}(n_i, p_i),\qquad 
+y_i \sim \mathrm{Binomial}(n_i, p_i),\qquad
 \mathrm{logit}(p_i)=\eta_i=\alpha + X_i^\top\beta.
 \]
 La función logit es \(\mathrm{logit}(p)=\log\!\big(\tfrac{p}{1-p}\big)\) y su inversa es
@@ -184,23 +184,23 @@ Una utilidad del script combina los draws de \(p_i\) con pesos \(n_i\) para obte
 Funciones como `save_posterior_prevalence_figs()` y `save_posterior_prevalence_mosaic()` guardan la distribución posterior de la prevalencia a nivel país (con media e IC95 %) y un mosaico por provincia que facilita comparar niveles e incertidumbre.
 
 ### Significado de los parámetros
-\(\alpha\): log-odds cuando todas las covariables estandarizadas valen 0 (en su media).  
-\(\beta_k\): efecto de +1 DE en la covariable \(k\) sobre el logit; en odds es \(\exp(\beta_k)\).  
+\(\alpha\): log-odds cuando todas las covariables estandarizadas valen 0 (en su media).
+\(\beta_k\): efecto de +1 DE en la covariable \(k\) sobre el logit; en odds es \(\exp(\beta_k)\).
 \(p_i\): probabilidad de la condición en la fila \(i\); base para medias, IC/HDI y agregados ponderados.
 
 ### Supuestos y consecuencias
-Binomialidad: \(y_i\mid p_i \sim \mathrm{Binomial}(n_i,p_i)\) con \(\mathrm{Var}(y_i\mid p_i)=n_i p_i(1-p_i)\).  
-Linealidad en logit: la relación entre covariables y \(p_i\) es lineal en la escala logit.  
-Priors débiles: \(\mathcal N(0,5)\) deja que los datos dominen, salvo en celdas con poca exposición.  
+Binomialidad: \(y_i\mid p_i \sim \mathrm{Binomial}(n_i,p_i)\) con \(\mathrm{Var}(y_i\mid p_i)=n_i p_i(1-p_i)\).
+Linealidad en logit: la relación entre covariables y \(p_i\) es lineal en la escala logit.
+Priors débiles: \(\mathcal N(0,5)\) deja que los datos dominen, salvo en celdas con poca exposición.
 
 ### Diagnóstico y tuning
-Convergencia: \(\hat R\approx 1\) y tamaños efectivos altos indican cadenas bien mezcladas.  
-Divergencias: si aparecen, elevar `target_accept`, revisar la estandarización y/o usar priors un poco más informativos.  
+Convergencia: \(\hat R\approx 1\) y tamaños efectivos altos indican cadenas bien mezcladas.
+Divergencias: si aparecen, elevar `target_accept`, revisar la estandarización y/o usar priors un poco más informativos.
 Predicción y calibración: con los draws de \(p_i\) se evalúan métricas fuera del bloque de muestreo (p. ej., MAE, RMSE) y cobertura de IC/HDI frente a observados.
 
 ### Validación empírica reportada
-Convergencia: \(\hat{R}=1.00\) en obesidad y sobrepeso; tamaños efectivos mínimos en núcleo/colas superiores a 4700, lo que sugiere exploración homogénea del posterior.  
-Precisión predictiva: obesidad con MAE \(=0.023\) y RMSE \(=0.032\); sobrepeso con MAE \(=0.021\) y RMSE \(=0.030\). Diferencias promedio entre proporciones observadas y estimadas en el rango 2–3 puntos porcentuales.  
+Convergencia: \(\hat{R}=1.00\) en obesidad y sobrepeso; tamaños efectivos mínimos en núcleo/colas superiores a 4700, lo que sugiere exploración homogénea del posterior.
+Precisión predictiva: obesidad con MAE \(=0.023\) y RMSE \(=0.032\); sobrepeso con MAE \(=0.021\) y RMSE \(=0.030\). Diferencias promedio entre proporciones observadas y estimadas en el rango 2–3 puntos porcentuales.
 Cobertura (IC95 %): 77.8 % para obesidad y 89.1 % para sobrepeso. Indica buena reproducción de la variabilidad; ligera subcobertura en obesidad (estimaciones algo más concentradas), calibración más cercana al nominal en sobrepeso.
 
 ### Resumen ejecutivo
