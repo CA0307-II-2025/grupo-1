@@ -54,7 +54,7 @@
 
 ### Julián Soto:
 - *¿Qué hice ayer?*: revisar las tareas asignadas por realizar en este sprint
-- *¿Qué haré hoy?*: investigar sobre la implementación del modelo utilizado.  
+- *¿Qué haré hoy?*: investigar sobre la implementación del modelo utilizado.
 - *¿Hay algo que me está bloqueando?*: no
 
 ### María Paula Jiménez:
@@ -76,11 +76,11 @@
 
 ### Julián Soto:
 - *¿Qué hice ayer?*: comenzar con la descripción de los algoritmos empleados
-- *¿Qué haré hoy?*: Lectura detallada del documento escrito. 
+- *¿Qué haré hoy?*: Lectura detallada del documento escrito.
 - *¿Hay algo que me está bloqueando?*:
 
 ### María Paula Jiménez:
-•⁠  ⁠*¿Qué hice ayer?*: trabajar en los resultados 
+•⁠  ⁠*¿Qué hice ayer?*: trabajar en los resultados
 •⁠  ⁠*¿Qué haré hoy?*: terminar la presentación
 •⁠  ⁠*¿Hay algo que me está bloqueando?*: no
 
