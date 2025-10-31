@@ -349,6 +349,22 @@ El flujo completo implementado en `run_with_csv()` vincula estas funciones de la
 
 Este procedimiento traduce la teoría del muestreo hamiltoniano a una aplicación empírica concreta, cumpliendo con el principio de exploración eficiente del espacio posterior al que hace referencia @HoffmanGelman2014.
 
+### Validación del modelo
+
+La validación de los modelos binomiales de enlace logit para las condiciones de **obesidad** y **sobrepeso infantil** se realizó con base en tres dimensiones principales: la convergencia del muestreo NUTS, la precisión predictiva y la calibración posterior. En ambos casos se empleó el mismo procedimiento de estimación, con cuatro cadenas y 2 000 iteraciones por cadena, asegurando la comparabilidad de los resultados entre modelos.
+
+#### Convergencia del muestreo
+
+Los diagnósticos de convergencia del algoritmo NUTS evidencian un excelente comportamiento en ambos modelos. En el caso del modelo de obesidad, el estadístico $\hat{R}$ alcanzó un valor máximo de 1.00, con tamaños efectivos mínimos de muestra de 5 764 en la parte central de las distribuciones y 4 841 en las colas. De manera similar, el modelo de sobrepeso obtuvo $\hat{R}=1.00$, con tamaños efectivos de 5 008 y 4 742, respectivamente. Estos resultados indican que las cadenas convergieron de forma adecuada, explorando homogéneamente el espacio posterior y garantizando la estabilidad de las estimaciones.
+
+#### Precisión predictiva
+
+En términos de ajuste, el modelo de obesidad presentó un **error absoluto medio (MAE)** de 0.023 y un **error cuadrático medio (RMSE)** de 0.032, mientras que el modelo de sobrepeso alcanzó un MAE de 0.021 y un RMSE de 0.030. En ambos casos, las diferencias promedio entre las proporciones observadas y las estimadas por el modelo se sitúan en un rango de 2 % a 3 % en unidades proporcionales, lo que denota una buena capacidad para reproducir las prevalencias empíricas.
+
+#### Cobertura predictiva posterior
+
+La evaluación de la calibración mediante la cobertura predictiva posterior mostró que el **77.8 %** de las proporciones observadas de obesidad y el **89.1 %** de las proporciones de sobrepeso se encuentran dentro del intervalo creíble del 95 % generado por los respectivos modelos. Esto indica que ambos modelos reproducen razonablemente la variabilidad observada, aunque el de sobrepeso presenta una calibración más cercana al nivel nominal. El incremento en la cobertura al incorporar la incertidumbre muestral confirma que los intervalos creíbles reflejan adecuadamente la dispersión esperada bajo el proceso binomial. En el caso de la obesidad, la leve subcobertura observada sugiere una concentración algo mayor de las estimaciones alrededor del promedio nacional, mientras que el modelo de sobrepeso muestra una calibración más ajustada a la dispersión real entre distritos.
+
 ## Resultados
 
 Los resultados obtenidos a partir del modelo binomial con enlace logit y muestreo NUTS evidencian un patrón claro en la distribución de la prevalencia de obesidad y sobrepeso infantil en Costa Rica, tanto a nivel nacional como provincial. En el plano nacional, la media posterior estimada para obesidad fue de 0.14143, con un intervalo de credibilidad del 95% entre 0.14023 y 0.14254. En el caso del sobrepeso, la media posterior fue de 0.19848, con un intervalo de credibilidad del 95% entre 0.19715 y 0.19983. Estos resultados, cuando se suman, permiten inferir que aproximadamente un 34% de la población infantil escolar del país presenta exceso de peso, cifra que confirma la magnitud del problema de salud pública y se encuentra alineada con las tendencias observadas en contextos internacionales. La Organización Mundial de la Salud @WHO2025 señala que “childhood obesity has become one of the most serious public health challenges of the 21st century”, al estimar que más de 390 millones de niños y adolescentes de entre 5 y 19 años en el mundo tienen sobrepeso u obesidad. Esta cifra global se sitúa en torno al 20% de esa población, lo que significa que Costa Rica presenta una proporción ligeramente superior al promedio global, aunque en consonancia con otros países de ingreso medio y urbano consolidado.
