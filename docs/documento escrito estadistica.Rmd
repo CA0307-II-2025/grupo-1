@@ -88,7 +88,34 @@ Las variables consideradas en el análisis se describen a continuación:
 
 En términos generales, la prevalencia combinada de sobrepeso y obesidad infantil muestra una media del 34%, con valores entre 13% y 56%, reflejando una variabilidad importante entre distritos. Al desagregar, la prevalencia de sobrepeso presenta un promedio de 20%, con una desviación estándar del 3% y un rango entre 6 y 33%, mientras que la prevalencia de obesidad registra un promedio de 14%, con desviación estándar del 4% y valores entre 0 y 33%. Estos resultados evidencian que, aunque ambas condiciones están presentes en magnitudes considerables, el sobrepeso es más frecuente que la obesidad, lo cual no es sorprendente al considerar que la obesidad se puede interpretar como un caso extremo de sobrepeso.
 
-Los años de escolaridad promedio por distrito se sitúan en 8.1 años, con una dispersión moderada (sd ≈ 1.5). La tasa de desempleo es baja en promedio (3%), pero con algunos distritos alcanzando valores cercanos a 9%. El porcentaje de hogares monomarentales ronda el 20% y la privación crítica promedio de los hogares se ubica en 29%, mostrando casos extremos de hasta 90% La población urbana evidencia una clara polarización: muchos distritos son predominantemente rurales (0%) o completamente urbanos (100%).
+Los años de escolaridad promedio por distrito se sitúan en 8.1 años, con una dispersión moderada $sd \approx 1.5$. La tasa de desempleo es baja en promedio (3%), pero con algunos distritos alcanzando valores cercanos a 9%. El porcentaje de hogares monomarentales ronda el 20% y la privación crítica promedio de los hogares se ubica en 29%, mostrando casos extremos de hasta 90% La población urbana evidencia una clara polarización: muchos distritos son predominantemente rurales (0%) o completamente urbanos (100%).
+
+### Enfoque Bayesiano
+Dada la naturaleza de los datos, se modela el número total de casos observados en cada categoría (sobrepeso y obesidad, respectivamente) mediante una distribución $Y \sim \text{Binom}(N,p)$, donde $Y$ es el número total de casos, N el tamaño de la muestra y $p$ la probabilidad de pertenecer a la categoría de sobrepeso (o bien, obesidad) independientemente de la pertenencia cantonal o distrital. Desde un enfoque bayesiano, se asigna una distribución previa $\pi \sim \text{Beta}(1,1)$. De esta forma, se estima la prevalencia de obesidad y sobrepeso infantil en Costa Rica, a través del algoritmo Metropolis-Hastings.
+
+
+#### Autocorrelación
+Para el método de Metropolis-Hasting, en ambos casos, se obtuvo una alta autocorrelación entre los elementos de la cadena, como se aprecia en las siguientes figuras.
+
+```{r fig-autocorr_obesidad, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
+knitr::include_graphics("../res/graficos/autocorr_obesidad.png")
+```
+
+```{r fig-autocorr_sobrepeso, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
+knitr::include_graphics("../res/graficos/autocorr_sobrepeso.png")
+```
+
+#### Histogramas
+Una vez finalizado el proceso, se realizaron histogramas para visualizar la distribución posterior obtenida a partir de esta metodología. Además, se presenta la media y el intervalo de confianza para cada categoría.
+
+```{r fig-sobpreso, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
+knitr::include_graphics("../res/graficos/hist_post_sobrepeso.png")
+```
+
+```{r fig-obesidad, echo=FALSE,fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de obesidad infantil"}
+knitr::include_graphics("../res/graficos/hist_post_obesidad.png")
+```
+
 
 Los histogramas permiten identificar distribuciones relativamente simétricas para variables como años de escolaridad, hogares monomarentales y ocupantes por hogar, mientras que otras como la población urbana y la privación crítica presentan asimetrías y valores extremos.
 
@@ -102,270 +129,91 @@ En cuanto a las asociaciones bivariadas, se observan patrones relevantes:
 
 Finalmente, al comparar por provincia, la prevalencia combinada oscila entre 30% en Limón y 37% en Heredia, siendo esta última la más alta. Los boxplots confirman una mayor heterogeneidad en provincias como San José y Alajuela, mientras que Cartago y Guanacaste presentan distribuciones más concentradas.
 
-1. Fundamento teórico
-2. Explicación del modelo
+## Fundamento Teórico
+### Hamiltonian Monte Carlo
+
+Hamiltonian Monte Carlo (HMC) es un método de Monte Carlo por cadenas de Markov que introduce variables auxiliares de momento para transformar el muestreo de la distribución posterior \(p(\theta\mid y)\) en la integración de un sistema hamiltoniano. Se define la energía potencial \(U(\theta)=-\log p(\theta\mid y)\) y la energía cinética \(K(r)=\tfrac12 r^\top M^{-1} r\) para un vector de momentos \(r\) y una matriz de masa \(M\). La dinámica hamiltoniana preserva volumen y energía, y se aproxima con el integrador leapfrog, que usa un tamaño de paso \(\epsilon\) y un número de pasos \(L\) para proponer estados $\theta^*,r^*)$ alejados del estado actual, evitando la caminata aleatoria. La propuesta se corrige con un paso de aceptación Metropolis con probabilidad \(\min\{1,\exp[-\Delta H]\}\), donde \(\Delta H\) es el cambio en la energía debido a la discretización. Esta construcción aprovecha gradientes del log-posterior, permitiendo trayectorias largas con baja autocorrelación y alto tamaño efectivo de muestra por evaluación del gradiente. En la práctica, el rendimiento depende de sintonizar \(\epsilon\), \(L\) y \(M\); tamaños de paso demasiado grandes inducen divergencias, mientras que tamaños de paso muy pequeños incrementan el costo computacional. La literatura recomienda adaptar \(\epsilon\) hacia una tasa de aceptación objetivo y adaptar \(M\) (diagonal o densa) para adecuar la escala y curvatura del posterior, mejorando la estabilidad y la mezcla de la cadena [@HoffmanGelman2014].
+
+### NUTS
+
+El No-U-Turn Sampler (NUTS) es una extensión adaptativa de HMC que elimina la necesidad de fijar manualmente la longitud de trayectoria. En lugar de elegir un \(L\) fijo, NUTS expande dinámicamente la trayectoria (mediante un árbol binario) hasta detectar una no-u-turn: el punto en que la dirección del movimiento comienza a invertirse y proseguir añadiría recorrido redundante. Esta regla de detención garantiza trayectorias lo suficientemente largas para explorar eficientemente la masa de probabilidad, pero no tan largas como para desperdiciar cómputo, reduciendo la autocorrelación sin requerir sintonía manual de \(L\) [@HoffmanGelman2014, p. 3, p. 10]. En paralelo, NUTS emplea dual averaging para adaptar el tamaño de paso \(\epsilon\) hacia una tasa de aceptación objetivo (usualmente entre 0.8 y 0.95), lo que disminuye la incidencia de divergencias en posteriors con alta curvatura. En modelos con enlace logit y covariables estandarizadas —como el logit-binomial descrito— los gradientes están bien definidos y escalados, de modo que NUTS puede construir trayectorias estables que recorren el posterior con bajo error de integración y buena mezcla entre cadenas. La combinación de la expansión sin u-turn y la adaptación de \(\epsilon\) produce un muestreo eficiente y reproducible, con diagnósticos de convergencia favorables (\(\hat{R}\) cercano a 1 y tamaños efectivos altos), en línea con las recomendaciones metodológicas de @HoffmanGelman2014.
 
 
+### Logit-binomial
 
-
-
-
-
-## Marco Teórico (Preliminar)
-
-### 1. Modelado bayesiano espacial para mapeo de enfermedad
-
-El estudio de patrones geográficos de sobrepeso y obesidad mediante enfoques bayesianos espaciales permite estimar riesgos o prevalencias incorporando dependencia espacial y cuantificando la incertidumbre. En el contexto costarricense, se ha aplicado este enfoque para la prevalencia infantil, utilizando datos agregados a nivel distrital y complementando con variables socieconómicas, además de facilitar la visualización mediante un *dashboard* asociado al propio artículo. [@Gomez2023]
-
-### 2. Modelos espaciales y control de complejidad
-
-En el análisis espacial de enfermedades se emplean modelos jerárquicos que permiten separar efectos estructurados (dependencia espacial) y no estructurados (heterogeneidad), lo cual facilita la interpretación y el control de la complejidad. Este tipo de planteamientos provee una base formal para especificar hiperparámetros y para interpretar los componentes espaciales. [@Gelfand2010Handbook]
-
-### 3. Marcos jerárquicos con estructura/no estructura espacial
-
-El riesgo de obesidad puede modelarse en un esquema jerárquico que incorpore simultáneamente efectos estructurados (dependencia espacial) y no estructurados (heterogeneidad), en línea con modelos jerárquicos bayesianos aplicados en salud pública. [@Moraga2019Geospatial]
-
-### 4. Covariables relevantes y diagnóstico espacial exploratorio
-
-La literatura sobre obesidad infantil considera patrones de estilo de vida —por ejemplo, dieta, tiempo en pantalla, juego al aire libre, sueño y actividad física— y analiza su relación con el desarrollo del sobrepeso. Ello ilustra tanto la selección de covariables significativas como la incorporación de diagnósticos espaciales exploratorios. [@WHO2018]
-
-### 5. Comparaciones con modelos de sobredispersión
-
-En datos susceptibles de correlación espacial y conteo/tasas, es pertinente comparar modelos de sobredispersión con los modelos espaciales jerárquicos, utilizando criterios de comparación y diagnóstico. La evidencia empírica disponible muestra aplicaciones de estas comparaciones en contextos de salud pública. [@Moraga2020Sloth]
-
-### 6. Evidencia contextual: determinantes socieconómicos y referencias antropométricas
-
-En Costa Rica, se ha documentado la asociación entre nivel socieconómico (tipo de escuela, zona geográfica, nivel de desarrollo distrital) y exceso de peso en escolares, con una prevalencia total reportada del 34%, y mayor proporción en varones que en mujeres dentro de la muestra analizada. Además, se observa mayor probabilidad de exceso de peso en escuelas privadas, zonas urbanas y distritos más desarrollados. [@Gamboa2021]
-
-Como referencia antropométrica nacional, se han estimado percentiles de IMC y circunferencia de cintura en población infanto-juvenil costarricense, reportando 16.3% de obesidad y 26.2% de sobrepeso en la muestra estudiada, y señalando discrepancias con referencias internacionales que pueden conducir a sobreestimación si se usan de forma exclusiva. [@Nunez2022]
-
-### 7. Patrón espacial en la región: ejemplo del Perú
-
-El análisis espacial del sobrepeso y la obesidad infantil en Perú (2014) identifica concentraciones regionales y clústeres distritales, con mayores tasas en zonas urbanas costeras y menores en regiones andinas y amazónicas, en el contexto de una transición nutricional con coexistencia de desnutrición y exceso de peso. [@Hernandez2016]
-
-### 8. Fundamentos y referencias de estadística espacial
-
-Los fundamentos metodológicos de procesos puntuales y de modelos con efectos aleatorios espaciales se encuentran sistematizados en obras de referencia que sirven como base conceptual y técnica para los enfoques anteriores, incluyendo aplicaciones geoespaciales y de estadística espacial aplicada. [@Gelfand2010Handbook; @Moraga2019Geospatial; @Moraga2023SpatialStats]
-
-### 9. Síntesis operativa para el estudio propuesto
-
-- El uso de marcos jerárquicos espaciales ofrece una parametrización interpretable de la estructura espacial y una guía para fijar hiperparámetros. [@Gelfand2010Handbook]
-- La incorporación de efectos estructurados/no estructurados se alinea con desarrollos recientes aplicados al riesgo de obesidad. [@Moraga2019Geospatial]
-- La selección de covariables puede apoyarse en evidencia sobre estilos de vida y determinantes socieconómicos, junto con diagnóstico espacial exploratorio. [@WHO2018; @Gamboa2021]
-- La comparación con modelos de sobredispersión y la evaluación mediante criterios y diagnósticos son componentes metodológicos pertinentes. [@Moraga2020Sloth]
-- En el caso costarricense, existen datos distritales y un *dashboard* asociado al estudio que facilitan la integración de información socieconómica y la comunicación de resultados. [@Gomez2023]
-- Las referencias antropométricas nacionales pueden complementar o matizar las internacionales en la interpretación de resultados. [@Nunez2022]
-- Evidencia regional adicional (Perú) muestra la utilidad del análisis espacial para identificar clústeres y gradientes geográficos. [@Hernandez2016]
-
-
-
-
-
-
-## Implementación Metodológica (preliminar)
-
-### Enfoque Bayesiano
-Dada la naturaleza de los datos, se modela el número total de casos observados en cada categoría (sobrepeso y obesidad, respectivamente) mediante una distribución $Y \sim \text{Binom}(N,p)$, donde $Y$ es el número total de casos, N el tamaño de la muestra y $p$ la probabilidad de pertenecer a la categoría de sobrepeso (o bien, obesidad) independientemente de la pertenencia cantonal o distrital. Desde un enfoque bayesiano, se asigna una distribución previa $\pi \sim \text{Beta}(1,1)$. De esta forma, se estima la prevalencia de obesidad y sobrepeso infantil en Costa Rica, a través del algoritmo Metropolis-Hastings.
-
-<!--Al hacer esto, se obtienen los siguientes resultados:
-%%,de forma preliminar mente estimar la prevala verosimilitud utilizada es una Binomial(total, p), y la previa a utilizar %es %Beta(1, 1). Con ello, se estima el p, es decir, la probabilidad de pertenecer a la categoría de obesidad o de %%sobrepeso, %independientemente del cantón al que se pertenece. Así, -->
-
-### Autocorrelación
-Para el método de Metropolis-Hasting, en ambos casos, se obtuvo una alta autocorrelación entre los elementos de la cadena, como se aprecia en las siguientes figuras.
-
-```{r fig-autocorr_obesidad, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
-knitr::include_graphics("../res/graficos/autocorr_obesidad.png")
-```
-
-```{r fig-autocorr_sobrepeso, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
-knitr::include_graphics("../res/graficos/autocorr_sobrepeso.png")
-```
-
-### Histogramas
-Una vez finalizado el proceso, se realizaron histogramas para visualizar la distribución posterior obtenida a partir de esta metodología. Además, se presenta la media y el intervalo de confianza para cada categoría.
-
-```{r fig-sobpreso, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
-knitr::include_graphics("../res/graficos/hist_post_sobrepeso.png")
-```
-
-
-
-```{r fig-obesidad, echo=FALSE,fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de obesidad infantil"}
-knitr::include_graphics("../res/graficos/hist_post_obesidad.png")
-```
-
-
-### Modelo de Regresión Binomial para prevalencia de sobrepeso, a nivel distrital.
-
-Por su parte, se ajustó también un modelo de regresión binomial, con función de enlace logit, para modelar la prevalencia de sobrepeso en función de covariables sociodemográficas a nivel distrital. Específicamente, se considera como variable de respuesta, $Y_{i}$, la cantidad de casos observados de sobrepeso en el $i$-ésimo distrito, con una muestra total de \(n_i\):
-
+El modelo logit-binomial describe conteos de “éxitos” \(y_i\) sobre exposiciones \(n_i\) mediante una verosimilitud binomial y un enlace logit para la probabilidad \(p_i\):
 \[
-Y_i \sim Binomial(n_i, \pi_i), \quad
-\text{logit}(\mathbb{E}(Y_{i}|\mathbf{X})) = \beta_0 + \beta_1 X_{1i} + \cdots + \beta_p X_{pi}
+y_i \sim \mathrm{Binomial}(n_i, p_i),\qquad 
+\mathrm{logit}(p_i)=\eta_i=\alpha + X_i^\top\beta.
+\]
+La función logit es \(\mathrm{logit}(p)=\log\!\big(\tfrac{p}{1-p}\big)\) y su inversa es
+\[
+p_i=\frac{\exp(\eta_i)}{1+\exp(\eta_i)}.
+\]
+Condicionalmente en \(p_i\), la media y varianza de \(y_i\) son
+\[
+\mathbb E[y_i\mid p_i]=n_i p_i,\qquad \mathrm{Var}(y_i\mid p_i)=n_i p_i(1-p_i).
 \]
 
-Se incluyen las covariables: desempleo, población urbana, privación crítica, población menor de 14 años, hogares monomarentales, ocupantes por hogar y años de escolaridad. En la siguiente figura se presenta un resumen de las estimaciones de los coeficientes del modelo.
-
-\begin{table}[h]
-\centering
-\caption{Resumen de los coeficientes del modelo binomial.}
-\label{tab:coef_binom}
-\begin{tabular}{lrrrr}
-\toprule
-\textbf{Variable} & \textbf{Estimate} & \textbf{Std. Error} & \textbf{z value} & \textbf{Pr(>|z|)} \\
-\midrule
-(Intercept)              & -1.540 & 0.1279 & -12.042 & $< 2\text{e-}16$ *** \\
-desempleo                & -2.897 & 0.5001 & -5.793  & $6.93\text{e-}09$ *** \\
-población\_urbana        &  0.059 & 0.0246 &  2.420  & 0.0155 * \\
-privación\_critica       & -0.125 & 0.0789 & -1.592  & 0.1114 \\
-población\_menor\_14     & -0.940 & 0.2175 & -4.321  & $1.55\text{e-}05$ *** \\
-hogares\_monomarentales  & -0.009 & 0.1401 & -0.068  & 0.9457 \\
-ocupantes\_por\_hogar    &  0.105 & 0.0234 &  4.507  & $6.58\text{e-}06$ *** \\
-años\_escolaridad        &  0.012 & 0.0077 &  1.590  & 0.1117 \\
-\bottomrule
-\end{tabular}
-\vspace{0.3em}
-\footnotesize{Signif. codes: \textbf{0} ‘***’ \textbf{0.001} ‘**’ \textbf{0.01} ‘*’ \textbf{0.05} ‘.’ \textbf{0.1} ‘ ’ \textbf{1}}
-\end{table}
-
-En el modelo, resultan estadísticamente significativas las covariables de Desempleo, Población menor de 14 años, Ocupantes por hogar y Población urbana.Asimismo, el modelo es significativo con respecto al modelo nulo, por lo que las covariables incluidas explican parte de la variabilidad. Sin embargo, los diagnósticos indican la presencia de sobredispersión, con la razón $\text{Deviance/dof} = 1.914$. Por lo que el modelo no logra capturar en su totalidad la variabilidad de los datos.
-
-### Modelo de Regresión Binomial Jerárquico.
-
-En este estudio, la información se dispone a nivel distrital, la unidad geográficas más desagregada disponible. No obstante, los distritos están anidados dentro de cantones y provincias. Como lo señala la literatura consultada, es razonable asumir la existencia de correlación entre observaciones de una misma unidad geográfica superior. Por esta razón, se plantea el uso de modelos jerárquicos con efectos aleatorios que permitan incorporar la variablidad entre niveles
-
-De forma análoga, sea \(Y_{ij}\) el número de casos de sobrepeso en el distrito \(i\) perteneciente a la unidad geográfica \(j\) (cantón o provincia), y  \(n_{ij}\) el total de individuos observados en dicho distrito. Se propone el siguiente modelo:
-
+El intercepto \(\alpha\) es el log-odds cuando \(X_i=0\). Si las covariables están estandarizadas, \(X_i=0\) representa un “individuo medio” y \(\mathrm{logit}^{-1}(\alpha)\) es su probabilidad base. Cada \(\beta_k\) representa el cambio en log-odds por un incremento de una unidad en la covariable \(k\); si \(X\) está estandarizada, esto equivale a un cambio de 1 desviación estándar. En términos de odds ratio,
 \[
-Y_{ij} \sim \text{Binomial}(n_{ij}, \pi_{ij}), \qquad
-\text{logit}(\mathbb{E}(\pi_{ij}|\mathbf{X}) = \beta_0 + \mathbf{X}_{i}^\top \boldsymbol\beta + u_j,
+\text{OR}_k=\exp(\beta_k),
 \]
+de modo que un aumento de 1 DE en \(X_{ik}\) multiplica las odds por \(\exp(\beta_k)\).
+
+En la escala logit los parámetros son no acotados. Usar \(\alpha,\beta_j\sim\mathcal N(0,5)\) coloca un 95 por ciento previo aproximadamente en \([-9.8,9.8]\) para cada coeficiente, lo que en odds ratio equivale a \([\exp(-9.8),\exp(9.8)]\), abarcando varios órdenes de magnitud. Con \(X\) estandarizada, esto constituye una prior débil porque apenas restringe la probabilidad base y los efectos covariables, dejando que la verosimilitud determine la magnitud de \(p_i\) y de \(\beta\). Sin estandarización, la misma \(\mathcal N(0,5)\) podría no ser débil si las unidades de \(X\) fueran muy grandes.
+
+A partir de muestras posteriores \(\{p_i^{(s)}\}\), las réplicas predictivas se generan como \(\tilde y_i^{(s)}\sim\mathrm{Binomial}(n_i,p_i^{(s)})\). Con ellas se evalúan calibración y ajuste mediante coberturas de intervalos creíbles, MAE o RMSE entre proporciones observadas \(y_i/n_i\) y estimadas \(p_i\). La linealidad en la escala logit y la varianza binomial son supuestos centrales; si hubiera sobre-dispersión sistemática no explicada por \(X\), puede ampliarse el modelo con términos jerárquicos o estructuras espaciales que introduzcan correlación y pooling parcial entre unidades.
 
 
-donde \(u_{j}\) representa el efecto aleatorio asociado a la unidad geográfica superior $j$. Se asume que estos efectos aleatorios siguen una distribución normal con media cero y varianza común:
-\[
-u_j \sim \mathcal{N}(0, \sigma^2).
-\]
+## Explicación del Modelo
+El estudio emplea un modelo logit-binomial para estimar la prevalencia \(p_i\) a partir de conteos \(y_i\) sobre exposiciones \(n_i\), con \(\mathrm{logit}(p_i)=\alpha+X_i^{\top}\beta\) y covariables previamente estandarizadas. Las priors \(\alpha,\beta_j\sim\mathcal N(0,5)\) se especifican en la escala log-odds y, al ser muy dispersas, actúan como priors débiles. La inferencia se realiza con No-U-Turn Sampler (NUTS), un algoritmo HMC que adapta automáticamente el tamaño de paso y la longitud efectiva de la trayectoria, expandiéndola hasta detectar una “no-u-turn”; este procedimiento mejora la exploración del posterior al reducir la autocorrelación y evita fijar manualmente el número de pasos de integración, de acuerdo a @HoffmanGelman2014. El resultado son muestras posteriores mezcladas para \(p_i\) y para \((\alpha,\beta)\), a partir de las cuales se obtienen medias e intervalos de credibilidad por provincia y agregados ponderados por \(n_i\) para país.
 
-En este sentido, se aplicaron los tests de Levene y Fligner-Killen, para valorar la hipótesis de igualdad de varianzas a nivel provincial. En el test Fligner-Killen, se rechaza al 5\% la hipótesis de igualdad de varianza de la logit prevalencia entre provincias, mientras que en el test de Levene no hay evidencia estadística suficiente para rechazar la hipótesis.
 
-## Resultados
+### Implementación
+`prep_data()` filtra la condición (obesidad/sobrepeso), arma \(y\) y \(n\), estandariza covariables (con protección ante DE=0), mapea provincias a índices cuando hace falta y devuelve matrices listas para modelar junto con metadatos.
 
-El objetivo principal es combinar información sociodemográfica y territorial para generar estimaciones ajustadas que reflejen la variabilidad tanto entre distritos como entre provincias, permitiendo comparar la prevalencia entre regiones de manera más robusta.
+`fit_model_binomial_logit()` declara las priors anteriores, construye el predictor lineal \(\alpha + X\beta\), aplica la sigmoide para obtener \(p=\mathrm{sigmoid}(\cdot)\) y define la verosimilitud binomial con `pm.Binomial("y_obs", n=n, p=p, observed=y)`.
 
-La metodología parte de una preparación de datos donde se filtran los registros según la condición de interés (por ejemplo, obesidad), se eliminan observaciones sin exposición (totales igual a cero) y se construyen las variables de respuesta `y` (casos observados) y `n` (población total). Además, se seleccionan y estandarizan variables sociodemográficas como desempleo, escolaridad, población urbana o número de ocupantes por hogar. Estas covariables se normalizan para que todas tengan media cero y desviación estándar uno, asegurando que los coeficientes del modelo sean comparables.
+La inferencia se realiza con No-U-Turn Sampler (NUTS) vía `pm.sample()`, un HMC adaptativo que ajusta automáticamente la longitud de trayectoria usando gradientes del log-posterior para explorar eficientemente. Parámetros típicos: `draws=2000`, `tune=1000`, `target_accept=0.9`, `chains=4`, `cores=4`. Valores más altos de `target_accept` tienden a disminuir divergencias a cambio de más evaluaciones del gradiente. Varias cadenas permiten evaluar la convergencia con \(\hat R\).
 
-El modelo jerárquico utilizado es una regresión binomial con enlace logit, formulada como:
-$$
-y_i \sim \text{Binomial}(n_i, p_i), \quad \text{logit}(p_i) = \alpha + X_i \beta + u_j
-$$
-donde $u_j$ representa un efecto aleatorio provincial que captura la variabilidad no explicada por las covariables entre provincias. Este término jerárquico permite incorporar la estructura territorial en la estimación. Debido a la poca información previa disponible, se utilizaron previas débiles (en la escala logit) para los parámetros $\alpha, $\beta$ y $\sigma_u$ (desviación de los efectos provinciales).
+`posterior_summary_by_row()` extrae los draws de \(p_i\) y devuelve media posterior e intervalos de credibilidad al 95 %. Estos resúmenes se usan en tablas, mapas y gráficos.
 
-La inferencia bayesiana se implementa con el paquete `PyMC`, que aplica técnicas de muestreo MCMC (Markov Chain Monte Carlo) para generar miles de simulaciones de la distribución posterior de los parámetros. El script ejecuta cuatro modelos principales: dos jerárquicos (con efectos provinciales) y dos no jerárquicos (sin efectos provinciales), tanto para obesidad como para sobrepeso, lo que permite evaluar el aporte de la estructura jerárquica en la explicación de la variabilidad y la precisión de las estimaciones.
+Una utilidad del script combina los draws de \(p_i\) con pesos \(n_i\) para obtener prevalencias agregadas (por provincia o país). Así se propaga la incertidumbre desde distritos a agregados respetando la exposición.
 
-Finalmente, el documento produce resúmenes y visualizaciones de las distribuciones posteriores. A partir de los valores simulados de $p_i$, se calculan las medias, medianas e intervalos de credibilidad al 95 % para cada distrito. Además, se obtienen estimaciones agregadas por provincia y para el país en general. Estas distribuciones se representan mediante histogramas y curvas de densidad suavizadas.
+Funciones como `save_posterior_prevalence_figs()` y `save_posterior_prevalence_mosaic()` guardan la distribución posterior de la prevalencia a nivel país (con media e IC95 %) y un mosaico por provincia que facilita comparar niveles e incertidumbre.
 
-## Metodología
+### Significado de los parámetros
+\(\alpha\): log-odds cuando todas las covariables estandarizadas valen 0 (en su media).  
+\(\beta_k\): efecto de +1 DE en la covariable \(k\) sobre el logit; en odds es \(\exp(\beta_k)\).  
+\(p_i\): probabilidad de la condición en la fila \(i\); base para medias, IC/HDI y agregados ponderados.
 
-### Fuente de información
+### Supuestos y consecuencias
+Binomialidad: \(y_i\mid p_i \sim \mathrm{Binomial}(n_i,p_i)\) con \(\mathrm{Var}(y_i\mid p_i)=n_i p_i(1-p_i)\).  
+Linealidad en logit: la relación entre covariables y \(p_i\) es lineal en la escala logit.  
+Priors débiles: \(\mathcal N(0,5)\) deja que los datos dominen, salvo en celdas con poca exposición.  
 
-El análisis se sustenta en la base utilizada en el estudio de @Gamboa2021, construida a partir del Censo Escolar de Peso y Talla 2016 del Ministerio de Educación Pública de Costa Rica y variables complementarias de origen censal.
-La estructura de esta base permite modelar, bajo un enfoque probabilístico binomial, el número de escolares con sobrepeso u obesidad en cada distrito del país.
+### Diagnóstico y tuning
+Convergencia: \(\hat R\approx 1\) y tamaños efectivos altos indican cadenas bien mezcladas.  
+Divergencias: si aparecen, elevar `target_accept`, revisar la estandarización y/o usar priors un poco más informativos.  
+Predicción y calibración: con los draws de \(p_i\) se evalúan métricas fuera del bloque de muestreo (p. ej., MAE, RMSE) y cobertura de IC/HDI frente a observados.
 
-### Población de estudio
+### Validación empírica reportada
+Convergencia: \(\hat{R}=1.00\) en obesidad y sobrepeso; tamaños efectivos mínimos en núcleo/colas superiores a 4700, lo que sugiere exploración homogénea del posterior.  
+Precisión predictiva: obesidad con MAE \(=0.023\) y RMSE \(=0.032\); sobrepeso con MAE \(=0.021\) y RMSE \(=0.030\). Diferencias promedio entre proporciones observadas y estimadas en el rango 2–3 puntos porcentuales.  
+Cobertura (IC95 %): 77.8 % para obesidad y 89.1 % para sobrepeso. Indica buena reproducción de la variabilidad; ligera subcobertura en obesidad (estimaciones algo más concentradas), calibración más cercana al nominal en sobrepeso.
 
-La población está compuesta por niños y niñas matriculados en escuelas públicas y privadas costarricenses con registros antropométricos válidos. Cada observación representa un distrito educativo, agregando información sobre la cantidad de menores evaluados y aquellos con exceso de peso.
+### Resumen ejecutivo
+Es un modelo logit–binomial bayesiano con priors débiles; la inferencia usa NUTS (HMC) con adaptación automática para explorar eficientemente la posterior. El script estandariza covariables, estima el modelo, resume \(p_i\) por fila y agrega provincias/país ponderando por la exposición, además de graficar distribuciones posteriores comparables entre provincias. El resultado es un pipeline reproducible para cuantificar prevalencias y su incertidumbre a distintos niveles territoriales, con diagnósticos y validaciones que respaldan la calidad del ajuste.
 
-### Contexto temporal y espacial de los datos
 
-Los datos corresponden al año 2016 y se organizan espacialmente por distrito y provincia.
-
-### Métodos
-
-#### Enfoque general y estructura del modelo
-
-El estudio aplicó un modelo binomial con enlace logit, cuya formulación es:
-
-$$
-\text{logit}(p_i) = \alpha + X_i^{\top}\beta
-$$
-
-donde $\alpha$ es el intercepto global y $\beta$ el vector de coeficientes asociados a las covariables estandarizadas.
-Los parámetros fueron estimados bajo un enfoque bayesiano, utilizando distribuciones previas débiles:
-
-$$
-\alpha, \beta_j \sim \mathcal{N}(0, 5)
-$$
-En el script usado, este modelo se implementa en la función `fit_model_binomial_logit()`
-El bloque correspondiente define explícitamente la verosimilitud binomial (`pm.Binomial("y_obs", n=n, p=p, observed=y)`) y el enlace logit (`pm.math.sigmoid(lin)`), en coherencia con el planteamiento teórico.
-
-#### Algoritmo de muestreo: NUTS
-
-La inferencia bayesiana se realizó mediante el **No-U-Turn Sampler (NUTS)**, un algoritmo de tipo Hamiltonian Monte Carlo (HMC) que elimina la necesidad de fijar manualmente la longitud de trayectoria de las simulaciones.
-
-Según @HoffmanGelman2014, NUTS “detecta de manera automática cuándo una trayectoria en el espacio de parámetros comienza a invertir su dirección (‘no-u-turn’), deteniendo el muestreo y garantizando un recorrido eficiente sin redundancia” (p. 3).
-Esta propiedad lo convierte en una extensión adaptativa del método HMC, que aprovecha la información del gradiente de la verosimilitud para explorar con mayor eficiencia la distribución posterior.
-
-En la práctica, NUTS emplea un integrador de salto (*leapfrog integrator*) para simular el movimiento de una partícula en el espacio de parámetros, guiada por el gradiente del logaritmo de la densidad posterior.
-Cada iteración genera una trayectoria que se expande dinámicamente hasta alcanzar el punto donde la dirección del momento cambia de signo, condición en la que el algoritmo detiene la expansión (p. 10).
-Esto garantiza que las cadenas no realicen trayectorias excesivamente largas ni cortas, evitando la autocorrelación elevada y mejorando la eficiencia del muestreo.
-
-### Implementación en el script `modelo_jerarquico.py`
-
-El muestreo NUTS fue ejecutado mediante la función `pm.sample()` del paquete PyMC, la cual implementa el algoritmo descrito por Hoffman y Gelman.
-El bloque de código responsable de este proceso se encuentra en la función `fit_model_binomial_logit()` y adopta los siguientes parámetros:
-
-```{r}
-#| eval: false
-
-trace = pm.sample(
-    draws=2000,
-    tune=1000,
-    target_accept=0.9,
-    chains=4,
-    cores=4)
-
+# Resultados
+```{r fig-mosaico_obesidad, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de obesidad infantil"}
+knitr::include_graphics("../res/graficos/mosaico_posterior_prevalencia_obesidad_provincias.png")
 ```
-
-
-Cada elemento responde a una decisión metodológica específica:
-
-- `draws=2000` y `tune=1000`: establecen 2000 muestras posteriores por cadena y 1000 iteraciones de ajuste (“burn-in”), de modo que el algoritmo pueda adaptar el tamaño de paso y la masa inercial antes de comenzar el muestreo efectivo.
-@HoffmanGelman2014 recomiendan una fase de adaptation inicial en la que NUTS ajusta de forma iterativa el parámetro $\epsilon$ (step size) para alcanzar una tasa de aceptación deseada.
-
-- `target_accept=0.9`: controla el criterio de aceptación de propuestas. Valores más altos reducen el riesgo de divergencias a costa de un mayor número de evaluaciones del gradiente, tal como se sugiere en la literatura sobre tuning adaptativo.
-
-- `chains=4 y cores=4`: especifican la ejecución paralela de cuatro cadenas independientes, lo que permite evaluar la convergencia de manera robusta mediante el diagnóstico $\hat{R}$ de Gelman-Rubin.
-
-El flujo completo implementado en `run_with_csv()` vincula estas funciones de la siguiente manera:
-
-- Lectura y filtrado de datos (`prep_data()`), generando las matrices $y$, $n$ y $X_z$
-
-- Ajuste del modelo logit-binomial mediante `fit_model_binomial_logit()` sin estructura jerárquica.
-
-- Muestreo NUTS mediante `pm.sample()` con los parámetros descritos.
-
-- Resumen de resultados (`posterior_summary_by_row()`), donde se calculan la media posterior y los intervalos de credibilidad del 95 %.
-
-Este procedimiento traduce la teoría del muestreo hamiltoniano a una aplicación empírica concreta, cumpliendo con el principio de exploración eficiente del espacio posterior al que hace referencia @HoffmanGelman2014.
-
-### Validación del modelo
-
-La validación de los modelos binomiales de enlace logit para las condiciones de **obesidad** y **sobrepeso infantil** se realizó con base en tres dimensiones principales: la convergencia del muestreo NUTS, la precisión predictiva y la calibración posterior. En ambos casos se empleó el mismo procedimiento de estimación, con cuatro cadenas y 2 000 iteraciones por cadena, asegurando la comparabilidad de los resultados entre modelos.
-
-#### Convergencia del muestreo
-
-Los diagnósticos de convergencia del algoritmo NUTS evidencian un excelente comportamiento en ambos modelos. En el caso del modelo de obesidad, el estadístico $\hat{R}$ alcanzó un valor máximo de 1.00, con tamaños efectivos mínimos de muestra de 5 764 en la parte central de las distribuciones y 4 841 en las colas. De manera similar, el modelo de sobrepeso obtuvo $\hat{R}=1.00$, con tamaños efectivos de 5 008 y 4 742, respectivamente. Estos resultados indican que las cadenas convergieron de forma adecuada, explorando homogéneamente el espacio posterior y garantizando la estabilidad de las estimaciones.
-
-#### Precisión predictiva
-
-En términos de ajuste, el modelo de obesidad presentó un **error absoluto medio (MAE)** de 0.023 y un **error cuadrático medio (RMSE)** de 0.032, mientras que el modelo de sobrepeso alcanzó un MAE de 0.021 y un RMSE de 0.030. En ambos casos, las diferencias promedio entre las proporciones observadas y las estimadas por el modelo se sitúan en un rango de 2 % a 3 % en unidades proporcionales, lo que denota una buena capacidad para reproducir las prevalencias empíricas.
-
-#### Cobertura predictiva posterior
-
-La evaluación de la calibración mediante la cobertura predictiva posterior mostró que el **77.8 %** de las proporciones observadas de obesidad y el **89.1 %** de las proporciones de sobrepeso se encuentran dentro del intervalo creíble del 95 % generado por los respectivos modelos. Esto indica que ambos modelos reproducen razonablemente la variabilidad observada, aunque el de sobrepeso presenta una calibración más cercana al nivel nominal. El incremento en la cobertura al incorporar la incertidumbre muestral confirma que los intervalos creíbles reflejan adecuadamente la dispersión esperada bajo el proceso binomial. En el caso de la obesidad, la leve subcobertura observada sugiere una concentración algo mayor de las estimaciones alrededor del promedio nacional, mientras que el modelo de sobrepeso muestra una calibración más ajustada a la dispersión real entre distritos.
-
-## Resultados
+```{r fig-mosaico_sobrepeso, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
+knitr::include_graphics("../res/graficos/mosaico_posterior_prevalencia_sobrepeso_provincias.png")
+```
 
 Los resultados obtenidos a partir del modelo binomial con enlace logit y muestreo NUTS evidencian un patrón claro en la distribución de la prevalencia de obesidad y sobrepeso infantil en Costa Rica, tanto a nivel nacional como provincial. En el plano nacional, la media posterior estimada para obesidad fue de 0.14143, con un intervalo de credibilidad del 95% entre 0.14023 y 0.14254. En el caso del sobrepeso, la media posterior fue de 0.19848, con un intervalo de credibilidad del 95% entre 0.19715 y 0.19983. Estos resultados, cuando se suman, permiten inferir que aproximadamente un 34% de la población infantil escolar del país presenta exceso de peso, cifra que confirma la magnitud del problema de salud pública y se encuentra alineada con las tendencias observadas en contextos internacionales. La Organización Mundial de la Salud @WHO2025 señala que “childhood obesity has become one of the most serious public health challenges of the 21st century”, al estimar que más de 390 millones de niños y adolescentes de entre 5 y 19 años en el mundo tienen sobrepeso u obesidad. Esta cifra global se sitúa en torno al 20% de esa población, lo que significa que Costa Rica presenta una proporción ligeramente superior al promedio global, aunque en consonancia con otros países de ingreso medio y urbano consolidado.
 
@@ -389,8 +237,11 @@ Si bien los resultados principales se refieren a la prevalencia provincial, el a
 
 A pesar de las diferencias territoriales, el modelo muestra que la variabilidad interprovincial es relativamente limitada. Esto puede interpretarse como evidencia de un fenómeno generalizado a escala nacional, sustentado por determinantes compartidos: patrones alimentarios densos en energía, alta exposición a alimentos ultraprocesados y disminución progresiva de la actividad física. En la línea de @UNICEF2023, “the environments in which children live increasingly promote consumption of unhealthy foods and discourage physical activity”. Tal afirmación describe con precisión las condiciones observadas en las zonas metropolitanas costarricenses, donde la urbanización rápida y la densidad de establecimientos de comida rápida se han incrementado de forma sostenida durante las dos últimas décadas.
 
+# Conclusiones
+
 Los resultados nacionales y provinciales obtenidos confirman, por tanto, la existencia de una problemática estructural de salud pública en evolución. La convergencia con los hallazgos internacionales y regionales respalda la validez de las estimaciones del modelo y evidencia que el exceso de peso infantil costarricense forma parte de un fenómeno global de gran escala. Como sintetiza el @WorldObesity2023, “without bold policy action, no country is on track to meet the WHO target of halting the rise in obesity by 2025”. En este sentido, las estimaciones de este estudio no solo proporcionan una base empírica robusta para comprender la magnitud del problema en Costa Rica, sino también un punto de partida para el diseño de intervenciones públicas y escolares basadas en evidencia.
 
-Finalmente, aunque el modelo aplicado es no jerárquico, los resultados obtenidos presentan consistencia y precisión aceptables en todos los niveles geográficos. La implementación del muestreo NUTS permitió explorar adecuadamente la distribución posterior de los parámetros, reduciendo la autocorrelación entre cadenas y garantizando convergencia. Esta estabilidad estadística refuerza la confianza en los valores reportados y su utilidad para la comparación con futuras estimaciones. No obstante, la literatura metodológica de @Gomez2023 recomienda, para etapas posteriores, incorporar componentes espaciales jerárquicos o modelos BYM2 que permitan captar dependencia geográfica residual y afinar las estimaciones provinciales en zonas con escasa información. En la actualidad, el modelo presentado proporciona una lectura clara, coherente y bien fundamentada del estado de la obesidad y el sobrepeso infantil en Costa Rica, situando al país dentro de la tendencia ascendente que preocupa a la comunidad internacional de salud pública.
+Finalmente, los resultados obtenidos presentan consistencia y precisión aceptables en todos los niveles geográficos. La implementación del muestreo NUTS permitió explorar adecuadamente la distribución posterior de los parámetros, reduciendo la autocorrelación entre cadenas y garantizando convergencia. Esta estabilidad estadística refuerza la confianza en los valores reportados y su utilidad para la comparación con futuras estimaciones. No obstante, la literatura metodológica de @Gomez2023 recomienda, para etapas posteriores, incorporar componentes espaciales jerárquicos o modelos BYM2 que permitan captar dependencia geográfica residual y afinar las estimaciones provinciales en zonas con escasa información. En la actualidad, el modelo presentado proporciona una lectura clara, coherente y bien fundamentada del estado de la obesidad y el sobrepeso infantil en Costa Rica, situando al país dentro de la tendencia ascendente que preocupa a la comunidad internacional de salud pública.
+
 
 ## Referencias
