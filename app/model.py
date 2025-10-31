@@ -467,5 +467,5 @@ save_posterior_prevalence_figs(
     ],  # opcional
     bins=60,
 )
-    
+
     print("Gráficos guardados en res/graficos/graficos_simulados")

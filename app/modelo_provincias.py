@@ -158,9 +158,9 @@ def posterior_summary_by_row(trace, meta, var_name="p", q=(0.025, 0.5, 0.975)):
     """
     Devuelve un DataFrame con la media e IC para la probabilidad p por fila (distrito).
     """
-    p = trace.posterior[var_name].values   # (chains, draws, N)
-    p2d = p.reshape(-1, p.shape[-1])       # (S, N)
-    mean = p2d.mean(axis=0)                # (N,)
+    p = trace.posterior[var_name].values  # (chains, draws, N)
+    p2d = p.reshape(-1, p.shape[-1])  # (S, N)
+    mean = p2d.mean(axis=0)  # (N,)
     qlo, qmd, qhi = np.quantile(p2d, q, axis=0)
 
     out = meta["df"].copy()
@@ -382,8 +382,8 @@ def save_posterior_prevalence_figs(
             bins=bins,
             kde_factor=2,
         )
-        
-        
+
+
 def _plot_posterior_1d_ax(
     ax,
     draws: np.ndarray,
@@ -431,7 +431,9 @@ def save_posterior_prevalence_mosaic(
     dfm = meta["df"]
     provincias = dfm["provincia"].astype(str).to_numpy()
     n_i = dfm["total"].to_numpy(dtype=float)
-    provs = np.unique(provincias) if province_order is None else np.array(province_order)
+    provs = (
+        np.unique(provincias) if province_order is None else np.array(province_order)
+    )
 
     nplots = len(provs)
     nrows = int(np.ceil(nplots / ncols))
@@ -475,8 +477,6 @@ def save_posterior_prevalence_mosaic(
     fig.savefig(outfile, dpi=dpi, bbox_inches="tight")
     plt.close(fig)
     print("Guardado:", outfile)
-
-
 
 
 if __name__ == "__main__":
@@ -535,11 +535,19 @@ if __name__ == "__main__":
         meta_2,
         condicion_label="obesidad",
         outdir=outdir_ob,
-        province_order=["SAN JOSE","ALAJUELA","CARTAGO","HEREDIA","GUANACASTE","PUNTARENAS","LIMON"],
+        province_order=[
+            "SAN JOSE",
+            "ALAJUELA",
+            "CARTAGO",
+            "HEREDIA",
+            "GUANACASTE",
+            "PUNTARENAS",
+            "LIMON",
+        ],
         bins=60,
-        ncols=2,             # 4x2 (7 provincias + 1 hueco)
+        ncols=2,  # 4x2 (7 provincias + 1 hueco)
         width_per_col=5.8,
-        height_per_row=4.6
+        height_per_row=4.6,
     )
 
     save_posterior_prevalence_mosaic(
@@ -547,11 +555,19 @@ if __name__ == "__main__":
         meta_2_sob,
         condicion_label="sobrepeso",
         outdir=outdir_sb,
-        province_order=["SAN JOSE","ALAJUELA","CARTAGO","HEREDIA","GUANACASTE","PUNTARENAS","LIMON"],
+        province_order=[
+            "SAN JOSE",
+            "ALAJUELA",
+            "CARTAGO",
+            "HEREDIA",
+            "GUANACASTE",
+            "PUNTARENAS",
+            "LIMON",
+        ],
         bins=60,
         ncols=2,
         width_per_col=5.8,
-        height_per_row=4.6
+        height_per_row=4.6,
     )
 
     print("Listo. Mosaicos guardados.")
