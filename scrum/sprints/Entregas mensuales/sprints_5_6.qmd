@@ -260,4 +260,3 @@ Definir la metodología exacta a seguir, incluyendo la manera en que se asignar�
 
 ## :pencil: Acciones concretas  para el próximo sprint
 1. **Gestión de tiempo**: Se presionará a los integrantes a mantener actualizadas las tareas pequeñas realizadas.
-
