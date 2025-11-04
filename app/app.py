@@ -6,7 +6,7 @@ Dashboard (Dash) que usa **el mismo método del script `modelo_jerarquico.py`** 
 - Construir un **mapa interactivo** (hover muestra media e IC95% de obesidad y sobrepeso).
 - Añadir un **forest plot** comparando provincias.
 
-Rutas esperadas (como en `modelo_jerarquico.py`):
+Rutas esperadas (como en `modelo_provincias.py`):
 - Datos: `data/clean/datos_limpios.csv`
 - Gráficos simulados de salida:
   - `res/graficos/graficos_simulados/obesidad/`
@@ -37,12 +37,16 @@ import plotly.graph_objs as go
 from PIL import Image
 
 # Importar utilidades y función de muestreo del script original
-# (El archivo `modelo_jerarquico.py` debe estar en el mismo directorio o en PYTHONPATH)
-import importlib
+import base64
 
-mj = importlib.import_module(
-    "modelo_jerarquico"
-)  # run_with_csv, save_posterior_prevalence_figs, _weighted_draws, etc.
+def img_to_data_uri(path: str) -> str:
+    if not os.path.isfile(path):
+        return ""
+    with open(path, "rb") as f:
+        return "data:image/png;base64," + base64.b64encode(f.read()).decode("ascii")
+
+
+SUMMARY_CSV = "../res/csv/summary_prevalence_by_province.csv"
 
 # ==========================
 # Parámetros y constantes
@@ -64,20 +68,23 @@ PROVINCE_ORDER = [
 
 # Cabeceras provinciales (aprox.)
 PROV_POINTS = {
-    "SAN JOSE": (9.9281, -84.0907),
-    "ALAJUELA": (10.0163, -84.2116),
-    "CARTAGO": (9.8644, -83.9194),
-    "HEREDIA": (9.9981, -84.1165),
-    "GUANACASTE": (10.6320, -85.4377),
-    "PUNTARENAS": (9.9763, -84.8384),
-    "LIMON": (9.9830, -83.0330),
+    "SAN JOSE":   (9.92810,  -84.09070),  # San José
+    "ALAJUELA":   (10.01630, -84.21160),  # Alajuela
+    "CARTAGO":    (9.86440,  -83.91940),  # Cartago
+    "HEREDIA":    (9.99700,  -84.11700),  # Heredia
+    "GUANACASTE": (10.63470, -85.44360),  # Liberia (cabecera provincia)
+    "PUNTARENAS": (9.97630,  -84.83840),  # Puntarenas
+    "LIMON":      (9.99070,  -83.03600),  # Limón
 }
 
 DATA_CSV = "../data/clean/datos_limpios.csv"
-OUTDIR_OB = "../res/graficos/graficos_simulados/obesidad"
-OUTDIR_SOB = "../res/graficos/graficos_simulados/sobrepeso"
-MOSAIC_OB = os.path.join(OUTDIR_OB, "posterior_prevalencia_obesidad_grid.png")
-MOSAIC_SOB = os.path.join(OUTDIR_SOB, "posterior_prevalencia_sobrepeso_grid.png")
+OUTDIR_OB = "../res/graficos/graficos_simulados_no_jer/obesidad"
+OUTDIR_SOB = "../res/graficos/graficos_simulados_no_jer/sobrepeso"
+MOSAIC_OB_PROV = os.path.join(OUTDIR_OB, "mosaico_posterior_prevalencia_obesidad_provincias.png")
+MOSAIC_SOB_PROV = os.path.join(OUTDIR_SOB, "mosaico_posterior_prevalencia_sobrepeso_provincias.png")
+MOSAIC_OB_PAIS  = os.path.join(OUTDIR_OB,  "posterior_prevalencia_obesidad_pais.png")
+MOSAIC_SOB_PAIS = os.path.join(OUTDIR_SOB, "posterior_prevalencia_sobrepeso_pais.png")
+GEOJSON_PROVINCES = "../data/geo/geoBoundaries-CRI-ADM1_simplified.geojson"
 
 # ==========================
 # Utilidades
@@ -110,6 +117,42 @@ def _sanitize_prov(s: str) -> str:
     for a, b in rep:
         t = t.replace(a, b)
     return t
+
+def _load_province_geojson(path: str):
+    """Carga un GeoJSON de provincias y añade 'id' normalizado por feature
+    para poder unir contra df['_prov_clean']."""
+    import json, re
+    if not os.path.isfile(path):
+        return None, None
+    with open(path, "r", encoding="utf-8") as f:
+        gj = json.load(f)
+
+    # claves candidatas para el nombre; geoBoundaries usa 'shapeName'
+    candidates = ["shapeName", "name", "provincia", "province", "PROVINCIA", "NOMBRE", "nom", "Nombre"]
+    prop_key = None
+    try:
+        props = gj["features"][0]["properties"]
+        for k in candidates:
+            if k in props:
+                prop_key = k
+                break
+        if prop_key is None:
+            for k, v in props.items():
+                if isinstance(v, str):
+                    prop_key = k
+                    break
+    except Exception:
+        return None, None
+
+    # normaliza y fija 'id' por feature para el join
+    for feat in gj.get("features", []):
+        name_raw = str(feat.get("properties", {}).get(prop_key, "")).strip()
+        # muchos geoBoundaries traen "Provincia Heredia": quitamos prefijo
+        name_raw = re.sub(r"^\s*Provincia\s+", "", name_raw, flags=re.I)
+        name_clean = _sanitize_prov(name_raw)  # SAN JOSE, LIMON, etc.
+        feat["id"] = name_clean
+
+    return gj, "id"
 
 
 def _posterior_draws_by_province(trace, meta) -> Dict[str, np.ndarray]:
@@ -204,10 +247,10 @@ def prepare_results_if_needed():
                 "anos_escolaridad",
             ),
             incluye_provincia=True,
-            draws=2000,
-            tune=1000,
-            chains=4,
-            cores=4,
+            draws=20,
+            tune=10,
+            chains=2,
+            cores=2,
             seed=2025,
         )
         trace_sob, resumen_sob, meta_sob = mj.run_with_csv(
@@ -225,10 +268,10 @@ def prepare_results_if_needed():
                 "anos_escolaridad",
             ),
             incluye_provincia=True,
-            draws=2000,
-            tune=1000,
-            chains=4,
-            cores=4,
+            draws=20,
+            tune=10,
+            chains=2,
+            cores=2,
             seed=2025,
         )
         # Figuras por provincia (archivo por provincia) + país
@@ -282,10 +325,10 @@ def prepare_results_if_needed():
                 "anos_escolaridad",
             ),
             incluye_provincia=True,
-            draws=2000,
-            tune=1000,
-            chains=4,
-            cores=4,
+            draws=20,
+            tune=10,
+            chains=2,
+            cores=2,
             seed=2025,
         )
         trace_sob, _, meta_sob = mj.run_with_csv(
@@ -303,10 +346,10 @@ def prepare_results_if_needed():
                 "anos_escolaridad",
             ),
             incluye_provincia=True,
-            draws=2000,
-            tune=1000,
-            chains=4,
-            cores=4,
+            draws=20,
+            tune=10,
+            chains=2,
+            cores=2,
             seed=2025,
         )
         return (trace_ob, meta_ob), (trace_sob, meta_sob)
@@ -374,199 +417,360 @@ def build_summary_df(trace_ob, meta_ob, trace_sob, meta_sob) -> pd.DataFrame:
 
 
 def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
+    import plotly.express as px
+    import plotly.graph_objects as go
+    import numpy as np
+    import pandas as pd
+
     assert metric in {"ob_mean", "sb_mean"}
-    vals = df_summary[df_summary["Province"] != "PAIS"][metric].astype(float)
-    vmin, vmax = float(vals.min()), float(vals.max())
 
-    hovertext = (
-        "<b>%{customdata[0]}</b><br>"
-        "Obesidad: %{customdata[1]:.3f} (IC95% [%{customdata[2]:.3f}, %{customdata[3]:.3f}])<br>"
-        "Sobrepeso: %{customdata[4]:.3f} (IC95% [%{customdata[5]:.3f}, %{customdata[6]:.3f}])<extra></extra>"
-    )
+    # columnas del intervalo según la métrica elegida
+    lo_col = "ob_q2.5" if metric == "ob_mean" else "sb_q2.5"
+    hi_col = "ob_q97.5" if metric == "ob_mean" else "sb_q97.5"
 
-    # Customdata: [prov, ob_mean, ob_q2.5, ob_q97.5, sb_mean, sb_q2.5, sb_q97.5]
-    cd = np.stack(
-        [
-            df_summary["Province"].values,
-            df_summary["ob_mean"].values,
-            df_summary["ob_q2.5"].values,
-            df_summary["ob_q97.5"].values,
-            df_summary["sb_mean"].values,
-            df_summary["sb_q2.5"].values,
-            df_summary["sb_q97.5"].values,
-        ],
-        axis=-1,
-    )
+    # DataFrame por provincia (sin PAIS) y nombre limpio para el join
+    dfp = df_summary[df_summary["Province"].astype(str) != "PAIS"].copy()
+    dfp["_prov_clean"] = dfp["Province"].astype(str).apply(_sanitize_prov)
+
+    # columnas auxiliares para hover (media + IC) de la métrica elegida
+    dfp["__mean"] = dfp[metric].astype(float)
+    dfp["__lo"]   = dfp[lo_col].astype(float)
+    dfp["__hi"]   = dfp[hi_col].astype(float)
+
+    # intenta cargar GeoJSON
+    gj, fid_key = _load_province_geojson(GEOJSON_PROVINCES)
+
+    if gj is not None and fid_key is not None:
+        fig = px.choropleth_mapbox(
+            dfp,
+            geojson=gj,
+            locations="_prov_clean",     # coincide con feature['id']
+            featureidkey="id",
+            color="__mean",
+            custom_data=["__mean", "__lo", "__hi"],
+            center={"lat": CR_LATITUDE, "lon": CR_LONGITUDE},
+            mapbox_style=MAPBOX_STYLE,
+            zoom=7.2,                    # zoom más cercano a CR
+            opacity=0.78,
+            color_continuous_scale="Viridis",
+        )
+
+        # usa hovertext para el título (provincia) y define el contenido del hover
+        fig.update_traces(
+            hovertext=dfp["Province"],
+            hovertemplate=(
+                "<b>%{hovertext}</b><br>"
+                "Media: %{customdata[0]:.4f}<br>"
+                "IC95%: [%{customdata[1]:.4f}, %{customdata[2]:.4f}]"
+                "<extra></extra>"
+            )
+        )
+
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+            coloraxis_colorbar=dict(title="media"),
+            height=600,
+        )
+
+        # marcador opcional para PAIS (con mismo esquema: título en negrita + media e IC)
+        if "PAIS" in df_summary["Province"].values:
+            pais_row = df_summary[df_summary["Province"] == "PAIS"].iloc[0]
+            mean_p = float(pais_row[metric])
+            lo_p   = float(pais_row[lo_col])
+            hi_p   = float(pais_row[hi_col])
+            fig.add_trace(
+                go.Scattermapbox(
+                    lat=[pais_row.get("lat", CR_LATITUDE)],
+                    lon=[pais_row.get("lon", CR_LONGITUDE)],
+                    mode="markers",
+                    marker=dict(size=12, opacity=0.9),
+                    name="País",
+                    customdata=np.array([[mean_p, lo_p, hi_p]]),
+                    hovertemplate=(
+                        "<b>País</b><br>"
+                        "Media: %{customdata[0]:.4f}<br>"
+                        "IC95%: [%{customdata[1]:.4f}, %{customdata[2]:.4f}]"
+                        "<extra></extra>"
+                    ),
+                )
+            )
+
+        return fig
+
+    # ------- Fallback a puntos si no hay GeoJSON -------
+    vals = dfp["__mean"].values
+    vmin, vmax = float(np.nanmin(vals)), float(np.nanmax(vals))
 
     fig = go.Figure(
         go.Scattermapbox(
-            lat=df_summary["lat"],
-            lon=df_summary["lon"],
-            text=df_summary["Province"],
-            customdata=cd,
+            lat=dfp["lat"],
+            lon=dfp["lon"],
+            text=dfp["Province"],  # título en la cajita
             mode="markers",
             marker=dict(
-                size=20,
-                color=df_summary[metric],
+                size=18,
+                color=dfp["__mean"],
                 colorscale="Viridis",
                 cmin=vmin,
                 cmax=vmax,
                 showscale=True,
-                colorbar=dict(
-                    title=("Obesidad" if metric == "ob_mean" else "Sobrepeso")
-                    + " (media)"
-                ),
+                colorbar=dict(title="media"),
+                opacity=0.9,
             ),
-            hovertemplate=hovertext,
+            customdata=np.column_stack([dfp["__mean"], dfp["__lo"], dfp["__hi"]]),
+            hovertemplate=(
+                "<b>%{text}</b><br>"
+                "media: %{customdata[0]:.4f}<br>"
+                "IC95%: [%{customdata[1]:.4f}, %{customdata[2]:.4f}]"
+                "<extra></extra>"
+            ),
+            name="Provincia",
         )
     )
-
     fig.update_layout(
-        mapbox_style=MAPBOX_STYLE,
-        mapbox_zoom=CR_ZOOM,
-        mapbox_center=dict(lat=CR_LATITUDE, lon=CR_LONGITUDE),
-        margin=dict(r=0, t=0, l=0, b=0),
+        mapbox=dict(
+            style=MAPBOX_STYLE,
+            center=dict(lat=CR_LATITUDE, lon=CR_LONGITUDE),
+            zoom=7.2,
+        ),
+        margin=dict(l=0, r=0, t=0, b=0),
         height=600,
     )
     return fig
 
 
-def make_forest(df_summary: pd.DataFrame, metric: str = "ob") -> go.Figure:
-    # metric: "ob" (obesidad) o "sb" (sobrepeso)
-    assert metric in {"ob", "sb"}
-    base = df_summary[df_summary["Province"] != "PAIS"].copy()
-    base = base.set_index("Province").loc[PROVINCE_ORDER].reset_index()
-    y = base["Province"].tolist()
 
-    m = base[f"{metric}_mean"].to_numpy()
-    lo = base[f"{metric}_q2.5"].to_numpy()
-    hi = base[f"{metric}_q97.5"].to_numpy()
+
+def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
+    import plotly.graph_objects as go
+    import numpy as np
+    import pandas as pd
+
+    # columnas según métrica
+    if metric == "ob":
+        mean_col, lo_col, hi_col, title = "ob_mean", "ob_q2.5", "ob_q97.5", "Obesidad"
+    else:
+        mean_col, lo_col, hi_col, title = "sb_mean", "sb_q2.5", "sb_q97.5", "Sobrepeso"
+
+    # solo provincias (sin PAIS) y orden DESC por media (mayor → menor)
+    dfp = df_summary[df_summary["Province"].astype(str) != "PAIS"].copy()
+    dfp = dfp.sort_values(mean_col, ascending=False)
+
+    # orden explícito para el eje Y
+    y_order = dfp["Province"].tolist()
+    y_vals = pd.Categorical(dfp["Province"], categories=y_order, ordered=True)
+
+    mean = dfp[mean_col].to_numpy()
+    lo   = dfp[lo_col].to_numpy()
+    hi   = dfp[hi_col].to_numpy()
+
+    # barras de error asimétricas
+    err_plus  = hi - mean
+    err_minus = mean - lo
+
+    custom = np.column_stack([lo, hi])
 
     fig = go.Figure()
+
     fig.add_trace(
         go.Scatter(
-            x=m,
-            y=y,
+            x=mean,
+            y=y_vals,
             mode="markers",
-            name=("Obesidad" if metric == "ob" else "Sobrepeso"),
-            error_x=dict(type="data", symmetric=False, array=hi - m, arrayminus=m - lo),
+            marker=dict(size=8),
+            error_x=dict(
+                type="data",
+                symmetric=False,
+                array=err_plus,
+                arrayminus=err_minus,
+                thickness=1.2,
+                width=0,
+            ),
+            customdata=custom,
+            hovertemplate=(
+                "Media: %{x:.4f}<br>"
+                "IC95%: %{customdata[0]:.4f} – %{customdata[1]:.4f}"
+                "<extra></extra>"
+            ),
+            name=title,
         )
     )
+
+    # línea vertical con media país + etiqueta (desplazada a la derecha y misma opacidad)
+    if "PAIS" in df_summary["Province"].values:
+        pais_val = float(df_summary.loc[df_summary["Province"] == "PAIS", mean_col].iloc[0])
+
+        # línea
+        line_opacity = 0.6
+        fig.add_vline(x=pais_val, line_dash="dot", line_width=1, opacity=line_opacity)
+
+        # desplazamiento en unidades de datos (~2 % del rango)
+        x_min = float(np.min(lo))
+        x_max = float(np.max(hi))
+        dx = 0.035 * (x_max - x_min)
+
+        # etiqueta
+        fig.add_annotation(
+            x=pais_val + dx,     # un poco a la derecha
+            y=1.02,              # arriba del panel
+            xref="x",
+            yref="paper",
+            text=f"Media país",
+            showarrow=False,
+            align="left",
+            opacity=line_opacity  # misma opacidad que la línea
+        )
+
+    # altura dinámica para que quepan todas las provincias
+    base_h = 140
+    row_h  = 40
+    fig_h  = base_h + row_h * max(1, len(y_order))
+
     fig.update_layout(
-        title=("Forest plot: " + ("Obesidad" if metric == "ob" else "Sobrepeso")),
-        xaxis_title="Prevalencia (media e IC95%)",
+        title=f"Forest plot – {title}",
+        xaxis_title="Estimación (media) con IC95%",
         yaxis_title="Provincia",
-        height=420,
-        margin=dict(l=80, r=40, t=50, b=40),
+        margin=dict(l=10, r=10, t=55, b=10),
+        hoverlabel=dict(bgcolor="#4f46e5", font_color="white"),
+        height=fig_h,
     )
+
+    # asegura orden y evita “zoom inicial”
+    fig.update_yaxes(categoryorder="array", categoryarray=y_order, automargin=True)
+    fig.update_xaxes(autorange=True)
+
     return fig
+
 
 
 # ==========================
 # Preparación (correr/leer) y DataFrame resumen
 # ==========================
-(trace_ob, meta_ob), (trace_sob, meta_sob) = prepare_results_if_needed()
-SUMMARY_DF = build_summary_df(trace_ob, meta_ob, trace_sob, meta_sob)
+def get_summary_df() -> pd.DataFrame:
+    """
+    Lee SUMMARY_CSV y lo valida. No crea nada si falta.
+    """
+    if not os.path.isfile(SUMMARY_CSV):
+        raise FileNotFoundError(
+            f"No se encontró el CSV requerido: {SUMMARY_CSV}. "
+            "Genera el archivo antes de lanzar el dashboard."
+        )
 
+    df = pd.read_csv(SUMMARY_CSV)
+
+    required_cols = {
+        "Province",
+        "ob_mean", "ob_q2.5", "ob_q50", "ob_q97.5",
+        "sb_mean", "sb_q2.5", "sb_q50", "sb_q97.5",
+    }
+    missing = required_cols.difference(df.columns)
+    if missing:
+        raise ValueError(
+            "El CSV no tiene las columnas necesarias: "
+            + ", ".join(sorted(missing))
+        )
+    # --- Añadir lat/lon desde constantes si el CSV no las trae ---
+    if ("lat" not in df.columns) or ("lon" not in df.columns):
+        # normaliza nombres para hacer match con PROV_POINTS
+        df["_prov_clean"] = df["Province"].astype(str).apply(_sanitize_prov)
+
+        # mapea coords de provincias (PAIS se pone con el centro CR)
+        df["lat"] = df["_prov_clean"].map(lambda k: PROV_POINTS.get(k, (np.nan, np.nan))[0])
+        df["lon"] = df["_prov_clean"].map(lambda k: PROV_POINTS.get(k, (np.nan, np.nan))[1])
+
+        # override para PAIS
+        mask_pais = df["_prov_clean"] == "PAIS"
+        if mask_pais.any():
+            df.loc[mask_pais, "lat"] = CR_LATITUDE
+            df.loc[mask_pais, "lon"] = CR_LONGITUDE
+
+        df.drop(columns=["_prov_clean"], inplace=True)
+
+        # (opcional) avisa si quedó alguna provincia sin coordenadas
+        if df["lat"].isna().any() or df["lon"].isna().any():
+            faltantes = df.loc[df["lat"].isna() | df["lon"].isna(), "Province"].tolist()
+            raise ValueError(
+                "Faltan coordenadas para: " + ", ".join(faltantes) +
+                ". Revisa PROV_POINTS o los nombres en el CSV."
+            )
+
+
+    # Ordena provincias si están todas (opcional)
+    try:
+        order = [p for p in PROVINCE_ORDER if p in set(df["Province"])]
+        # deja PAIS al final si existe
+        if "PAIS" in set(df["Province"]):
+            order += ["PAIS"]
+        df = df.set_index("Province").loc[order].reset_index()
+    except Exception:
+        pass
+
+    return df
+
+
+SUMMARY_DF = get_summary_df()
 
 # ==========================
 # App Dash
 # ==========================
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, suppress_callback_exceptions=True)
+
 app.title = "Obesidad y Sobrepeso – Costa Rica"
 
 app.layout = html.Div(
     [
-        html.H1(
-            "Dashboard – Costa Rica: Obesidad y Sobrepeso", style={"marginBottom": 6}
-        ),
-        dcc.Tabs(
-            id="tabs",
-            value="tab-map",
-            children=[
-                dcc.Tab(label="Mapa interactivo", value="tab-map"),
-                dcc.Tab(label="Mosaicos por provincia", value="tab-mosaic"),
-                dcc.Tab(label="Forest plot", value="tab-forest"),
-            ],
-        ),
-        html.Div(id="tabs-content", style={"padding": "12px 0"}),
+        html.H1("Dashboard – Costa Rica: Obesidad y Sobrepeso", style={"marginBottom": 6}),
+        dcc.Tabs(id="tabs", value="tab-map", children=[
+            # TAB MAPA
+            dcc.Tab(label="Mapa interactivo", value="tab-map", children=html.Div([
+                html.Div([
+                    html.Label("Condición:"),
+                    dcc.RadioItems(
+                        id="metric-radio",
+                        options=[
+                            {"label": "Obesidad", "value": "ob_mean"},
+                            {"label": "Sobrepeso", "value": "sb_mean"},
+                        ],
+                        value="ob_mean", inline=True,
+                    ),
+                ]),
+                dcc.Graph(id="map-graph", figure=make_map(SUMMARY_DF, metric="ob_mean")),
+            ])),
+            # TAB MOSAICOS (imágenes planas)
+            dcc.Tab(label="Mosaicos", value="tab-mosaic", children=html.Div([
+                html.Div([
+                    html.Label("Condición:"),
+                    dcc.RadioItems(
+                        id="mosaic-cond-radio",
+                        options=[{"label":"Obesidad","value":"obesidad"},{"label":"Sobrepeso","value":"sobrepeso"}],
+                        value="obesidad", inline=True, style={"marginRight":"16px"},
+                    ),
+                    html.Span("  "),
+                    html.Label("Ámbito:"),
+                    dcc.RadioItems(
+                        id="mosaic-scope-radio",
+                        options=[{"label":"Provincias","value":"provincias"},{"label":"País","value":"pais"}],
+                        value="provincias", inline=True,
+                    ),
+                ], style={"marginBottom": 8}),
+                html.Img(id="mosaic-img", src="", style={"display":"none"}),
+            ])),
+            # TAB FOREST
+            dcc.Tab(label="Forest plot", value="tab-forest", children=html.Div([
+                html.Label("Condición:"),
+                dcc.RadioItems(
+                    id="forest-radio",
+                    options=[{"label":"Obesidad","value":"ob"},{"label":"Sobrepeso","value":"sb"}],
+                    value="ob", inline=True,
+                ),
+                dcc.Graph(id="forest-graph", figure=make_forest(SUMMARY_DF, metric="ob")),
+            ])),
+        ]),
     ],
     style={"maxWidth": 1280, "margin": "0 auto", "padding": "12px"},
 )
 
 
-@app.callback(Output("tabs-content", "children"), Input("tabs", "value"))
-def render_tab(tab):
-    if tab == "tab-map":
-        return html.Div(
-            [
-                html.Div(
-                    [
-                        html.Label("Métrica para colorear:"),
-                        dcc.RadioItems(
-                            id="metric-radio",
-                            options=[
-                                {"label": "Obesidad (media)", "value": "ob_mean"},
-                                {"label": "Sobrepeso (media)", "value": "sb_mean"},
-                            ],
-                            value="ob_mean",
-                            inline=True,
-                        ),
-                    ]
-                ),
-                dcc.Graph(
-                    id="map-graph", figure=make_map(SUMMARY_DF, metric="ob_mean")
-                ),
-            ]
-        )
-
-    if tab == "tab-mosaic":
-        return html.Div(
-            [
-                html.Div(
-                    [
-                        html.Label("Mosaico"),
-                        dcc.RadioItems(
-                            id="mosaic-radio",
-                            options=[
-                                {"label": "Obesidad", "value": MOSAIC_OB},
-                                {"label": "Sobrepeso", "value": MOSAIC_SOB},
-                            ],
-                            value=MOSAIC_OB,
-                            inline=True,
-                        ),
-                    ],
-                    style={"marginBottom": 8},
-                ),
-                html.Img(
-                    id="mosaic-img",
-                    src="/assets/mosaic-placeholder.png",
-                    style={"display": "none"},
-                ),
-                dcc.Graph(id="mosaic-graph"),
-            ]
-        )
-
-    if tab == "tab-forest":
-        return html.Div(
-            [
-                html.Label("Condición:"),
-                dcc.RadioItems(
-                    id="forest-radio",
-                    options=[
-                        {"label": "Obesidad", "value": "ob"},
-                        {"label": "Sobrepeso", "value": "sb"},
-                    ],
-                    value="ob",
-                    inline=True,
-                ),
-                dcc.Graph(
-                    id="forest-graph", figure=make_forest(SUMMARY_DF, metric="ob")
-                ),
-            ]
-        )
-
-    return html.Div()
 
 
 # === Callbacks dinámicos ===
@@ -575,22 +779,42 @@ def update_map(metric_value):
     return make_map(SUMMARY_DF, metric=metric_value)
 
 
-@app.callback(Output("mosaic-graph", "figure"), Input("mosaic-radio", "value"))
-def update_mosaic(mosaic_path):
-    # Mostrar la imagen como figura Plotly para zoom fácil
-    import plotly.express as px
+# --- NUEVO: mosaico como imagen "plana" con dos radios (condición y ámbito) ---
+import base64
 
-    if not os.path.isfile(mosaic_path):
-        fig = go.Figure()
-        fig.update_layout(
-            title="No se encontró el mosaico. Revisa las rutas de salida."
-        )
-        return fig
-    img = Image.open(mosaic_path)
-    fig = px.imshow(img)
-    fig.update_xaxes(showticklabels=False).update_yaxes(showticklabels=False)
-    fig.update_layout(margin=dict(l=0, r=0, t=30, b=0), title=mosaic_path)
-    return fig
+@app.callback(
+    Output("mosaic-img", "src"),
+    Output("mosaic-img", "style"),
+    Input("mosaic-cond-radio", "value"),
+    Input("mosaic-scope-radio", "value"),
+)
+def update_mosaic_image(condicion, scope):
+    # Debes tener definidas estas constantes arriba:
+    # MOSAIC_OB_PROV, MOSAIC_SOB_PROV, MOSAIC_OB_PAIS, MOSAIC_SOB_PAIS
+    if condicion == "obesidad" and scope == "provincias":
+        path = MOSAIC_OB_PROV
+    elif condicion == "obesidad" and scope == "pais":
+        path = MOSAIC_OB_PAIS
+    elif condicion == "sobrepeso" and scope == "provincias":
+        path = MOSAIC_SOB_PROV
+    else:
+        path = MOSAIC_SOB_PAIS
+
+    if not os.path.isfile(path):
+        # Oculta la imagen si no existe
+        return "", {"display": "none"}
+
+    with open(path, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode("ascii")
+    src = f"data:image/png;base64,{encoded}"
+    style = {
+        "maxWidth": "100%",
+        "height": "auto",
+        "display": "block",
+        "border": "1px solid #e5e7eb",
+        "borderRadius": "8px",
+    }
+    return src, style
 
 
 @app.callback(Output("forest-graph", "figure"), Input("forest-radio", "value"))
@@ -598,7 +822,9 @@ def update_forest(metric_value):
     return make_forest(SUMMARY_DF, metric=metric_value)
 
 
+
 # Servidor
 if __name__ == "__main__":
     # Dash
-    app.run(host="0.0.0.0", port=8050, debug=True)
+    app.run(host="127.0.0.1", port=8050, debug=True)
+
