@@ -4,6 +4,7 @@ import pymc as pm
 import arviz as az
 import os
 import matplotlib.pyplot as plt
+SUMMARY_CSV = "../res/csv/summary_prevalence_by_province.csv"
 
 try:
     from scipy.stats import gaussian_kde
@@ -168,6 +169,68 @@ def posterior_summary_by_row(trace, meta, var_name="p", q=(0.025, 0.5, 0.975)):
     out["p_q2.5"] = qlo
     out["p_q50"] = qmd
     out["p_q97.5"] = qhi
+    return out
+
+def province_country_summary(trace, meta, condicion_label: str):
+    """
+    Devuelve un DataFrame con filas: 7 provincias + 'PAIS',
+    y columnas de resumen para la condicion dada con prefijo:
+      ob_* si condicion_label == "obesidad"
+      sb_* si condicion_label == "sobrepeso"
+    Usa ponderación por 'total' (n_i).
+    """
+    # Draws de p: (chains, draws, N) -> (S, N)
+    p = trace.posterior["p"].values
+    S = p.shape[0] * p.shape[1]
+    p2d = p.reshape(S, p.shape[-1])
+
+    dfm = meta["df"]
+    provincias = dfm["provincia"].astype(str).to_numpy()
+    n_i = dfm["total"].to_numpy(dtype=float)
+
+    # País ponderado
+    import numpy as np
+    import arviz as az
+
+    def _summ(draws_1d: np.ndarray):
+        mean = draws_1d.mean()
+        q2p5, q50, q97p5 = np.quantile(draws_1d, [0.025, 0.5, 0.975])
+        return mean, q2p5, q50, q97p5
+
+    # prefijo por condicion
+    prefix = "ob" if condicion_label.lower().startswith("obes") else "sb"
+
+    rows = []
+    # País
+    from numpy import logical_or
+    draws_country = _weighted_draws(p2d, n_i)
+    m, ql, qm, qh = _summ(draws_country)
+    rows.append(
+        dict(
+            Province="PAIS",
+            **{f"{prefix}_mean": m, f"{prefix}_q2.5": ql, f"{prefix}_q50": qm, f"{prefix}_q97.5": qh},
+        )
+    )
+
+    # Provincias
+    for prov in np.unique(provincias):
+        mask = provincias == prov
+        if not np.any(mask):
+            continue
+        draws_prov = _weighted_draws(p2d[:, mask], n_i[mask])
+        m, ql, qm, qh = _summ(draws_prov)
+        rows.append(
+            dict(
+                Province=str(prov),
+                **{f"{prefix}_mean": m, f"{prefix}_q2.5": ql, f"{prefix}_q50": qm, f"{prefix}_q97.5": qh},
+            )
+        )
+
+    out = pd.DataFrame(rows)
+    # Orden: provincias alfabéticas + PAIS al final
+    provs = sorted([r for r in out["Province"] if r != "PAIS"])
+    order = provs + ["PAIS"]
+    out = out.set_index("Province").loc[order].reset_index()
     return out
 
 
@@ -498,8 +561,8 @@ if __name__ == "__main__":
         incluye_provincia=False,
         draws=2000,
         tune=1000,
-        chains=2,
-        cores=1,
+        chains=4,
+        cores=4,
         seed=2025,
     )
 
@@ -521,15 +584,15 @@ if __name__ == "__main__":
         incluye_provincia=False,
         draws=2000,
         tune=1000,
-        chains=2,
-        cores=1,
+        chains=4,
+        cores=4,
         seed=2025,
     )
 
     # ----- Guardar mosaicos (ajusta rutas si quieres) -----
     outdir_ob = ""
     outdir_sb = ""
-
+    
     save_posterior_prevalence_mosaic(
         trace_2,
         meta_2,
@@ -569,5 +632,21 @@ if __name__ == "__main__":
         width_per_col=5.8,
         height_per_row=4.6,
     )
-
     print("Listo. Mosaicos guardados.")
+
+    # ----- Construir y guardar CSV combinado (obesidad + sobrepeso) -----
+    df_ob = province_country_summary(trace_2, meta_2, condicion_label="obesidad")
+    df_sb = province_country_summary(trace_2_sob, meta_2_sob, condicion_label="sobrepeso")
+
+    # merge por Province
+    df_comb = pd.merge(df_ob, df_sb, on="Province", how="outer")
+
+    # (opcional) normaliza nombres a mayúsculas sin tildes para consistencia con tus imágenes
+    df_comb["Province"] = df_comb["Province"].astype(str)
+
+    os.makedirs(os.path.dirname(SUMMARY_CSV), exist_ok=True)
+    df_comb.to_csv(SUMMARY_CSV, index=False)
+    print("CSV de resumen guardado en:", SUMMARY_CSV)
+
+
+    
