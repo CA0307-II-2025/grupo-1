@@ -4,6 +4,7 @@ import pymc as pm
 import arviz as az
 import os
 import matplotlib.pyplot as plt
+
 SUMMARY_CSV = "../res/csv/summary_prevalence_by_province.csv"
 
 try:
@@ -171,6 +172,7 @@ def posterior_summary_by_row(trace, meta, var_name="p", q=(0.025, 0.5, 0.975)):
     out["p_q97.5"] = qhi
     return out
 
+
 def province_country_summary(trace, meta, condicion_label: str):
     """
     Devuelve un DataFrame con filas: 7 provincias + 'PAIS',
@@ -190,7 +192,6 @@ def province_country_summary(trace, meta, condicion_label: str):
 
     # País ponderado
     import numpy as np
-    import arviz as az
 
     def _summ(draws_1d: np.ndarray):
         mean = draws_1d.mean()
@@ -202,13 +203,17 @@ def province_country_summary(trace, meta, condicion_label: str):
 
     rows = []
     # País
-    from numpy import logical_or
     draws_country = _weighted_draws(p2d, n_i)
     m, ql, qm, qh = _summ(draws_country)
     rows.append(
         dict(
             Province="PAIS",
-            **{f"{prefix}_mean": m, f"{prefix}_q2.5": ql, f"{prefix}_q50": qm, f"{prefix}_q97.5": qh},
+            **{
+                f"{prefix}_mean": m,
+                f"{prefix}_q2.5": ql,
+                f"{prefix}_q50": qm,
+                f"{prefix}_q97.5": qh,
+            },
         )
     )
 
@@ -222,7 +227,12 @@ def province_country_summary(trace, meta, condicion_label: str):
         rows.append(
             dict(
                 Province=str(prov),
-                **{f"{prefix}_mean": m, f"{prefix}_q2.5": ql, f"{prefix}_q50": qm, f"{prefix}_q97.5": qh},
+                **{
+                    f"{prefix}_mean": m,
+                    f"{prefix}_q2.5": ql,
+                    f"{prefix}_q50": qm,
+                    f"{prefix}_q97.5": qh,
+                },
             )
         )
 
@@ -592,7 +602,7 @@ if __name__ == "__main__":
     # ----- Guardar mosaicos (ajusta rutas si quieres) -----
     outdir_ob = ""
     outdir_sb = ""
-    
+
     save_posterior_prevalence_mosaic(
         trace_2,
         meta_2,
@@ -636,7 +646,9 @@ if __name__ == "__main__":
 
     # ----- Construir y guardar CSV combinado (obesidad + sobrepeso) -----
     df_ob = province_country_summary(trace_2, meta_2, condicion_label="obesidad")
-    df_sb = province_country_summary(trace_2_sob, meta_2_sob, condicion_label="sobrepeso")
+    df_sb = province_country_summary(
+        trace_2_sob, meta_2_sob, condicion_label="sobrepeso"
+    )
 
     # merge por Province
     df_comb = pd.merge(df_ob, df_sb, on="Province", how="outer")
@@ -647,6 +659,3 @@ if __name__ == "__main__":
     os.makedirs(os.path.dirname(SUMMARY_CSV), exist_ok=True)
     df_comb.to_csv(SUMMARY_CSV, index=False)
     print("CSV de resumen guardado en:", SUMMARY_CSV)
-
-
-    

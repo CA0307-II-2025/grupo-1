@@ -39,6 +39,7 @@ from PIL import Image
 # Importar utilidades y función de muestreo del script original
 import base64
 
+
 def img_to_data_uri(path: str) -> str:
     if not os.path.isfile(path):
         return ""
@@ -68,21 +69,25 @@ PROVINCE_ORDER = [
 
 # Cabeceras provinciales (aprox.)
 PROV_POINTS = {
-    "SAN JOSE":   (9.92810,  -84.09070),  # San José
-    "ALAJUELA":   (10.01630, -84.21160),  # Alajuela
-    "CARTAGO":    (9.86440,  -83.91940),  # Cartago
-    "HEREDIA":    (9.99700,  -84.11700),  # Heredia
+    "SAN JOSE": (9.92810, -84.09070),  # San José
+    "ALAJUELA": (10.01630, -84.21160),  # Alajuela
+    "CARTAGO": (9.86440, -83.91940),  # Cartago
+    "HEREDIA": (9.99700, -84.11700),  # Heredia
     "GUANACASTE": (10.63470, -85.44360),  # Liberia (cabecera provincia)
-    "PUNTARENAS": (9.97630,  -84.83840),  # Puntarenas
-    "LIMON":      (9.99070,  -83.03600),  # Limón
+    "PUNTARENAS": (9.97630, -84.83840),  # Puntarenas
+    "LIMON": (9.99070, -83.03600),  # Limón
 }
 
 DATA_CSV = "../data/clean/datos_limpios.csv"
 OUTDIR_OB = "../res/graficos/graficos_simulados_no_jer/obesidad"
 OUTDIR_SOB = "../res/graficos/graficos_simulados_no_jer/sobrepeso"
-MOSAIC_OB_PROV = os.path.join(OUTDIR_OB, "mosaico_posterior_prevalencia_obesidad_provincias.png")
-MOSAIC_SOB_PROV = os.path.join(OUTDIR_SOB, "mosaico_posterior_prevalencia_sobrepeso_provincias.png")
-MOSAIC_OB_PAIS  = os.path.join(OUTDIR_OB,  "posterior_prevalencia_obesidad_pais.png")
+MOSAIC_OB_PROV = os.path.join(
+    OUTDIR_OB, "mosaico_posterior_prevalencia_obesidad_provincias.png"
+)
+MOSAIC_SOB_PROV = os.path.join(
+    OUTDIR_SOB, "mosaico_posterior_prevalencia_sobrepeso_provincias.png"
+)
+MOSAIC_OB_PAIS = os.path.join(OUTDIR_OB, "posterior_prevalencia_obesidad_pais.png")
 MOSAIC_SOB_PAIS = os.path.join(OUTDIR_SOB, "posterior_prevalencia_sobrepeso_pais.png")
 GEOJSON_PROVINCES = "../data/geo/geoBoundaries-CRI-ADM1_simplified.geojson"
 
@@ -118,17 +123,29 @@ def _sanitize_prov(s: str) -> str:
         t = t.replace(a, b)
     return t
 
+
 def _load_province_geojson(path: str):
     """Carga un GeoJSON de provincias y añade 'id' normalizado por feature
     para poder unir contra df['_prov_clean']."""
-    import json, re
+    import json
+    import re
+
     if not os.path.isfile(path):
         return None, None
     with open(path, "r", encoding="utf-8") as f:
         gj = json.load(f)
 
     # claves candidatas para el nombre; geoBoundaries usa 'shapeName'
-    candidates = ["shapeName", "name", "provincia", "province", "PROVINCIA", "NOMBRE", "nom", "Nombre"]
+    candidates = [
+        "shapeName",
+        "name",
+        "provincia",
+        "province",
+        "PROVINCIA",
+        "NOMBRE",
+        "nom",
+        "Nombre",
+    ]
     prop_key = None
     try:
         props = gj["features"][0]["properties"]
@@ -420,7 +437,6 @@ def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
     import plotly.express as px
     import plotly.graph_objects as go
     import numpy as np
-    import pandas as pd
 
     assert metric in {"ob_mean", "sb_mean"}
 
@@ -434,8 +450,8 @@ def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
 
     # columnas auxiliares para hover (media + IC) de la métrica elegida
     dfp["__mean"] = dfp[metric].astype(float)
-    dfp["__lo"]   = dfp[lo_col].astype(float)
-    dfp["__hi"]   = dfp[hi_col].astype(float)
+    dfp["__lo"] = dfp[lo_col].astype(float)
+    dfp["__hi"] = dfp[hi_col].astype(float)
 
     # intenta cargar GeoJSON
     gj, fid_key = _load_province_geojson(GEOJSON_PROVINCES)
@@ -444,13 +460,13 @@ def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
         fig = px.choropleth_mapbox(
             dfp,
             geojson=gj,
-            locations="_prov_clean",     # coincide con feature['id']
+            locations="_prov_clean",  # coincide con feature['id']
             featureidkey="id",
             color="__mean",
             custom_data=["__mean", "__lo", "__hi"],
             center={"lat": CR_LATITUDE, "lon": CR_LONGITUDE},
             mapbox_style=MAPBOX_STYLE,
-            zoom=7.2,                    # zoom más cercano a CR
+            zoom=7.2,  # zoom más cercano a CR
             opacity=0.78,
             color_continuous_scale="Viridis",
         )
@@ -463,7 +479,7 @@ def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
                 "Media: %{customdata[0]:.4f}<br>"
                 "IC95%: [%{customdata[1]:.4f}, %{customdata[2]:.4f}]"
                 "<extra></extra>"
-            )
+            ),
         )
 
         fig.update_layout(
@@ -476,8 +492,8 @@ def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
         if "PAIS" in df_summary["Province"].values:
             pais_row = df_summary[df_summary["Province"] == "PAIS"].iloc[0]
             mean_p = float(pais_row[metric])
-            lo_p   = float(pais_row[lo_col])
-            hi_p   = float(pais_row[hi_col])
+            lo_p = float(pais_row[lo_col])
+            hi_p = float(pais_row[hi_col])
             fig.add_trace(
                 go.Scattermapbox(
                     lat=[pais_row.get("lat", CR_LATITUDE)],
@@ -539,8 +555,6 @@ def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
     return fig
 
 
-
-
 def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
     import plotly.graph_objects as go
     import numpy as np
@@ -561,11 +575,11 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
     y_vals = pd.Categorical(dfp["Province"], categories=y_order, ordered=True)
 
     mean = dfp[mean_col].to_numpy()
-    lo   = dfp[lo_col].to_numpy()
-    hi   = dfp[hi_col].to_numpy()
+    lo = dfp[lo_col].to_numpy()
+    hi = dfp[hi_col].to_numpy()
 
     # barras de error asimétricas
-    err_plus  = hi - mean
+    err_plus = hi - mean
     err_minus = mean - lo
 
     custom = np.column_stack([lo, hi])
@@ -598,7 +612,9 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
 
     # línea vertical con media país + etiqueta (desplazada a la derecha y misma opacidad)
     if "PAIS" in df_summary["Province"].values:
-        pais_val = float(df_summary.loc[df_summary["Province"] == "PAIS", mean_col].iloc[0])
+        pais_val = float(
+            df_summary.loc[df_summary["Province"] == "PAIS", mean_col].iloc[0]
+        )
 
         # línea
         line_opacity = 0.6
@@ -611,20 +627,20 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
 
         # etiqueta
         fig.add_annotation(
-            x=pais_val + dx,     # un poco a la derecha
-            y=1.02,              # arriba del panel
+            x=pais_val + dx,  # un poco a la derecha
+            y=1.02,  # arriba del panel
             xref="x",
             yref="paper",
-            text=f"Media país",
+            text="Media país",
             showarrow=False,
             align="left",
-            opacity=line_opacity  # misma opacidad que la línea
+            opacity=line_opacity,  # misma opacidad que la línea
         )
 
     # altura dinámica para que quepan todas las provincias
     base_h = 140
-    row_h  = 40
-    fig_h  = base_h + row_h * max(1, len(y_order))
+    row_h = 40
+    fig_h = base_h + row_h * max(1, len(y_order))
 
     fig.update_layout(
         title=f"Forest plot – {title}",
@@ -640,7 +656,6 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
     fig.update_xaxes(autorange=True)
 
     return fig
-
 
 
 # ==========================
@@ -660,14 +675,19 @@ def get_summary_df() -> pd.DataFrame:
 
     required_cols = {
         "Province",
-        "ob_mean", "ob_q2.5", "ob_q50", "ob_q97.5",
-        "sb_mean", "sb_q2.5", "sb_q50", "sb_q97.5",
+        "ob_mean",
+        "ob_q2.5",
+        "ob_q50",
+        "ob_q97.5",
+        "sb_mean",
+        "sb_q2.5",
+        "sb_q50",
+        "sb_q97.5",
     }
     missing = required_cols.difference(df.columns)
     if missing:
         raise ValueError(
-            "El CSV no tiene las columnas necesarias: "
-            + ", ".join(sorted(missing))
+            "El CSV no tiene las columnas necesarias: " + ", ".join(sorted(missing))
         )
     # --- Añadir lat/lon desde constantes si el CSV no las trae ---
     if ("lat" not in df.columns) or ("lon" not in df.columns):
@@ -675,8 +695,12 @@ def get_summary_df() -> pd.DataFrame:
         df["_prov_clean"] = df["Province"].astype(str).apply(_sanitize_prov)
 
         # mapea coords de provincias (PAIS se pone con el centro CR)
-        df["lat"] = df["_prov_clean"].map(lambda k: PROV_POINTS.get(k, (np.nan, np.nan))[0])
-        df["lon"] = df["_prov_clean"].map(lambda k: PROV_POINTS.get(k, (np.nan, np.nan))[1])
+        df["lat"] = df["_prov_clean"].map(
+            lambda k: PROV_POINTS.get(k, (np.nan, np.nan))[0]
+        )
+        df["lon"] = df["_prov_clean"].map(
+            lambda k: PROV_POINTS.get(k, (np.nan, np.nan))[1]
+        )
 
         # override para PAIS
         mask_pais = df["_prov_clean"] == "PAIS"
@@ -690,10 +714,10 @@ def get_summary_df() -> pd.DataFrame:
         if df["lat"].isna().any() or df["lon"].isna().any():
             faltantes = df.loc[df["lat"].isna() | df["lon"].isna(), "Province"].tolist()
             raise ValueError(
-                "Faltan coordenadas para: " + ", ".join(faltantes) +
-                ". Revisa PROV_POINTS o los nombres en el CSV."
+                "Faltan coordenadas para: "
+                + ", ".join(faltantes)
+                + ". Revisa PROV_POINTS o los nombres en el CSV."
             )
-
 
     # Ordena provincias si están todas (opcional)
     try:
@@ -719,58 +743,113 @@ app.title = "Obesidad y Sobrepeso – Costa Rica"
 
 app.layout = html.Div(
     [
-        html.H1("Dashboard – Costa Rica: Obesidad y Sobrepeso", style={"marginBottom": 6}),
-        dcc.Tabs(id="tabs", value="tab-map", children=[
-            # TAB MAPA
-            dcc.Tab(label="Mapa interactivo", value="tab-map", children=html.Div([
-                html.Div([
-                    html.Label("Condición:"),
-                    dcc.RadioItems(
-                        id="metric-radio",
-                        options=[
-                            {"label": "Obesidad", "value": "ob_mean"},
-                            {"label": "Sobrepeso", "value": "sb_mean"},
-                        ],
-                        value="ob_mean", inline=True,
+        html.H1(
+            "Dashboard – Costa Rica: Obesidad y Sobrepeso", style={"marginBottom": 6}
+        ),
+        dcc.Tabs(
+            id="tabs",
+            value="tab-map",
+            children=[
+                # TAB MAPA
+                dcc.Tab(
+                    label="Mapa interactivo",
+                    value="tab-map",
+                    children=html.Div(
+                        [
+                            html.Div(
+                                [
+                                    html.Label("Condición:"),
+                                    dcc.RadioItems(
+                                        id="metric-radio",
+                                        options=[
+                                            {"label": "Obesidad", "value": "ob_mean"},
+                                            {"label": "Sobrepeso", "value": "sb_mean"},
+                                        ],
+                                        value="ob_mean",
+                                        inline=True,
+                                    ),
+                                ]
+                            ),
+                            dcc.Graph(
+                                id="map-graph",
+                                figure=make_map(SUMMARY_DF, metric="ob_mean"),
+                            ),
+                        ]
                     ),
-                ]),
-                dcc.Graph(id="map-graph", figure=make_map(SUMMARY_DF, metric="ob_mean")),
-            ])),
-            # TAB MOSAICOS (imágenes planas)
-            dcc.Tab(label="Mosaicos", value="tab-mosaic", children=html.Div([
-                html.Div([
-                    html.Label("Condición:"),
-                    dcc.RadioItems(
-                        id="mosaic-cond-radio",
-                        options=[{"label":"Obesidad","value":"obesidad"},{"label":"Sobrepeso","value":"sobrepeso"}],
-                        value="obesidad", inline=True, style={"marginRight":"16px"},
-                    ),
-                    html.Span("  "),
-                    html.Label("Ámbito:"),
-                    dcc.RadioItems(
-                        id="mosaic-scope-radio",
-                        options=[{"label":"Provincias","value":"provincias"},{"label":"País","value":"pais"}],
-                        value="provincias", inline=True,
-                    ),
-                ], style={"marginBottom": 8}),
-                html.Img(id="mosaic-img", src="", style={"display":"none"}),
-            ])),
-            # TAB FOREST
-            dcc.Tab(label="Forest plot", value="tab-forest", children=html.Div([
-                html.Label("Condición:"),
-                dcc.RadioItems(
-                    id="forest-radio",
-                    options=[{"label":"Obesidad","value":"ob"},{"label":"Sobrepeso","value":"sb"}],
-                    value="ob", inline=True,
                 ),
-                dcc.Graph(id="forest-graph", figure=make_forest(SUMMARY_DF, metric="ob")),
-            ])),
-        ]),
+                # TAB MOSAICOS (imágenes planas)
+                dcc.Tab(
+                    label="Mosaicos",
+                    value="tab-mosaic",
+                    children=html.Div(
+                        [
+                            html.Div(
+                                [
+                                    html.Label("Condición:"),
+                                    dcc.RadioItems(
+                                        id="mosaic-cond-radio",
+                                        options=[
+                                            {"label": "Obesidad", "value": "obesidad"},
+                                            {
+                                                "label": "Sobrepeso",
+                                                "value": "sobrepeso",
+                                            },
+                                        ],
+                                        value="obesidad",
+                                        inline=True,
+                                        style={"marginRight": "16px"},
+                                    ),
+                                    html.Span("  "),
+                                    html.Label("Ámbito:"),
+                                    dcc.RadioItems(
+                                        id="mosaic-scope-radio",
+                                        options=[
+                                            {
+                                                "label": "Provincias",
+                                                "value": "provincias",
+                                            },
+                                            {"label": "País", "value": "pais"},
+                                        ],
+                                        value="provincias",
+                                        inline=True,
+                                    ),
+                                ],
+                                style={"marginBottom": 8},
+                            ),
+                            html.Img(
+                                id="mosaic-img", src="", style={"display": "none"}
+                            ),
+                        ]
+                    ),
+                ),
+                # TAB FOREST
+                dcc.Tab(
+                    label="Forest plot",
+                    value="tab-forest",
+                    children=html.Div(
+                        [
+                            html.Label("Condición:"),
+                            dcc.RadioItems(
+                                id="forest-radio",
+                                options=[
+                                    {"label": "Obesidad", "value": "ob"},
+                                    {"label": "Sobrepeso", "value": "sb"},
+                                ],
+                                value="ob",
+                                inline=True,
+                            ),
+                            dcc.Graph(
+                                id="forest-graph",
+                                figure=make_forest(SUMMARY_DF, metric="ob"),
+                            ),
+                        ]
+                    ),
+                ),
+            ],
+        ),
     ],
     style={"maxWidth": 1280, "margin": "0 auto", "padding": "12px"},
 )
-
-
 
 
 # === Callbacks dinámicos ===
@@ -780,7 +859,7 @@ def update_map(metric_value):
 
 
 # --- NUEVO: mosaico como imagen "plana" con dos radios (condición y ámbito) ---
-import base64
+
 
 @app.callback(
     Output("mosaic-img", "src"),
@@ -822,9 +901,7 @@ def update_forest(metric_value):
     return make_forest(SUMMARY_DF, metric=metric_value)
 
 
-
 # Servidor
 if __name__ == "__main__":
     # Dash
     app.run(host="127.0.0.1", port=8050, debug=True)
-
