@@ -31,14 +31,15 @@ def standardize_cols(df, cols):
 def prep_data(
     df,
     condicion="obesidad",
-    provincia_col="provincia",
+    region_col="provincia",
     distrito_col="distrito",
     vars_dem=None,
 ):
     """
-    Filtra por condicion y prepara y, n, matrices con valores normalizados de laas covariables y los índices de provincia.
-    Espera columnas: ['condicion','total','subtotal', provincia_col, distrito_col] + vars_dem
+    Filtra y prepara y, n, Xz y los índices de la región (provincia o cantón).
+    region_col puede ser 'provincia', 'canton', o cualquier variable categórica.
     """
+
     if vars_dem is None:
         vars_dem = [
             "desempleo",
@@ -50,49 +51,45 @@ def prep_data(
             "anos_escolaridad",
         ]
 
-    # filtrar condicion y quedarnos con filas válidas
     dfc = df.loc[df["condicion"] == condicion].copy()
 
-    # asegurar tipos enteros en total/subtotal
     dfc["total"] = dfc["total"].astype(int)
     dfc["subtotal"] = dfc["subtotal"].astype(int)
-
-    # quitar filas sin exposición
     dfc = dfc[dfc["total"] > 0].copy()
 
-    # construir respuesta
     y = dfc["subtotal"].to_numpy()
     n = dfc["total"].to_numpy()
 
-    # para seleccionar las covariables que vamos a usar
     use_covs = [c for c in vars_dem if c in dfc.columns]
-    Xz = None  # recordatorio: Xz representa la matriz con los valores de las covariables ya normalizados
+    Xz = None
     if len(use_covs) > 0:
         Xz, mu, sd = standardize_cols(dfc, use_covs)
     else:
-        mu, sd = None, None
+        mu = sd = None
 
-    # índices de provincia (util para el modelo)
-    if provincia_col not in dfc.columns:
-        raise ValueError(f"No se encontró la columna de provincia: '{provincia_col}'")
-    prov_codes, prov_index = np.unique(
-        dfc[provincia_col].astype(str).values, return_inverse=True
+    # Crear índices de la región (provincia o cantón)
+    if region_col not in dfc.columns:
+        raise ValueError(f"No se encontró la columna '{region_col}' en el dataframe.")
+
+    region_codes, region_id = np.unique(
+        dfc[region_col].astype(str).values, return_inverse=True
     )
-    J = len(prov_codes)
+    J = len(region_codes)
 
     meta = {
         "distrito": dfc[distrito_col].astype(str).values
         if distrito_col in dfc.columns
         else np.arange(len(dfc)),
-        "provincia": dfc[provincia_col].astype(str).values,
-        "prov_codes": prov_codes,
-        "prov_id": prov_index,
+        "region": dfc[region_col].astype(str).values,  # <-- ahora genérico
+        "region_codes": region_codes,
+        "region_id": region_id,
         "use_covs": use_covs,
         "X_mu": mu,
         "X_sd": sd,
         "df": dfc.reset_index(drop=True),
     }
-    return y, n, Xz, prov_index, J, meta
+
+    return y, n, Xz, region_id, J, meta
 
 
 # ---------------------------
@@ -102,9 +99,9 @@ def fit_model_binomial_logit(
     y,
     n,
     Xz=None,
-    prov_id=None,
+    region_id=None,  # <-- antes prov_id
     J=None,
-    incluye_provincia=True,
+    incluye_region=True,  # <-- antes incluye_provincia
     draws=2000,
     tune=1000,
     target_accept=0.9,
@@ -113,14 +110,12 @@ def fit_model_binomial_logit(
     random_seed=42,
 ):
     """
-    Modelo:
-      y_i ~ Binomial(n_i, p_i)
-      logit(p_i) = alpha + Xz @ beta  (+ u_j[prov_id] si incluye_provincia)
-      u_j ~ Normal(0, sigma_u), sigma_u ~ HalfNormal(2) (esto como una primera aproximacion de prueba)
-    Priors débiles en alpha/beta ~ Normal(0,5)
+    Igual que antes, pero con región genérica.
     """
+
     with pm.Model() as model:
         alpha = pm.Normal("alpha", mu=0, sigma=5)
+
         if Xz is not None:
             K = Xz.shape[1]
             beta = pm.Normal("beta", mu=0, sigma=5, shape=K)
@@ -129,18 +124,19 @@ def fit_model_binomial_logit(
             beta = None
             lin = alpha
 
-        if incluye_provincia:
-            if prov_id is None or J is None:
-                raise ValueError(
-                    "Para incluye_provincia=True hay que pasar prov_id y J."
-                )
+        if incluye_region:
+            if region_id is None or J is None:
+                raise ValueError("Debe pasar region_id y J si incluye_region=True")
+
             sigma_u = pm.HalfNormal("sigma_u", sigma=2)
             u = pm.Normal("u", mu=0, sigma=sigma_u, shape=J)
-            lin = lin + u[prov_id]
+            lin = lin + u[region_id]
         else:
-            sigma_u, u = None, None
+            sigma_u = None
+            u = None
 
         p = pm.Deterministic("p", pm.math.sigmoid(lin))
+
         pm.Binomial("y_obs", n=n, p=p, observed=y)
 
         trace = pm.sample(
@@ -150,7 +146,8 @@ def fit_model_binomial_logit(
             chains=chains,
             cores=cores,
             random_seed=random_seed,
-        )  # muestreo
+        )
+
     return model, trace
 
 
@@ -175,7 +172,7 @@ def posterior_summary_by_row(trace, meta, var_name="p", q=(0.025, 0.5, 0.975)):
 def run_with_csv(
     csv_path="../../data/clean/datos_limpios.csv",
     condicion="obesidad",
-    provincia_col="provincia",
+    region_col="provincia",
     distrito_col="distrito",
     vars_dem=(
         "desempleo",
@@ -186,7 +183,7 @@ def run_with_csv(
         "ocupantes_por_hogar",
         "anos_escolaridad",
     ),
-    incluye_provincia=True,
+    incluye_region=True,
     draws=2000,
     tune=1000,
     chains=4,
@@ -195,10 +192,10 @@ def run_with_csv(
 ):
     df = pd.read_csv(csv_path)
 
-    y, n, Xz, prov_id, J, meta = prep_data(
+    y, n, Xz, region_id, J, meta = prep_data(
         df,
         condicion=condicion,
-        provincia_col=provincia_col,
+        region_col=region_col,
         distrito_col=distrito_col,
         vars_dem=list(vars_dem),
     )
@@ -207,9 +204,9 @@ def run_with_csv(
         y=y,
         n=n,
         Xz=Xz,
-        prov_id=prov_id,
+        region_id=region_id,
         J=J,
-        incluye_provincia=incluye_provincia,
+        incluye_region=incluye_region,
         draws=draws,
         tune=tune,
         chains=chains,
@@ -218,14 +215,7 @@ def run_with_csv(
     )
 
     resumen = posterior_summary_by_row(trace, meta, var_name="p")
-    # Resumen de parámetros globales:
-    vars_resumen = ["alpha"]
-    if Xz is not None:
-        vars_resumen.append("beta")
-    if incluye_provincia:
-        vars_resumen.append("sigma_u")
 
-    print(az.summary(trace, var_names=vars_resumen, round_to=3))
     return trace, resumen, meta
 
 
@@ -320,31 +310,48 @@ def save_posterior_prevalence_figs(
     meta,
     condicion_label: str,
     outdir: str = "res/graficos",
-    province_order=None,
+    province_order=None,  # se mantiene el nombre por compatibilidad
+    region_col: str = None,
     bins: int = 50,
 ):
     """
     Genera y guarda:
       - Figura de la prevalencia posterior agregada (país)
-      - Figuras de la prevalencia posterior por provincia
+      - Figuras de la prevalencia posterior por región (provincia o cantón)
+
+    La columna de región se determina así:
+      1) Si se pasa region_col, se usa esa.
+      2) Si no, se intenta 'provincia', luego 'canton'.
     Todas ponderadas por 'total' (n_i) y usando los draws de 'p' del trace.
     """
     # Draws de p: (chains, draws, N) -> (S, N)
-    # Codigo para reacomodar el muestreo de las cadenas en una sola matriz
     p = trace.posterior["p"].values
     chains, draws, N = p.shape
     S = chains * draws
     p2d = p.reshape(S, N)
 
     dfm = meta["df"]
-    if not {"provincia", "total"}.issubset(dfm.columns):
-        raise ValueError("meta['df'] debe tener columnas 'provincia' y 'total'.")
 
-    provincias = dfm["provincia"].astype(str).to_numpy()
+    # --- Determinar la columna de región ---
+    if region_col is None:
+        if "provincia" in dfm.columns:
+            region_col = "provincia"
+        elif "canton" in dfm.columns:
+            region_col = "canton"
+        else:
+            raise ValueError(
+                "No se encontró ninguna columna de región. "
+                "meta['df'] debe tener al menos 'provincia' o 'canton'."
+            )
+
+    if "total" not in dfm.columns:
+        raise ValueError("meta['df'] debe tener la columna 'total'.")
+
+    regiones = dfm[region_col].astype(str).to_numpy()
     n_i = dfm["total"].to_numpy(dtype=float)
 
     # ---- País (ponderado)
-    p_country = _weighted_draws(p2d, n_i)  # Se saca la prevalencia promedio ponderada
+    p_country = _weighted_draws(p2d, n_i)
     f_country = os.path.join(
         outdir, f"posterior_prevalencia_{condicion_label}_pais.png"
     )
@@ -357,27 +364,26 @@ def save_posterior_prevalence_figs(
         kde_factor=2,
     )
 
-    # ---- Provincias
-    provs = (
-        np.unique(provincias) if province_order is None else np.array(province_order)
-    )
-    for prov in provs:
-        mask = provincias == prov
+    # ---- Regiones (provincia o cantón)
+    regs = np.unique(regiones) if province_order is None else np.array(province_order)
+
+    for reg in regs:
+        mask = regiones == reg
         if not np.any(mask):
             continue
-        p_prov = _weighted_draws(
-            p2d[:, mask], n_i[mask]
-        )  # Se saca el promedio ponderado aislando por provincia
 
-        # Nombre de archivo
-        f_prov = os.path.join(
-            outdir, f"posterior_prevalencia_{condicion_label}_{prov}.png"
+        p_reg = _weighted_draws(p2d[:, mask], n_i[mask])
+
+        f_reg = os.path.join(
+            outdir, f"posterior_prevalencia_{condicion_label}_{reg}.png"
         )
         _plot_posterior_1d(
-            p_prov,
-            title=f"Distribución posterior de la prevalencia de {condicion_label} – {prov}",
+            p_reg,
+            title=(
+                f"Distribución posterior de la prevalencia de {condicion_label} – {reg}"
+            ),
             xlabel=f"Prevalencia de {condicion_label}",
-            outfile=f_prov,
+            outfile=f_reg,
             bins=bins,
             kde_factor=2,
         )
@@ -568,7 +574,7 @@ if __name__ == "__main__":
     trace_2, resumen_2, meta_2 = run_with_csv(
         csv_path="../../data/clean/datos_limpios.csv",
         condicion="obesidad",
-        provincia_col="provincia",
+        region_col="provincia",
         distrito_col="distrito",
         vars_dem=(
             "desempleo",
@@ -579,7 +585,7 @@ if __name__ == "__main__":
             "ocupantes_por_hogar",
             "anos_escolaridad",
         ),
-        incluye_provincia=False,
+        incluye_region=False,
         draws=2000,
         tune=1000,
         chains=4,
@@ -591,7 +597,7 @@ if __name__ == "__main__":
     trace_2_sob, resumen_2_sob, meta_2_sob = run_with_csv(
         csv_path="../../data/clean/datos_limpios.csv",
         condicion="sobrepeso",
-        provincia_col="provincia",
+        region_col="provincia",
         distrito_col="distrito",
         vars_dem=(
             "desempleo",
@@ -602,7 +608,55 @@ if __name__ == "__main__":
             "ocupantes_por_hogar",
             "anos_escolaridad",
         ),
-        incluye_provincia=False,
+        incluye_region=False,
+        draws=2000,
+        tune=1000,
+        chains=4,
+        cores=4,
+        seed=2025,
+    )
+
+    # modelo por cantones
+    # obesidad
+    trace_c_ob, resumen_c_ob, meta_c_ob = run_with_csv(
+        csv_path="../../data/clean/datos_limpios.csv",
+        condicion="obesidad",
+        region_col="canton",
+        distrito_col="distrito",
+        vars_dem=(
+            "desempleo",
+            "poblacion_urbana",
+            "privacion_critica",
+            "poblacion_menor_14",
+            "hogares_monomarentales",
+            "ocupantes_por_hogar",
+            "anos_escolaridad",
+        ),
+        incluye_region=False,
+        draws=2000,
+        tune=1000,
+        chains=4,
+        cores=4,
+        seed=2025,
+    )
+
+    # modelo por cantones
+    # sobrepeso
+    trace_c_sob, resumen_c_sob, meta_c_sob = run_with_csv(
+        csv_path="../../data/clean/datos_limpios.csv",
+        condicion="sobrepeso",
+        region_col="canton",
+        distrito_col="distrito",
+        vars_dem=(
+            "desempleo",
+            "poblacion_urbana",
+            "privacion_critica",
+            "poblacion_menor_14",
+            "hogares_monomarentales",
+            "ocupantes_por_hogar",
+            "anos_escolaridad",
+        ),
+        incluye_region=False,
         draws=2000,
         tune=1000,
         chains=4,
@@ -644,6 +698,24 @@ if __name__ == "__main__":
         ],
         bins=60,
     )
+
+    # ===== guardar gráficos cantones =====
+    save_posterior_prevalence_figs(
+        trace_c_ob,
+        meta_c_ob,
+        condicion_label="obesidad",
+        outdir="../../res/graficos/graficos_simulados_no_jer/cantones/obesidad",
+        region_col="canton",
+    )
+
+    save_posterior_prevalence_figs(
+        trace_c_sob,
+        meta_c_sob,
+        condicion_label="sobrepeso",
+        outdir="../../res/graficos/graficos_simulados_no_jer/cantones/sobrepeso",
+        region_col="canton",
+    )
+
     print("Gráficos guardados en res/graficos/graficos_simulados")
 
     # validacion
