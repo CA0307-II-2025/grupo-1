@@ -237,9 +237,6 @@ def _compose_mosaic(
 # ==========================
 # Construcción de resúmenes para el mapa y forest plot
 # ==========================
-
-
-def build_summary_df(trace_ob, meta_ob, trace_sob, meta_sob) -> pd.DataFrame:
     ob_by_prov = _posterior_draws_by_province(trace_ob, meta_ob)
     sob_by_prov = _posterior_draws_by_province(trace_sob, meta_sob)
 
@@ -469,6 +466,7 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
                 "<extra></extra>"
             ),
             name=title,
+            showlegend=False
         )
     )
 
@@ -480,25 +478,18 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
         pais_hi = float(pais_row[hi_col])
 
         line_opacity = 0.6
+        line_color = "#111827"  # gris oscuro (elige el que quieras)
 
-        # traza como línea → aparece en la leyenda y tiene hover
-        fig.add_trace(
-            go.Scatter(
-                x=[pais_val, pais_val],
-                y=[y_order[0] + 1, y_order[-1]],  # de la primera a la última provincia
-                mode="lines",
-                line=dict(dash="dot", width=1.5),
-                name="",
-                opacity=line_opacity,
-                hovertemplate=(
-                    f"Media país: {pais_val:.4f}<br>"
-                    f"IC95%: {pais_lo:.4f} – {pais_hi:.4f}"
-                    "<extra></extra>"
-                ),
-            )
+        # 1) línea de fondo que SIEMPRE va de arriba a abajo del panel (tamaño paper)
+        fig.add_vline(
+            x=pais_val,
+            line_dash="dot",
+            line_width=1.5,
+            opacity=line_opacity,
+            line_color=line_color,
         )
 
-        # desplazamiento horizontal para el texto “Media país”
+        # desplazamiento en unidades de datos (~3.5 % del rango)
         x_min = float(np.min(lo))
         x_max = float(np.max(hi))
         dx = 0.035 * (x_max - x_min)
@@ -509,10 +500,39 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
             xref="x",
             yref="paper",
             text="",
-            showarrow=False,
+            showarrow=True,
             align="left",
             opacity=line_opacity,
         )
+        pais_row = df_summary.loc[df_summary["Province"] == "PAIS"].iloc[0]
+        pais_val = float(pais_row[mean_col])
+        pais_lo = float(pais_row[lo_col])
+        pais_hi = float(pais_row[hi_col])
+
+        # muchos puntos a lo largo de Y (una por provincia)
+        y_line = pd.Categorical(y_order, categories=y_order, ordered=True)
+        custom_line = np.column_stack(
+            [[pais_lo] * len(y_order), [pais_hi] * len(y_order)]
+        )
+
+        fig.add_trace(
+            go.Scatter(
+                x=[pais_val] * len(y_order),
+                y=y_line,
+                mode="lines",
+                line=dict(dash="dot", width=1.5),
+                name="Media país",
+                opacity=0,
+                customdata=custom_line,
+                hovertemplate=(
+                    "Media país: %{x:.4f}<br>"
+                    "IC95% país: %{customdata[0]:.4f} – %{customdata[1]:.4f}"
+                    "<extra></extra>"
+                ),
+                showlegend=False,
+            )
+        )
+
 
 
     # altura dinámica para que quepan todas las provincias
@@ -521,13 +541,20 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
     fig_h = base_h + row_h * max(1, len(y_order))
 
     fig.update_layout(
-        title=f"{title}",
+        title=dict(
+            text=f"Intervalos de confianza 95% – {title}",
+            x=0.5,          
+            xanchor="center",
+        ),
         xaxis_title="",
-        yaxis_title="Provincia",
+        yaxis_title="",
         margin=dict(l=10, r=10, t=55, b=10),
         hoverlabel=dict(bgcolor="#4f46e5", font_color="white"),
         height=fig_h,
+        showlegend=False,      # si ya quitaste la leyenda
     )
+
+
 
     # asegura orden y evita “zoom inicial”
     fig.update_yaxes(categoryorder="array", categoryarray=y_order, automargin=True)
