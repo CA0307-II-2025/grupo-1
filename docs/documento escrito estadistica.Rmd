@@ -208,6 +208,25 @@ Es un modelo logit–binomial bayesiano con priors débiles; la inferencia usa N
 
 
 # Resultados
+```{r resumen.provincias, echo=FALSE}
+library(dplyr)
+library(knitr)
+
+read.csv("../res/csv/summary_prevalence_by_province.csv") %>%
+  transmute(
+    Grupo = stringr::str_to_title(Province),
+    Media_Obesidad        = round(ob_mean, 5),
+    `Intervalo Obesidad`  = paste0("[", round(ob_q2.5, 5),  ", ", round(ob_q97.5, 5),  "]"),
+    Media_Sobrepeso       = round(sb_mean, 5),
+    `Intervalo Sobrepeso` = paste0("[", round(sb_q2.5, 5), ", ", round(sb_q97.5, 5), "]")
+  ) %>%
+  kable(
+    caption = "Resumen por provincia: obesidad y sobrepeso",
+    align = "c"
+  )
+
+```
+
 ```{r fig-mosaico_obesidad, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de obesidad infantil"}
 knitr::include_graphics("../res/graficos/mosaico_posterior_prevalencia_obesidad_provincias.png")
 ```
