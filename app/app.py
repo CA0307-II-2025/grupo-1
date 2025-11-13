@@ -52,8 +52,8 @@ SUMMARY_CSV = "../res/csv/summary_prevalence_by_province.csv"
 # ==========================
 # Parámetros y constantes
 # ==========================
-CR_LATITUDE = 9.7489
-CR_LONGITUDE = -83.7534
+CR_LATITUDE = 9.76810
+CR_LONGITUDE = -84.29070
 CR_ZOOM = 7
 MAPBOX_STYLE = "carto-positron"
 
@@ -172,33 +172,6 @@ def _load_province_geojson(path: str):
     return gj, "id"
 
 
-def _posterior_draws_by_province(trace, meta) -> Dict[str, np.ndarray]:
-    """Devuelve draws ponderados por provincia usando el mismo método del script original."""
-    p = trace.posterior["p"].values  # (chains, draws, N)
-    S = p.shape[0] * p.shape[1]
-    p2d = p.reshape(S, p.shape[2])  # (S, N)
-    dfm = meta["df"]
-    provincias = dfm["provincia"].astype(str).apply(_sanitize_prov).to_numpy()
-    n_i = dfm["total"].to_numpy(float)
-
-    draws_by_prov: Dict[str, np.ndarray] = {}
-    for prov in PROVINCE_ORDER:
-        mask = provincias == prov
-        if not np.any(mask):
-            continue
-        # Agregación ponderada por 'total' usando la función original
-        p_prov = mj._weighted_draws(p2d[:, mask], n_i[mask])
-        draws_by_prov[prov] = p_prov
-    return draws_by_prov
-
-
-def _posterior_country_draws(trace, meta) -> np.ndarray:
-    p = trace.posterior["p"].values
-    S = p.shape[0] * p.shape[1]
-    p2d = p.reshape(S, p.shape[2])
-    n_i = meta["df"]["total"].to_numpy(float)
-    return mj._weighted_draws(p2d, n_i)
-
 
 def _summarize(draws: np.ndarray) -> Tuple[float, float, float, float]:
     mean = float(draws.mean())
@@ -237,140 +210,6 @@ def _compose_mosaic(
             y += h + pad
     _ensure_dir(os.path.dirname(outpath))
     canvas.save(outpath)
-
-
-# ==========================
-# Preparación de resultados (correr modelo si faltan mosaicos)
-# ==========================
-
-
-def prepare_results_if_needed():
-    need_run = not (os.path.isfile(MOSAIC_OB) and os.path.isfile(MOSAIC_SOB))
-
-    if need_run:
-        # Muestreo idéntico al script
-        trace_ob, resumen_ob, meta_ob = mj.run_with_csv(
-            csv_path=DATA_CSV,
-            condicion="obesidad",
-            provincia_col="provincia",
-            distrito_col="distrito",
-            vars_dem=(
-                "desempleo",
-                "poblacion_urbana",
-                "privacion_critica",
-                "poblacion_menor_14",
-                "hogares_monomarentales",
-                "ocupantes_por_hogar",
-                "anos_escolaridad",
-            ),
-            incluye_provincia=True,
-            draws=20,
-            tune=10,
-            chains=2,
-            cores=2,
-            seed=2025,
-        )
-        trace_sob, resumen_sob, meta_sob = mj.run_with_csv(
-            csv_path=DATA_CSV,
-            condicion="sobrepeso",
-            provincia_col="provincia",
-            distrito_col="distrito",
-            vars_dem=(
-                "desempleo",
-                "poblacion_urbana",
-                "privacion_critica",
-                "poblacion_menor_14",
-                "hogares_monomarentales",
-                "ocupantes_por_hogar",
-                "anos_escolaridad",
-            ),
-            incluye_provincia=True,
-            draws=20,
-            tune=10,
-            chains=2,
-            cores=2,
-            seed=2025,
-        )
-        # Figuras por provincia (archivo por provincia) + país
-        mj.save_posterior_prevalence_figs(
-            trace_ob,
-            meta_ob,
-            condicion_label="obesidad",
-            outdir=OUTDIR_OB,
-            province_order=PROVINCE_ORDER,
-            bins=60,
-        )
-        mj.save_posterior_prevalence_figs(
-            trace_sob,
-            meta_sob,
-            condicion_label="sobrepeso",
-            outdir=OUTDIR_SOB,
-            province_order=PROVINCE_ORDER,
-            bins=60,
-        )
-
-        # Crear mosaicos: país + 7 provincias = 8 paneles (orden dado)
-        def paths_for(cond: str, outdir: str):
-            paths = [os.path.join(outdir, f"posterior_prevalencia_{cond}_pais.png")]
-            paths += [
-                os.path.join(outdir, f"posterior_prevalencia_{cond}_{prov}.png")
-                for prov in PROVINCE_ORDER
-            ]
-            return paths
-
-        _compose_mosaic(paths_for("obesidad", OUTDIR_OB), MOSAIC_OB)
-        _compose_mosaic(paths_for("sobrepeso", OUTDIR_SOB), MOSAIC_SOB)
-
-        return (trace_ob, meta_ob), (trace_sob, meta_sob)
-
-    else:
-        # Si ya existen mosaicos, aún necesitamos los resúmenes para el mapa.
-        # Los generamos corriendo el modelo rápidamente (mismos parámetros).
-        # (Si en tu entorno querés evitar re-muestrear, podrías leer un CSV precomputado en su lugar.)
-        trace_ob, _, meta_ob = mj.run_with_csv(
-            csv_path=DATA_CSV,
-            condicion="obesidad",
-            provincia_col="provincia",
-            distrito_col="distrito",
-            vars_dem=(
-                "desempleo",
-                "poblacion_urbana",
-                "privacion_critica",
-                "poblacion_menor_14",
-                "hogares_monomarentales",
-                "ocupantes_por_hogar",
-                "anos_escolaridad",
-            ),
-            incluye_provincia=True,
-            draws=20,
-            tune=10,
-            chains=2,
-            cores=2,
-            seed=2025,
-        )
-        trace_sob, _, meta_sob = mj.run_with_csv(
-            csv_path=DATA_CSV,
-            condicion="sobrepeso",
-            provincia_col="provincia",
-            distrito_col="distrito",
-            vars_dem=(
-                "desempleo",
-                "poblacion_urbana",
-                "privacion_critica",
-                "poblacion_menor_14",
-                "hogares_monomarentales",
-                "ocupantes_por_hogar",
-                "anos_escolaridad",
-            ),
-            incluye_provincia=True,
-            draws=20,
-            tune=10,
-            chains=2,
-            cores=2,
-            seed=2025,
-        )
-        return (trace_ob, meta_ob), (trace_sob, meta_sob)
-
 
 # ==========================
 # Construcción de resúmenes para el mapa y forest plot
@@ -413,7 +252,7 @@ def build_summary_df(trace_ob, meta_ob, trace_sob, meta_sob) -> pd.DataFrame:
     df = pd.DataFrame(rows)
     total_row = {
         "Province": "PAIS",
-        "lat": CR_LATITUDE,
+        "lat": (9.92810, -84.09070),
         "lon": CR_LONGITUDE,
         "ob_mean": cobm,
         "ob_q2.5": cob2,
