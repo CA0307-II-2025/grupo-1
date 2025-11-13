@@ -47,6 +47,8 @@ def img_to_data_uri(path: str) -> str:
         return "data:image/png;base64," + base64.b64encode(f.read()).decode("ascii")
 
 
+
+
 SUMMARY_CSV = "../res/csv/summary_prevalence_by_province.csv"
 
 # ==========================
@@ -94,6 +96,27 @@ GEOJSON_PROVINCES = "../data/geo/geoBoundaries-CRI-ADM1_simplified.geojson"
 # ==========================
 # Utilidades
 # ==========================
+
+def density_image_path(condicion: str, ambito: str) -> str:
+    """
+    Devuelve la ruta al PNG de la densidad para una condición
+    ('obesidad' o 'sobrepeso') y un ámbito (provincia en MAYÚSCULAS
+    como en PROVINCE_ORDER, o 'PAIS').
+    """
+    if condicion == "obesidad":
+        base_dir = OUTDIR_OB
+        prefix = "posterior_prevalencia_obesidad_"
+    else:
+        base_dir = OUTDIR_SOB
+        prefix = "posterior_prevalencia_sobrepeso_"
+
+    if ambito == "PAIS":
+        filename = prefix + "pais.png"
+    else:
+        # ej: 'SAN JOSE' -> 'posterior_prevalencia_obesidad_SAN JOSE.png'
+        filename = prefix + ambito + ".png"
+
+    return os.path.join(base_dir, filename)
 
 
 def _ensure_dir(path: str):
@@ -449,32 +472,48 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
         )
     )
 
-    # línea vertical con media país + etiqueta (desplazada a la derecha y misma opacidad)
+    # línea vertical *interactiva* con media país + etiqueta
     if "PAIS" in df_summary["Province"].values:
-        pais_val = float(
-            df_summary.loc[df_summary["Province"] == "PAIS", mean_col].iloc[0]
+        pais_row = df_summary.loc[df_summary["Province"] == "PAIS"].iloc[0]
+        pais_val = float(pais_row[mean_col])
+        pais_lo = float(pais_row[lo_col])
+        pais_hi = float(pais_row[hi_col])
+
+        line_opacity = 0.6
+
+        # traza como línea → aparece en la leyenda y tiene hover
+        fig.add_trace(
+            go.Scatter(
+                x=[pais_val, pais_val],
+                y=[y_order[0] + 1, y_order[-1]],  # de la primera a la última provincia
+                mode="lines",
+                line=dict(dash="dot", width=1.5),
+                name="",
+                opacity=line_opacity,
+                hovertemplate=(
+                    f"Media país: {pais_val:.4f}<br>"
+                    f"IC95%: {pais_lo:.4f} – {pais_hi:.4f}"
+                    "<extra></extra>"
+                ),
+            )
         )
 
-        # línea
-        line_opacity = 0.6
-        fig.add_vline(x=pais_val, line_dash="dot", line_width=1, opacity=line_opacity)
-
-        # desplazamiento en unidades de datos (~2 % del rango)
+        # desplazamiento horizontal para el texto “Media país”
         x_min = float(np.min(lo))
         x_max = float(np.max(hi))
         dx = 0.035 * (x_max - x_min)
 
-        # etiqueta
         fig.add_annotation(
-            x=pais_val + dx,  # un poco a la derecha
-            y=1.02,  # arriba del panel
+            x=pais_val + dx,
+            y=1.02,
             xref="x",
             yref="paper",
-            text="Media país",
+            text="",
             showarrow=False,
             align="left",
-            opacity=line_opacity,  # misma opacidad que la línea
+            opacity=line_opacity,
         )
+
 
     # altura dinámica para que quepan todas las provincias
     base_h = 140
@@ -482,8 +521,8 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
     fig_h = base_h + row_h * max(1, len(y_order))
 
     fig.update_layout(
-        title=f"Forest plot – {title}",
-        xaxis_title="Estimación (media) con IC95%",
+        title=f"{title}",
+        xaxis_title="",
         yaxis_title="Provincia",
         margin=dict(l=10, r=10, t=55, b=10),
         hoverlabel=dict(bgcolor="#4f46e5", font_color="white"),
@@ -616,17 +655,17 @@ app.layout = html.Div(
                         ]
                     ),
                 ),
-                # TAB MOSAICOS (imágenes planas)
+                # TAB DENSIDADES
                 dcc.Tab(
-                    label="Mosaicos",
-                    value="tab-mosaic",
+                    label="Densidades",
+                    value="tab-mosaic",  # puedes dejar este value igual
                     children=html.Div(
                         [
                             html.Div(
                                 [
                                     html.Label("Condición:"),
                                     dcc.RadioItems(
-                                        id="mosaic-cond-radio",
+                                        id="dens-cond-radio",
                                         options=[
                                             {"label": "Obesidad", "value": "obesidad"},
                                             {
@@ -636,34 +675,39 @@ app.layout = html.Div(
                                         ],
                                         value="obesidad",
                                         inline=True,
-                                        style={"marginRight": "16px"},
-                                    ),
-                                    html.Span("  "),
-                                    html.Label("Ámbito:"),
-                                    dcc.RadioItems(
-                                        id="mosaic-scope-radio",
-                                        options=[
-                                            {
-                                                "label": "Provincias",
-                                                "value": "provincias",
-                                            },
-                                            {"label": "País", "value": "pais"},
-                                        ],
-                                        value="provincias",
-                                        inline=True,
                                     ),
                                 ],
                                 style={"marginBottom": 8},
                             ),
+
+                            # Pestañas por ámbito: país + provincias
+                            dcc.Tabs(
+                                id="dens-scope-tabs",
+                                value="PAIS",
+                                children=[
+                                    dcc.Tab(label="País", value="PAIS"),
+                                    dcc.Tab(label="San José", value="SAN JOSE"),
+                                    dcc.Tab(label="Alajuela", value="ALAJUELA"),
+                                    dcc.Tab(label="Cartago", value="CARTAGO"),
+                                    dcc.Tab(label="Heredia", value="HEREDIA"),
+                                    dcc.Tab(label="Guanacaste", value="GUANACASTE"),
+                                    dcc.Tab(label="Puntarenas", value="PUNTARENAS"),
+                                    dcc.Tab(label="Limón", value="LIMON"),
+                                ],
+                                style={"marginBottom": 8},
+                            ),
+
                             html.Img(
-                                id="mosaic-img", src="", style={"display": "none"}
+                                id="dens-img",
+                                src="",
+                                style={"display": "none"},
                             ),
                         ]
                     ),
                 ),
                 # TAB FOREST
                 dcc.Tab(
-                    label="Forest plot",
+                    label="Intervalos de Confianza 95%",
                     value="tab-forest",
                     children=html.Div(
                         [
@@ -701,29 +745,23 @@ def update_map(metric_value):
 
 
 @app.callback(
-    Output("mosaic-img", "src"),
-    Output("mosaic-img", "style"),
-    Input("mosaic-cond-radio", "value"),
-    Input("mosaic-scope-radio", "value"),
+    Output("dens-img", "src"),
+    Output("dens-img", "style"),
+    Input("dens-cond-radio", "value"),
+    Input("dens-scope-tabs", "value"),
 )
-def update_mosaic_image(condicion, scope):
-    # Debes tener definidas estas constantes arriba:
-    # MOSAIC_OB_PROV, MOSAIC_SOB_PROV, MOSAIC_OB_PAIS, MOSAIC_SOB_PAIS
-    if condicion == "obesidad" and scope == "provincias":
-        path = MOSAIC_OB_PROV
-    elif condicion == "obesidad" and scope == "pais":
-        path = MOSAIC_OB_PAIS
-    elif condicion == "sobrepeso" and scope == "provincias":
-        path = MOSAIC_SOB_PROV
-    else:
-        path = MOSAIC_SOB_PAIS
+def update_density_image(condicion, ambito):
+    # arma la ruta del PNG según condición y ámbito
+    path = density_image_path(condicion, ambito)
 
     if not os.path.isfile(path):
-        # Oculta la imagen si no existe
+        # si no existe, ocultamos la imagen
         return "", {"display": "none"}
 
+    # si existe, la convertimos a data URI para mostrarla en el <img>
     with open(path, "rb") as f:
         encoded = base64.b64encode(f.read()).decode("ascii")
+
     src = f"data:image/png;base64,{encoded}"
     style = {
         "maxWidth": "100%",
@@ -733,6 +771,7 @@ def update_mosaic_image(condicion, scope):
         "borderRadius": "8px",
     }
     return src, style
+
 
 
 @app.callback(Output("forest-graph", "figure"), Input("forest-radio", "value"))
