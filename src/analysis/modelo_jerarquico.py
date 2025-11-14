@@ -13,6 +13,10 @@ except Exception:
     _HAS_SCIPY = False
 
 
+SUMMARY_PROVINCE_CSV = "../../res/csv/summary_prevalence_by_province.csv"
+SUMMARY_CANTON_CSV = "../../res/csv/summary_prevalence_by_canton.csv"
+
+
 # ---------------------------
 # Utilidades
 # ---------------------------
@@ -166,6 +170,83 @@ def posterior_summary_by_row(trace, meta, var_name="p", q=(0.025, 0.5, 0.975)):
     out["p_q2.5"] = qlo
     out["p_q50"] = qmd
     out["p_q97.5"] = qhi
+    return out
+
+def region_country_summary(trace, meta, condicion_label: str,
+                           region_col: str,
+                           label_col: str = "Region"):
+    """
+    Devuelve un DataFrame con filas: regiones (provincia o cantón) + 'PAIS',
+    y columnas de resumen para la condición dada con prefijo:
+      ob_* si condicion_label == "obesidad"
+      sb_* si condicion_label == "sobrepeso"
+
+    region_col: nombre de la columna de región en meta["df"] (p.ej. 'provincia' o 'canton')
+    label_col: nombre de la columna de etiquetas en el resumen (p.ej. 'Province' o 'Canton')
+    """
+    # Draws de p: (chains, draws, N) -> (S, N)
+    p = trace.posterior["p"].values
+    chains, draws, N = p.shape
+    S = chains * draws
+    p2d = p.reshape(S, N)
+
+    dfm = meta["df"]
+    if region_col not in dfm.columns:
+        raise ValueError(f"No se encontró la columna de región '{region_col}' en meta['df'].")
+
+    if "total" not in dfm.columns:
+        raise ValueError("meta['df'] debe tener la columna 'total'.")
+
+    regiones = dfm[region_col].astype(str).to_numpy()
+    n_i = dfm["total"].to_numpy(dtype=float)
+
+    def _summ(draws_1d: np.ndarray):
+        mean = draws_1d.mean()
+        q2p5, q50, q97p5 = np.quantile(draws_1d, [0.025, 0.5, 0.975])
+        return mean, q2p5, q50, q97p5
+
+    # prefijo por condición
+    prefix = "ob" if condicion_label.lower().startswith("obes") else "sb"
+
+    rows = []
+
+    # País (ponderado)
+    draws_country = _weighted_draws(p2d, n_i)
+    m, ql, qm, qh = _summ(draws_country)
+    rows.append(
+        {
+            label_col: "PAIS",
+            f"{prefix}_mean": m,
+            f"{prefix}_q2.5": ql,
+            f"{prefix}_q50": qm,
+            f"{prefix}_q97.5": qh,
+        }
+    )
+
+    # Regiones
+    for reg in np.unique(regiones):
+        mask = regiones == reg
+        if not np.any(mask):
+            continue
+        draws_reg = _weighted_draws(p2d[:, mask], n_i[mask])
+        m, ql, qm, qh = _summ(draws_reg)
+        rows.append(
+            {
+                label_col: str(reg),
+                f"{prefix}_mean": m,
+                f"{prefix}_q2.5": ql,
+                f"{prefix}_q50": qm,
+                f"{prefix}_q97.5": qh,
+            }
+        )
+
+    out = pd.DataFrame(rows)
+
+    # Ordenar alfabéticamente y dejar 'PAIS' al final
+    regs = out[label_col].astype(str).tolist()
+    others = sorted([r for r in regs if r != "PAIS"])
+    order = others + (["PAIS"] if "PAIS" in regs else [])
+    out = out.set_index(label_col).loc[order].reset_index()
     return out
 
 
@@ -725,3 +806,51 @@ if __name__ == "__main__":
 
     diag_sobrepeso = resumen_diagnostico_modelo(trace_2_sob, meta_2_sob)
     print(diag_sobrepeso)
+
+    # ============================
+    # CSV de resumen por PROVINCIA (igual formato que modelo_provincias)
+    # ============================
+    df_prov_ob = region_country_summary(
+        trace_2,
+        meta_2,
+        condicion_label="obesidad",
+        region_col="provincia",
+        label_col="Province",  # misma columna que en summary_prevalence_by_province.csv
+    )
+    df_prov_sb = region_country_summary(
+        trace_2_sob,
+        meta_2_sob,
+        condicion_label="sobrepeso",
+        region_col="provincia",
+        label_col="Province",
+    )
+
+    df_prov_comb = pd.merge(df_prov_ob, df_prov_sb, on="Province", how="outer")
+
+    os.makedirs(os.path.dirname(SUMMARY_PROVINCE_CSV), exist_ok=True)
+    df_prov_comb.to_csv(SUMMARY_PROVINCE_CSV, index=False)
+    print("CSV de resumen por provincia guardado en:", SUMMARY_PROVINCE_CSV)
+
+    # ============================
+    # CSV de resumen por CANTÓN
+    # ============================
+    df_cant_ob = region_country_summary(
+        trace_c_ob,
+        meta_c_ob,
+        condicion_label="obesidad",
+        region_col="canton",
+        label_col="Canton",
+    )
+    df_cant_sb = region_country_summary(
+        trace_c_sob,
+        meta_c_sob,
+        condicion_label="sobrepeso",
+        region_col="canton",
+        label_col="Canton",
+    )
+
+    df_cant_comb = pd.merge(df_cant_ob, df_cant_sb, on="Canton", how="outer")
+
+    os.makedirs(os.path.dirname(SUMMARY_CANTON_CSV), exist_ok=True)
+    df_cant_comb.to_csv(SUMMARY_CANTON_CSV, index=False)
+    print("CSV de resumen por cantón guardado en:", SUMMARY_CANTON_CSV)
