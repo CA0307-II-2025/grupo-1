@@ -29,7 +29,6 @@ def img_to_data_uri(path: str) -> str:
 
 
 
-SUMMARY_CSV = "../res/csv/summary_prevalence_by_province.csv"
 
 # ==========================
 # Parámetros y constantes
@@ -66,7 +65,10 @@ OUTDIR_SOB = "../res/graficos/graficos_simulados_no_jer/sobrepeso"
 MOSAIC_OB_PAIS = os.path.join(OUTDIR_OB, "posterior_prevalencia_obesidad_pais.png")
 MOSAIC_SOB_PAIS = os.path.join(OUTDIR_SOB, "posterior_prevalencia_sobrepeso_pais.png")
 GEOJSON_PROVINCES = "../data/geo/geoBoundaries-CRI-ADM1_simplified.geojson"
-
+GEOJSON_CANTONES = "../data/geo/Cantones_de_Costa_Rica.geojson"
+CANTON_CODES_JSON = "../data/geo/CodeSystem-cantones-cs.json"
+SUMMARY_CSV = "../res/csv/summary_prevalence_by_province.csv"
+SUMMARY_CSV_CANTON = "../res/csv/summary_prevalence_by_canton.csv"
 # ==========================
 # Utilidades
 # ==========================
@@ -326,6 +328,117 @@ def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
     )
     return fig
 
+def make_map_canton(df_canton: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
+    import plotly.express as px
+    import plotly.graph_objects as go
+    import numpy as np
+
+    assert metric in {"ob_mean", "sb_mean"}
+
+    lo_col = "ob_q2.5" if metric == "ob_mean" else "sb_q2.5"
+    hi_col = "ob_q97.5" if metric == "ob_mean" else "sb_q97.5"
+
+    dfc = df_canton.copy()
+
+    # columnas numéricas
+    dfc["__mean"] = dfc[metric].astype(float)
+    dfc["__lo"] = dfc[lo_col].astype(float)
+    dfc["__hi"] = dfc[hi_col].astype(float)
+
+    # nos aseguramos de tener el nombre limpio del cantón
+    if "_canton_clean" not in dfc.columns:
+        dfc["_canton_clean"] = dfc["Canton"].astype(str).apply(_sanitize_prov)
+
+    canton_names = dfc["_canton_clean"].unique().tolist()
+
+    # Intento 1: choropleth por polígonos de cantón
+    gj, fid_key = _load_canton_geojson(GEOJSON_CANTONES, canton_names)
+
+    if gj is not None and fid_key is not None:
+        fig = px.choropleth_mapbox(
+            dfc,
+            geojson=gj,
+            locations="_canton_clean",     # empata con feat["id"]
+            featureidkey="id",
+            color="__mean",
+            custom_data=["__mean", "__lo", "__hi"],
+            center={"lat": CR_LATITUDE, "lon": CR_LONGITUDE},
+            mapbox_style=MAPBOX_STYLE,
+            zoom=8.0,
+            opacity=0.80,
+            color_continuous_scale="Viridis",
+        )
+
+        fig.update_traces(
+            hovertext=dfc["Canton_display"],
+            hovertemplate=(
+                "<b>%{hovertext}</b><br>"
+                "Media: %{customdata[0]:.4f}<br>"
+                "IC95%: [%{customdata[1]:.4f}, %{customdata[2]:.4f}]"
+                "<extra></extra>"
+            ),
+        )
+
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+            coloraxis_colorbar=dict(title="media"),
+            height=600,
+        )
+
+        return fig
+
+    # Intento 2 (fallback): puntos por cantón usando lat/lon
+    if ("lat" not in dfc.columns) or ("lon" not in dfc.columns):
+        raise ValueError(
+            "El mapa por cantón no pudo usar el GeoJSON y el CSV no tiene "
+            "columnas 'lat' y 'lon'.\n"
+            "Solución rápida: agrega 'lat' y 'lon' al CSV de cantones, o revisa "
+            "que GEOJSON_CANTONES apunte al archivo correcto."
+        )
+
+    vals = dfc["__mean"].values
+    vmin, vmax = float(np.nanmin(vals)), float(np.nanmax(vals))
+
+    fig = go.Figure(
+        go.Scattermapbox(
+            lat=dfc["lat"],
+            lon=dfc["lon"],
+            text=dfc["Canton_display"],
+            mode="markers",
+            marker=dict(
+                size=12,
+                color=dfc["__mean"],
+                colorscale="Viridis",
+                cmin=vmin,
+                cmax=vmax,
+                showscale=True,
+                colorbar=dict(title="media"),
+                opacity=0.9,
+            ),
+            customdata=np.column_stack([dfc["__mean"], dfc["__lo"], dfc["__hi"]]),
+            hovertemplate=(
+                "<b>%{text}</b><br>"
+                "Media: %{customdata[0]:.4f}<br>"
+                "IC95%: [%{customdata[1]:.4f}, %{customdata[2]:.4f}]"
+                "<extra></extra>"
+            ),
+            name="Cantón",
+        )
+    )
+
+    fig.update_layout(
+        mapbox=dict(
+            style=MAPBOX_STYLE,
+            center=dict(lat=CR_LATITUDE, lon=CR_LONGITUDE),
+            zoom=8.0,
+        ),
+        margin=dict(l=0, r=0, t=0, b=0),
+        height=600,
+    )
+    return fig
+
+
+
 
 def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
     import plotly.graph_objects as go
@@ -460,7 +573,7 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
 # ==========================
 def get_summary_df() -> pd.DataFrame:
     """
-    Lee SUMMARY_CSV y lo valida.
+    Lee SUMMARY_CSV y lo valida. Provincias.
     """
     if not os.path.isfile(SUMMARY_CSV):
         raise FileNotFoundError(
@@ -525,6 +638,142 @@ def get_summary_df() -> pd.DataFrame:
 
 SUMMARY_DF = get_summary_df()
 
+def _load_canton_codes(path: str):
+    """
+    Lee el CodeSystem de cantones FHIR y devuelve un dict:
+    clave = nombre sanitizado (MAYÚSCULAS sin tildes)
+    valor = nombre oficial con tildes (display).
+    """
+    import json
+
+    if not os.path.isfile(path):
+        return {}
+
+    with open(path, "r", encoding="utf-8") as f:
+        cs = json.load(f)
+
+    concepts = cs.get("concept", [])
+    name_map = {}
+    for c in concepts:
+        disp = c.get("display", "").strip()
+        if not disp:
+            continue
+        clean = _sanitize_prov(disp)
+        name_map[clean] = disp
+    return name_map
+
+def _load_canton_geojson(path: str, canton_names: List[str]):
+    """
+    Carga un GeoJSON de cantones y elige automáticamente la columna de
+    'properties' que mejor calza con los nombres de cantón (_canton_clean).
+
+    - canton_names: lista de nombres ya sanitizados (MAYÚSCULAS sin tildes).
+    Devuelve (geojson_mod, "id") o (None, None) si no se pudo usar.
+    """
+    import json
+
+    if not os.path.isfile(path):
+        return None, None
+
+    with open(path, "r", encoding="utf-8") as f:
+        gj = json.load(f)
+
+    features = gj.get("features", [])
+    if not features:
+        return None, None
+
+    # claves de propiedades que son cadenas
+    sample_props = features[0].get("properties", {})
+    candidate_keys = [k for k, v in sample_props.items() if isinstance(v, str)]
+    if not candidate_keys:
+        return None, None
+
+    target_set = set(canton_names)
+    best_key = None
+    best_score = -1
+
+    # buscamos la propiedad cuyo conjunto de nombres (sanitizados)
+    # tenga mayor intersección con los nombres del CSV
+    for key in candidate_keys:
+        names_for_key = set()
+        for feat in features:
+            val = str(feat.get("properties", {}).get(key, "")).strip()
+            if not val:
+                continue
+            names_for_key.add(_sanitize_prov(val))
+
+        score = len(names_for_key & target_set)
+        if score > best_score:
+            best_score = score
+            best_key = key
+
+    if best_key is None or best_score <= 0:
+        # no encontramos una columna que calce con los cantones del CSV
+        return None, None
+
+    # fijamos 'id' usando esa columna
+    for feat in features:
+        val = str(feat.get("properties", {}).get(best_key, "")).strip()
+        feat["id"] = _sanitize_prov(val)
+
+    return gj, "id"
+
+
+
+def get_summary_canton_df() -> pd.DataFrame:
+    """
+    Lee SUMMARY_CSV_CANTON (resumen por cantón) y agrega:
+    - _canton_clean: nombre sanitizado tipo SAN JOSE
+    - Canton_display: nombre oficial con tildes (San José, Escazú, etc.)
+    """
+    if not os.path.isfile(SUMMARY_CSV_CANTON):
+        raise FileNotFoundError(
+            f"No se encontró el CSV requerido: {SUMMARY_CSV_CANTON}. "
+            "Genera el archivo de resumen por cantón antes de lanzar el dashboard."
+        )
+
+    df = pd.read_csv(SUMMARY_CSV_CANTON)
+
+    required_cols = {
+        "Canton",
+        "ob_mean",
+        "ob_q2.5",
+        "ob_q50",
+        "ob_q97.5",
+        "sb_mean",
+        "sb_q2.5",
+        "sb_q50",
+        "sb_q97.5",
+    }
+    missing = required_cols.difference(df.columns)
+    if missing:
+        raise ValueError(
+            "El CSV de cantones no tiene las columnas necesarias: "
+            + ", ".join(sorted(missing))
+        )
+
+    # nombre "limpio" para empatar con geojson y con el CodeSystem
+    df["_canton_clean"] = df["Canton"].astype(str).apply(_sanitize_prov)
+
+    # nombres oficiales con tildes desde el CodeSystem
+    name_map = _load_canton_codes(CANTON_CODES_JSON)
+    df["Canton_display"] = df["_canton_clean"].map(name_map)
+
+    # fallback: si algún cantón no está en el CodeSystem, usa title case
+    df["Canton_display"] = df["Canton_display"].fillna(
+        df["Canton"].astype(str).str.title()
+    )
+
+    return df
+
+
+SUMMARY_DF = get_summary_df()
+SUMMARY_CANTON_DF = get_summary_canton_df()
+
+
+
+
+
 # ==========================
 # App Dash
 # ==========================
@@ -543,31 +792,50 @@ app.layout = html.Div(
             children=[
                 # TAB MAPA
                 dcc.Tab(
-                    label="Mapa interactivo",
-                    value="tab-map",
-                    children=html.Div(
-                        [
-                            html.Div(
-                                [
-                                    html.Label("Condición:"),
-                                    dcc.RadioItems(
-                                        id="metric-radio",
-                                        options=[
-                                            {"label": "Obesidad", "value": "ob_mean"},
-                                            {"label": "Sobrepeso", "value": "sb_mean"},
-                                        ],
-                                        value="ob_mean",
-                                        inline=True,
-                                    ),
-                                ]
-                            ),
-                            dcc.Graph(
-                                id="map-graph",
-                                figure=make_map(SUMMARY_DF, metric="ob_mean"),
-                            ),
-                        ]
+    label="Mapa interactivo",
+    value="tab-map",
+    children=html.Div(
+        [
+            html.Div(
+                [
+                    html.Label("Condición:"),
+                    dcc.RadioItems(
+                        id="metric-radio",
+                        options=[
+                            {"label": "Obesidad", "value": "ob_mean"},
+                            {"label": "Sobrepeso", "value": "sb_mean"},
+                        ],
+                        value="ob_mean",
+                        inline=True,
                     ),
-                ),
+                    html.Span(" | "),
+                    html.Label("Nivel:"),
+                    dcc.RadioItems(
+                        id="map-level-radio",
+                        options=[
+                            {"label": "Provincia", "value": "provincia"},
+                            {"label": "Cantón", "value": "canton"},
+                        ],
+                        value="provincia",
+                        inline=True,
+                    ),
+                ],
+                style={
+                    "display": "flex",
+                    "flexWrap": "wrap",
+                    "gap": "12px",
+                    "alignItems": "center",
+                    "marginBottom": 8,
+                },
+            ),
+            dcc.Graph(
+                id="map-graph",
+                figure=make_map(SUMMARY_DF, metric="ob_mean"),
+            ),
+        ]
+    ),
+),
+
                 # TAB DENSIDADES
                 dcc.Tab(
                     label="Densidades",
@@ -649,9 +917,17 @@ app.layout = html.Div(
 
 
 # === Callbacks dinámicos ===
-@app.callback(Output("map-graph", "figure"), Input("metric-radio", "value"))
-def update_map(metric_value):
+@app.callback(
+    Output("map-graph", "figure"),
+    Input("metric-radio", "value"),
+    Input("map-level-radio", "value"),
+)
+def update_map(metric_value, level):
+    if level == "canton":
+        return make_map_canton(SUMMARY_CANTON_DF, metric=metric_value)
+    # por defecto, provincia
     return make_map(SUMMARY_DF, metric=metric_value)
+
 
 @app.callback(
     Output("dens-img", "src"),
