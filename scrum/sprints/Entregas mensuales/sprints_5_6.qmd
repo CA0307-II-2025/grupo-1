@@ -108,10 +108,10 @@ Definir la metodología exacta a seguir, incluyendo la manera en que se asignar�
 
 
 ## ✔️  Criterios de aceptación cumplidos:
-- [ ] Tenemos resultados preliminares, falta plasmarlos en el documento escrito.
-- [ ] Se analizaron los datos.
-- [ ] Se investigan posibles metodologías.
-- [ ] Se realizan resultados preliminares.
+- [$\checkmark$] Tenemos resultados preliminares, falta plasmarlos en el documento escrito.
+- [$\checkmark$] Se analizaron los datos.
+- [$\checkmark$] Se investigan posibles metodologías.
+- [$\checkmark$] Se realizan resultados preliminares.
 
 
 # 🔙  Retrospective – Fecha: 2025-10-17
@@ -234,14 +234,14 @@ Definir la metodología exacta a seguir, incluyendo la manera en que se asignar�
 
 ## :arrows_counterclockwise:  Retroalimentación
 
-- **Profesor**:
+- **Profesor**: Optimizar el AIC y BIC para la elección de variables a utilizar. Además, desea que se implemente el modelo a nivel cantonal.
 - **Compañeros:** Nos falta completar la metodología, con el fundamento teórico de los métodos utilizados.
 
 
 ## ✔️  Criterios de aceptación cumplidos:
-- [ ] Se especifica el modelo seleccionado en el documento final
-- [ ] Se obtuvieron estimaciones reproducibles
-- [ ] Los resultados se encuentran en el documento final
+- [$\checkmark$] Se especifica el modelo seleccionado en el documento final
+- [$\checkmark$] Se obtuvieron estimaciones reproducibles
+- [$\checkmark$] Los resultados se encuentran en el documento final
 
 
 # 🔙  Retrospective – Fecha: YYYY-MM-DD
