@@ -8,7 +8,7 @@ Dashboard utiliza los resultados generados para:
 import os
 import numpy as np
 import pandas as pd
-from typing import Dict, Tuple, List
+from typing import Tuple, List
 
 import dash
 from dash import dcc, html
@@ -25,9 +25,6 @@ def img_to_data_uri(path: str) -> str:
         return ""
     with open(path, "rb") as f:
         return "data:image/png;base64," + base64.b64encode(f.read()).decode("ascii")
-
-
-
 
 
 # ==========================
@@ -72,6 +69,7 @@ SUMMARY_CSV_CANTON = "../res/csv/summary_prevalence_by_canton.csv"
 # ==========================
 # Utilidades
 # ==========================
+
 
 def density_image_path(condicion: str, ambito: str) -> str:
     """
@@ -170,7 +168,6 @@ def _load_province_geojson(path: str):
     return gj, "id"
 
 
-
 def _summarize(draws: np.ndarray) -> Tuple[float, float, float, float]:
     mean = float(draws.mean())
     q2, q50, q97 = [float(x) for x in np.quantile(draws, [0.025, 0.5, 0.975])]
@@ -208,6 +205,7 @@ def _compose_mosaic(
     _ensure_dir(os.path.dirname(outpath))
     canvas.save(outpath)
 
+
 # ==========================
 # Figuras Plotly
 # ==========================
@@ -236,7 +234,7 @@ def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
         fig = px.choropleth_mapbox(
             dfp,
             geojson=gj,
-            locations="_prov_clean",  
+            locations="_prov_clean",
             featureidkey="id",
             color="__mean",
             custom_data=["__mean", "__lo", "__hi"],
@@ -328,6 +326,7 @@ def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
     )
     return fig
 
+
 def make_map_canton(df_canton: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
     import plotly.express as px
     import plotly.graph_objects as go
@@ -358,7 +357,7 @@ def make_map_canton(df_canton: pd.DataFrame, metric: str = "ob_mean") -> go.Figu
         fig = px.choropleth_mapbox(
             dfc,
             geojson=gj,
-            locations="_canton_clean",     # empata con feat["id"]
+            locations="_canton_clean",  # empata con feat["id"]
             featureidkey="id",
             color="__mean",
             custom_data=["__mean", "__lo", "__hi"],
@@ -438,8 +437,6 @@ def make_map_canton(df_canton: pd.DataFrame, metric: str = "ob_mean") -> go.Figu
     return fig
 
 
-
-
 def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
     import plotly.graph_objects as go
     import numpy as np
@@ -489,7 +486,7 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
                 "<extra></extra>"
             ),
             name=title,
-            showlegend=False
+            showlegend=False,
         )
     )
 
@@ -539,8 +536,6 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
             )
         )
 
-
-
     # altura dinámica para que quepan todas las provincias
     base_h = 140
     row_h = 40
@@ -549,7 +544,7 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
     fig.update_layout(
         title=dict(
             text=f"Intervalos de confianza 95% – {title}",
-            x=0.5,          
+            x=0.5,
             xanchor="center",
         ),
         xaxis_title="",
@@ -559,8 +554,6 @@ def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
         height=fig_h,
         showlegend=False,
     )
-
-
 
     fig.update_yaxes(categoryorder="array", categoryarray=y_order, automargin=True)
     fig.update_xaxes(autorange=True)
@@ -638,6 +631,7 @@ def get_summary_df() -> pd.DataFrame:
 
 SUMMARY_DF = get_summary_df()
 
+
 def _load_canton_codes(path: str):
     """
     Lee el CodeSystem de cantones FHIR y devuelve un dict:
@@ -661,6 +655,7 @@ def _load_canton_codes(path: str):
         clean = _sanitize_prov(disp)
         name_map[clean] = disp
     return name_map
+
 
 def _load_canton_geojson(path: str, canton_names: List[str]):
     """
@@ -719,7 +714,6 @@ def _load_canton_geojson(path: str, canton_names: List[str]):
     return gj, "id"
 
 
-
 def get_summary_canton_df() -> pd.DataFrame:
     """
     Lee SUMMARY_CSV_CANTON (resumen por cantón) y agrega:
@@ -771,9 +765,6 @@ SUMMARY_DF = get_summary_df()
 SUMMARY_CANTON_DF = get_summary_canton_df()
 
 
-
-
-
 # ==========================
 # App Dash
 # ==========================
@@ -792,50 +783,52 @@ app.layout = html.Div(
             children=[
                 # TAB MAPA
                 dcc.Tab(
-    label="Mapa interactivo",
-    value="tab-map",
-    children=html.Div(
-        [
-            html.Div(
-                [
-                    html.Label("Condición:"),
-                    dcc.RadioItems(
-                        id="metric-radio",
-                        options=[
-                            {"label": "Obesidad", "value": "ob_mean"},
-                            {"label": "Sobrepeso", "value": "sb_mean"},
-                        ],
-                        value="ob_mean",
-                        inline=True,
+                    label="Mapa interactivo",
+                    value="tab-map",
+                    children=html.Div(
+                        [
+                            html.Div(
+                                [
+                                    html.Label("Condición:"),
+                                    dcc.RadioItems(
+                                        id="metric-radio",
+                                        options=[
+                                            {"label": "Obesidad", "value": "ob_mean"},
+                                            {"label": "Sobrepeso", "value": "sb_mean"},
+                                        ],
+                                        value="ob_mean",
+                                        inline=True,
+                                    ),
+                                    html.Span(" | "),
+                                    html.Label("Nivel:"),
+                                    dcc.RadioItems(
+                                        id="map-level-radio",
+                                        options=[
+                                            {
+                                                "label": "Provincia",
+                                                "value": "provincia",
+                                            },
+                                            {"label": "Cantón", "value": "canton"},
+                                        ],
+                                        value="provincia",
+                                        inline=True,
+                                    ),
+                                ],
+                                style={
+                                    "display": "flex",
+                                    "flexWrap": "wrap",
+                                    "gap": "12px",
+                                    "alignItems": "center",
+                                    "marginBottom": 8,
+                                },
+                            ),
+                            dcc.Graph(
+                                id="map-graph",
+                                figure=make_map(SUMMARY_DF, metric="ob_mean"),
+                            ),
+                        ]
                     ),
-                    html.Span(" | "),
-                    html.Label("Nivel:"),
-                    dcc.RadioItems(
-                        id="map-level-radio",
-                        options=[
-                            {"label": "Provincia", "value": "provincia"},
-                            {"label": "Cantón", "value": "canton"},
-                        ],
-                        value="provincia",
-                        inline=True,
-                    ),
-                ],
-                style={
-                    "display": "flex",
-                    "flexWrap": "wrap",
-                    "gap": "12px",
-                    "alignItems": "center",
-                    "marginBottom": 8,
-                },
-            ),
-            dcc.Graph(
-                id="map-graph",
-                figure=make_map(SUMMARY_DF, metric="ob_mean"),
-            ),
-        ]
-    ),
-),
-
+                ),
                 # TAB DENSIDADES
                 dcc.Tab(
                     label="Densidades",
@@ -860,7 +853,6 @@ app.layout = html.Div(
                                 ],
                                 style={"marginBottom": 8},
                             ),
-
                             # Pestañas por ámbito: país + provincias
                             dcc.Tabs(
                                 id="dens-scope-tabs",
@@ -877,7 +869,6 @@ app.layout = html.Div(
                                 ],
                                 style={"marginBottom": 8},
                             ),
-
                             html.Img(
                                 id="dens-img",
                                 src="",
@@ -953,7 +944,6 @@ def update_density_image(condicion, ambito):
         "borderRadius": "8px",
     }
     return src, style
-
 
 
 @app.callback(Output("forest-graph", "figure"), Input("forest-radio", "value"))
