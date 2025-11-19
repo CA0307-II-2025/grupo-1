@@ -172,9 +172,10 @@ def posterior_summary_by_row(trace, meta, var_name="p", q=(0.025, 0.5, 0.975)):
     out["p_q97.5"] = qhi
     return out
 
-def region_country_summary(trace, meta, condicion_label: str,
-                           region_col: str,
-                           label_col: str = "Region"):
+
+def region_country_summary(
+    trace, meta, condicion_label: str, region_col: str, label_col: str = "Region"
+):
     """
     Devuelve un DataFrame con filas: regiones (provincia o cantón) + 'PAIS',
     y columnas de resumen para la condición dada con prefijo:
@@ -192,7 +193,9 @@ def region_country_summary(trace, meta, condicion_label: str,
 
     dfm = meta["df"]
     if region_col not in dfm.columns:
-        raise ValueError(f"No se encontró la columna de región '{region_col}' en meta['df'].")
+        raise ValueError(
+            f"No se encontró la columna de región '{region_col}' en meta['df']."
+        )
 
     if "total" not in dfm.columns:
         raise ValueError("meta['df'] debe tener la columna 'total'.")
@@ -659,11 +662,8 @@ if __name__ == "__main__":
         distrito_col="distrito",
         vars_dem=(
             "desempleo",
-            "poblacion_urbana",
             "privacion_critica",
             "poblacion_menor_14",
-            "hogares_monomarentales",
-            "ocupantes_por_hogar",
             "anos_escolaridad",
         ),
         incluye_region=False,
@@ -685,9 +685,6 @@ if __name__ == "__main__":
             "poblacion_urbana",
             "privacion_critica",
             "poblacion_menor_14",
-            "hogares_monomarentales",
-            "ocupantes_por_hogar",
-            "anos_escolaridad",
         ),
         incluye_region=False,
         draws=2000,
@@ -706,11 +703,8 @@ if __name__ == "__main__":
         distrito_col="distrito",
         vars_dem=(
             "desempleo",
-            "poblacion_urbana",
             "privacion_critica",
             "poblacion_menor_14",
-            "hogares_monomarentales",
-            "ocupantes_por_hogar",
             "anos_escolaridad",
         ),
         incluye_region=False,
@@ -733,9 +727,6 @@ if __name__ == "__main__":
             "poblacion_urbana",
             "privacion_critica",
             "poblacion_menor_14",
-            "hogares_monomarentales",
-            "ocupantes_por_hogar",
-            "anos_escolaridad",
         ),
         incluye_region=False,
         draws=2000,
