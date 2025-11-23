@@ -44,7 +44,7 @@ En el ámbito regional, @Hernandez2016 evidenciaron en Perú cómo el sobrepeso 
 
 De manera más específica para Costa Rica, @Gomez2023 aplicaron un modelo espacial bayesiano para estimar la prevalencia distrital de obesidad infantil, encontrando asociaciones significativas con factores educativos, económicos y demográficos. Entre los resultados se identificó una relación no lineal con la escolaridad promedio, así como una mayor prevalencia en distritos urbanos, cabeceras de provincia, zonas turísticas y fronterizas con Panamá. Estos hallazgos muestran que los entornos sociales y territoriales influyen de manera decisiva en la distribución del sobrepeso y la obesidad infantil.
 
-Este panorama motiva la siguiente pregunta de investigación: ¿cómo se distribuye territorialmente la prevalencia de sobrepeso y obesidad infantil en Costa Rica, y con qué grado de incertidumbre podemos estimarla a partir de la evidencia disponible? Para responderla, en este estudio adoptamos un enfoque bayesiano explícito en la cuantificación de la incertidumbre y nos proponemos, primero, estimar la distribución posterior de la prevalencia de sobrepeso y de obesidad en cada provincia mediante un modelo binomial bayesiano y métodos computacionales de inferencia; cuando corresponda, se emplearán algoritmos de muestreo eficientes como NUTS/HMC para garantizar una exploración adecuada del espacio posterior [@HoffmanGelman2014]. En segundo lugar, compararemos los resultados entre provincias, analizando medias posteriores e intervalos de credibilidad, con el fin de evaluar la heterogeneidad territorial. Finalmente, visualizaremos la prevalencia estimada y su incertidumbre posterior mediante mapas y gráficos que faciliten la interpretación y comunicación de los hallazgos a audiencias técnicas y de política pública.
+Este panorama motiva la siguiente pregunta de investigación: ¿cómo se distribuye territorialmente la prevalencia de sobrepeso y obesidad infantil en Costa Rica, y con qué grado de incertidumbre podemos estimarla a partir de la evidencia disponible? Para responderla, en este estudio se adopta un enfoque bayesiano explícito en la cuantificación de la incertidumbre y se propone, primero, estimar la distribución posterior de la prevalencia de sobrepeso y de obesidad en cada provincia mediante un modelo binomial bayesiano y métodos computacionales de inferencia; cuando corresponda, se emplearán algoritmos de muestreo eficientes como NUTS/HMC para garantizar una exploración adecuada del espacio posterior [@HoffmanGelman2014]. En segundo lugar, se compararán los resultados entre provincias y cantones, analizando medias posteriores e intervalos de credibilidad, con el fin de evaluar la heterogeneidad territorial. Finalmente, visualizaremos la prevalencia estimada y su incertidumbre posterior mediante mapas y gráficos que faciliten la interpretación y comunicación de los hallazgos a audiencias técnicas y de política pública.
 
 
 *Palabras clave:* Costa Rica, sobrepeso, obesidad
@@ -179,7 +179,8 @@ Precisión predictiva: obesidad con $\mathrm{MAE}=0.023$ y $\mathrm{RMSE}=0.032$
 Cobertura (IC95 %): 77.8 % para obesidad y 89.1 % para sobrepeso. Indica buena reproducción de la variabilidad; ligera subcobertura en obesidad (estimaciones algo más concentradas), calibración más cercana al nominal en sobrepeso.
 
 ### Resumen ejecutivo
-Es un modelo logit–binomial bayesiano con priors débiles; la inferencia usa NUTS (HMC) con adaptación automática para explorar eficientemente la posterior. El script estandariza covariables, selecciona un subconjunto mediante AIC, estima el modelo, resume $p_i$ por fila y agrega provincias/país ponderando por la exposición, además de graficar distribuciones posteriores comparables entre provincias. El resultado es un flujo reproducible para cuantificar prevalencias y su incertidumbre a distintos niveles territoriales, con métricas de desempeño que respaldan la calidad del ajuste.
+Es un modelo logit–binomial bayesiano con priors débiles; la inferencia usa NUTS (HMC) con adaptación automática para explorar eficientemente la posterior. El script estandariza covariables, selecciona un subconjunto mediante AIC, estima el modelo, resume $p_i$ por fila y agrega provincias/país ponderando por la exposición, además de graficar distribuciones posteriores comparables entre provincias. El resultado es un flujo reproducible para cuantificar prevalencias y su incertidumbre a distintos niveles territoriales, con métricas de desempeño que respaldan la calidad del ajuste. Como complemento a este informe, se desarrolló un dashboard interactivo, el cual se ejecuta de manera local dentro del entorno del proyecto de acuerdo a las instrucciones disponibles en el README del [repositorio](https://github.com/CA0307-II-2025/grupo-1)
+
 
 
 # Resultados
@@ -246,4 +247,21 @@ Desde el punto de vista metodológico, los resultados presentan consistencia y p
 
 
 
-## Referencias
+# Referencias Bibliográficas
+<div id="refs"></div>
+
+# Anexos
+```{r}
+read.csv("../res/csv/summary_prevalence_by_canton.csv") %>%
+  transmute(
+    Grupo = stringr::str_to_title(Canton),
+    Media_Obesidad        = round(ob_mean, 5),
+    `Intervalo Obesidad`  = paste0("[", round(ob_q2.5, 5),  ", ", round(ob_q97.5, 5),  "]"),
+    Media_Sobrepeso       = round(sb_mean, 5),
+    `Intervalo Sobrepeso` = paste0("[", round(sb_q2.5, 5), ", ", round(sb_q97.5, 5), "]")
+  ) %>%
+  kable(
+    caption = "Resumen por cantones: obesidad y sobrepeso",
+    align = "c"
+  )
+```
