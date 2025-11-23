@@ -91,8 +91,7 @@ En términos generales, la prevalencia combinada de sobrepeso y obesidad infanti
 Los años de escolaridad promedio por distrito se sitúan en 8.1 años, con una dispersión moderada $sd \approx 1.5$. La tasa de desempleo es baja en promedio (3%), pero con algunos distritos alcanzando valores cercanos a 9%. El porcentaje de hogares monomarentales ronda el 20% y la privación crítica promedio de los hogares se ubica en 29%, mostrando casos extremos de hasta 90% La población urbana evidencia una clara polarización: muchos distritos son predominantemente rurales (0%) o completamente urbanos (100%).
 
 ### Enfoque Bayesiano
-Dada la naturaleza de los datos, se modela el número total de casos observados en cada categoría (sobrepeso y obesidad, respectivamente) mediante una distribución $Y \sim \text{Binom}(N,p)$, donde $Y$ es el número total de casos, N el tamaño de la muestra y $p$ la probabilidad de pertenecer a la categoría de sobrepeso (o bien, obesidad) independientemente de la pertenencia cantonal o distrital. Desde un enfoque bayesiano, se asigna una distribución previa $\pi \sim \text{Beta}(1,1)$. De esta forma, se estima la prevalencia de obesidad y sobrepeso infantil en Costa Rica, a través del algoritmo Metropolis-Hastings.
-
+Dada la naturaleza de los datos, se modela el número total de casos observados en cada categoría (sobrepeso y obesidad, respectivamente) mediante una distribución $Y \sim \text{Binom}(N,p)$, donde $Y$ es el número total de casos, N el tamaño de la muestra y $p$ la probabilidad de pertenecer a la categoría de sobrepeso (o bien, obesidad) independientemente de la pertenencia provincial o cantonal. Desde un enfoque bayesiano, se asigna una distribución previa $\pi \sim \text{Beta}(1,1)$. De esta forma, se estima la prevalencia de obesidad y sobrepeso infantil en Costa Rica, a través del algoritmo Metropolis-Hastings.
 
 #### Autocorrelación
 Para el método de Metropolis-Hasting, en ambos casos, se obtuvo una alta autocorrelación entre los elementos de la cadena, como se aprecia en las siguientes figuras.
@@ -167,44 +166,31 @@ A partir de muestras posteriores \(\{p_i^{(s)}\}\), las réplicas predictivas se
 
 
 ## Explicación del Modelo
-El estudio emplea un modelo logit-binomial para estimar la prevalencia \(p_i\) a partir de conteos \(y_i\) sobre exposiciones \(n_i\), con \(\mathrm{logit}(p_i)=\alpha+X_i^{\top}\beta\) y covariables previamente estandarizadas. Las priors \(\alpha,\beta_j\sim\mathcal N(0,5)\) se especifican en la escala log-odds y, al ser muy dispersas, actúan como priors débiles. La inferencia se realiza con No-U-Turn Sampler (NUTS), un algoritmo HMC que adapta automáticamente el tamaño de paso y la longitud efectiva de la trayectoria, expandiéndola hasta detectar una “no-u-turn”; este procedimiento mejora la exploración del posterior al reducir la autocorrelación y evita fijar manualmente el número de pasos de integración, de acuerdo a @HoffmanGelman2014. El resultado son muestras posteriores mezcladas para \(p_i\) y para \((\alpha,\beta)\), a partir de las cuales se obtienen medias e intervalos de credibilidad por provincia y agregados ponderados por \(n_i\) para país.
-
-
-### Implementación
-`prep_data()` filtra la condición (obesidad/sobrepeso), arma \(y\) y \(n\), estandariza covariables (con protección ante DE=0), mapea provincias a índices cuando hace falta y devuelve matrices listas para modelar junto con metadatos.
-
-`fit_model_binomial_logit()` declara las priors anteriores, construye el predictor lineal \(\alpha + X\beta\), aplica la sigmoide para obtener \(p=\mathrm{sigmoid}(\cdot)\) y define la verosimilitud binomial con `pm.Binomial("y_obs", n=n, p=p, observed=y)`.
-
-La inferencia se realiza con No-U-Turn Sampler (NUTS) vía `pm.sample()`, un HMC adaptativo que ajusta automáticamente la longitud de trayectoria usando gradientes del log-posterior para explorar eficientemente. Parámetros típicos: `draws=2000`, `tune=1000`, `target_accept=0.9`, `chains=4`, `cores=4`. Valores más altos de `target_accept` tienden a disminuir divergencias a cambio de más evaluaciones del gradiente. Varias cadenas permiten evaluar la convergencia con \(\hat R\).
-
-`posterior_summary_by_row()` extrae los draws de \(p_i\) y devuelve media posterior e intervalos de credibilidad al 95 %. Estos resúmenes se usan en tablas, mapas y gráficos.
-
-Una utilidad del script combina los draws de \(p_i\) con pesos \(n_i\) para obtener prevalencias agregadas (por provincia o país). Así se propaga la incertidumbre desde distritos a agregados respetando la exposición.
-
-Funciones como `save_posterior_prevalence_figs()` y `save_posterior_prevalence_mosaic()` guardan la distribución posterior de la prevalencia a nivel país (con media e IC95 %) y un mosaico por provincia que facilita comparar niveles e incertidumbre.
+El estudio emplea un modelo logit-binomial para estimar la prevalencia $p_i$ a partir de conteos $y_i$ sobre exposiciones $n_i$, con $\mathrm{logit}(p_i)=\alpha+X_i^{\top}\beta$ y covariables previamente estandarizadas. Las priors $\alpha,\beta_j\sim\mathcal N(0,5)$ se especifican en la escala log-odds y, al ser muy dispersas, actúan como priors débiles. Antes del ajuste bayesiano se implementó una optimización del conjunto de covariables mediante una búsqueda exhaustiva de subconjuntos en un modelo lineal clásico, seleccionando el que minimiza el criterio de información de Akaike (AIC); este paso reduce la dimensionalidad del diseño $X_i$, evita modelos innecesariamente complejos y concentra el modelo logit–binomial en aquellas covariables con mayor respaldo empírico según el AIC. La inferencia se realiza con No-U-Turn Sampler (NUTS), un algoritmo HMC que adapta automáticamente el tamaño de paso y la longitud efectiva de la trayectoria, expandiéndola hasta detectar una “no-u-turn”; este procedimiento mejora la exploración del posterior al reducir la autocorrelación y evita fijar manualmente el número de pasos de integración, de acuerdo a @HoffmanGelman2014. El resultado son muestras posteriores mezcladas para $p_i$ y para $(\alpha,\beta)$, a partir de las cuales se obtienen medias e intervalos de credibilidad por provincia y agregados ponderados por $n_i$ para país.
 
 ### Significado de los parámetros
-\(\alpha\): log-odds cuando todas las covariables estandarizadas valen 0 (en su media).
-\(\beta_k\): efecto de +1 DE en la covariable \(k\) sobre el logit; en odds es \(\exp(\beta_k)\).
-\(p_i\): probabilidad de la condición en la fila \(i\); base para medias, IC/HDI y agregados ponderados.
+$\alpha$: es el intercepto en escala logit. Como las covariables se estandarizan, $\alpha$ representa el log-odds de la condición cuando todas las covariables estandarizadas valen $0$, es decir, en un “distrito promedio” (cada covariable en su media original). En la escala de probabilidad, la prevalencia basal asociada es
+$$
+p_0 = \mathrm{logit}^{-1}(\alpha) = \frac{1}{1 + e^{-\alpha}}.
+$$
+
+$\beta_k$: es el efecto de la covariable $k$ sobre el logit de la prevalencia. Como $X_k$ está estandarizada, $\beta_k$ mide el cambio en el log-odds al aumentar la covariable $k$ en $+1$ desviación estándar, manteniendo las demás covariables fijas. En términos de odds, $\exp(\beta_k)$ es el factor multiplicativo sobre las odds de la condición cuando $X_k$ aumenta en $+1$ DE; por ejemplo, $\exp(\beta_k)=1.2$ implica un aumento del 20 % en las odds.
+
+$p_i$: es la probabilidad (prevalencia) de la condición en la fila $i$, es decir, la probabilidad de que una persona del distrito $i$ presente la condición dado su vector de covariables. Es la cantidad central del modelo: determina la distribución binomial $y_i\mid p_i\sim\mathrm{Binomial}(n_i,p_i)$ y a partir de sus muestras posteriores se obtienen medias, intervalos de credibilidad e indicadores agregados (por provincia o país).
+
 
 ### Supuestos y consecuencias
-Binomialidad: \(y_i\mid p_i \sim \mathrm{Binomial}(n_i,p_i)\) con \(\mathrm{Var}(y_i\mid p_i)=n_i p_i(1-p_i)\).
-Linealidad en logit: la relación entre covariables y \(p_i\) es lineal en la escala logit.
-Priors débiles: \(\mathcal N(0,5)\) deja que los datos dominen, salvo en celdas con poca exposición.
-
-### Diagnóstico y tuning
-Convergencia: \(\hat R\approx 1\) y tamaños efectivos altos indican cadenas bien mezcladas.
-Divergencias: si aparecen, elevar `target_accept`, revisar la estandarización y/o usar priors un poco más informativos.
-Predicción y calibración: con los draws de \(p_i\) se evalúan métricas fuera del bloque de muestreo (p. ej., MAE, RMSE) y cobertura de IC/HDI frente a observados.
+Binomialidad: $y_i\mid p_i \sim \mathrm{Binomial}(n_i,p_i)$ con $\mathrm{Var}(y_i\mid p_i)=n_i p_i(1-p_i)$.  
+Linealidad en logit: la relación entre covariables y $p_i$ es lineal en la escala logit.  
+Priors débiles: $\mathcal N(0,5)$ deja que los datos dominen, salvo en celdas con poca exposición.
 
 ### Validación empírica reportada
-Convergencia: \(\hat{R}=1.00\) en obesidad y sobrepeso; tamaños efectivos mínimos en núcleo/colas superiores a 4700, lo que sugiere exploración homogénea del posterior.
-Precisión predictiva: obesidad con MAE \(=0.023\) y RMSE \(=0.032\); sobrepeso con MAE \(=0.021\) y RMSE \(=0.030\). Diferencias promedio entre proporciones observadas y estimadas en el rango 2–3 puntos porcentuales.
+Convergencia: $\hat{R}=1.00$ en obesidad y sobrepeso; tamaños efectivos mínimos en núcleo/colas superiores a 4700, lo que sugiere exploración homogénea del posterior.  
+Precisión predictiva: obesidad con $\mathrm{MAE}=0.023$ y $\mathrm{RMSE}=0.032$; sobrepeso con $\mathrm{MAE}=0.021$ y $\mathrm{RMSE}=0.030$. Diferencias promedio entre proporciones observadas y estimadas en el rango 2–3 puntos porcentuales.  
 Cobertura (IC95 %): 77.8 % para obesidad y 89.1 % para sobrepeso. Indica buena reproducción de la variabilidad; ligera subcobertura en obesidad (estimaciones algo más concentradas), calibración más cercana al nominal en sobrepeso.
 
 ### Resumen ejecutivo
-Es un modelo logit–binomial bayesiano con priors débiles; la inferencia usa NUTS (HMC) con adaptación automática para explorar eficientemente la posterior. El script estandariza covariables, estima el modelo, resume \(p_i\) por fila y agrega provincias/país ponderando por la exposición, además de graficar distribuciones posteriores comparables entre provincias. El resultado es un pipeline reproducible para cuantificar prevalencias y su incertidumbre a distintos niveles territoriales, con diagnósticos y validaciones que respaldan la calidad del ajuste.
+Es un modelo logit–binomial bayesiano con priors débiles; la inferencia usa NUTS (HMC) con adaptación automática para explorar eficientemente la posterior. El script estandariza covariables, selecciona un subconjunto mediante AIC, estima el modelo, resume $p_i$ por fila y agrega provincias/país ponderando por la exposición, además de graficar distribuciones posteriores comparables entre provincias. El resultado es un flujo reproducible para cuantificar prevalencias y su incertidumbre a distintos niveles territoriales, con métricas de desempeño que respaldan la calidad del ajuste.
 
 
 # Resultados
@@ -226,6 +212,22 @@ read.csv("../res/csv/summary_prevalence_by_province.csv") %>%
   )
 
 ```
+
+```{r}
+read.csv("../res/csv/summary_prevalence_by_canton.csv") %>%
+  transmute(
+    Grupo = stringr::str_to_title(Canton),
+    Media_Obesidad        = round(ob_mean, 5),
+    `Intervalo Obesidad`  = paste0("[", round(ob_q2.5, 5),  ", ", round(ob_q97.5, 5),  "]"),
+    Media_Sobrepeso       = round(sb_mean, 5),
+    `Intervalo Sobrepeso` = paste0("[", round(sb_q2.5, 5), ", ", round(sb_q97.5, 5), "]")
+  ) %>%
+  kable(
+    caption = "Resumen por provincia: obesidad y sobrepeso",
+    align = "c"
+  )
+```
+
 
 ```{r fig-mosaico_obesidad, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de obesidad infantil"}
 knitr::include_graphics("../res/graficos/mosaico_posterior_prevalencia_obesidad_provincias.png")
