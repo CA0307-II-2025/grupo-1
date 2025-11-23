@@ -26,9 +26,7 @@ nocite: '@*'
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-```
+
 
 # Resumen
 Este estudio analiza la prevalencia de sobrepeso y obesidad infantil en Costa Rica a partir del Primer Censo Escolar de Peso/Talla 2016 (niños de 6 a 12 años). Se modelan los conteos de casos por cantón mediante un modelo binomial con enlace logit e inferencia bayesiana, incorporando covariables socioeconómicas y demográficas estandarizadas. La estimación se realiza con el algoritmo No-U-Turn Sampler (NUTS), que permite obtener distribuciones posteriores bien mezcladas para las probabilidades de prevalencia en cada unidad territorial. A nivel nacional, la media posterior de obesidad es cercana al 14 % y la de sobrepeso al 20 %, lo que implica un exceso de peso combinado de alrededor del 34 %. Se observa un gradiente centro–periferia: provincias y cantones del Valle Central presentan las prevalencias más elevadas, mientras que zonas costeras y periféricas muestran valores sistemáticamente menores. Los resultados confirman que el exceso de peso infantil constituye un problema estructural de salud pública y muestran que el enfoque bayesiano logit–binomial es útil para cuantificar la prevalencia y su incertidumbre a distintos niveles geográficos.
@@ -94,13 +92,23 @@ Dada la naturaleza de los datos, se modela el número total de casos observados 
 #### Autocorrelación e Histogramas
 Para el método de Metropolis-Hasting, en ambos casos, se obtuvo una alta autocorrelación entre los elementos de la cadena. Una vez finalizado el proceso, se realizaron histogramas para visualizar la distribución posterior obtenida a partir de esta metodología. Además, se presenta la media y el intervalo de confianza para cada categoría.
 
-```{r fig-sobpreso, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
-knitr::include_graphics("../res/graficos/hist_post_sobrepeso.png")
-```
+\begin{figure}[H]
 
-```{r fig-obesidad, echo=FALSE,fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de obesidad infantil"}
-knitr::include_graphics("../res/graficos/hist_post_obesidad.png")
-```
+{\centering \includegraphics[width=0.7\linewidth]{../res/graficos/hist_post_sobrepeso} 
+
+}
+
+\caption{Distribución posterior de la prevalencia de sobrepeso infantil}\label{fig:fig-sobpreso}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.7\linewidth]{../res/graficos/hist_post_obesidad} 
+
+}
+
+\caption{Distribución posterior de la prevalencia de obesidad infantil}\label{fig:fig-obesidad}
+\end{figure}
 
 
 Los histogramas permiten identificar distribuciones relativamente simétricas para variables como años de escolaridad, hogares monomarentales y ocupantes por hogar, mientras que otras como la población urbana y la privación crítica presentan asimetrías y valores extremos.
@@ -182,48 +190,52 @@ Es un modelo logit–binomial bayesiano con priors débiles; la inferencia usa N
 
 
 # Resultados
-```{r fig-mosaico_sobrepeso, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil a nivel país"}
-knitr::include_graphics("../res/graficos/graficos_simulados_no_jer/sobrepeso/posterior_prevalencia_sobrepeso_pais.png")
-```
-```{r fig-mosaico_obesidad, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de obesidad infantil a nivel país"}
-knitr::include_graphics("../res/graficos/graficos_simulados_no_jer/obesidad/posterior_prevalencia_obesidad_pais.png")
-```
+\begin{figure}[H]
 
-```{r resumen.provincias, echo=FALSE}
-library(dplyr)
-library(knitr)
+{\centering \includegraphics[width=0.7\linewidth]{../res/graficos/graficos_simulados_no_jer/sobrepeso/posterior_prevalencia_sobrepeso_pais} 
 
-read.csv("../res/csv/summary_prevalence_by_province.csv") %>%
-  transmute(
-    Grupo = stringr::str_to_title(Province),
-    Media_Obesidad        = round(ob_mean, 5),
-    `Intervalo Obesidad`  = paste0("[", round(ob_q2.5, 5),  ", ", round(ob_q97.5, 5),  "]"),
-    Media_Sobrepeso       = round(sb_mean, 5),
-    `Intervalo Sobrepeso` = paste0("[", round(sb_q2.5, 5), ", ", round(sb_q97.5, 5), "]")
-  ) %>%
-  kable(
-    caption = "Resumen por provincia: obesidad y sobrepeso",
-    align = "c"
-  )
+}
 
-```
+\caption{Distribución posterior de la prevalencia de sobrepeso infantil a nivel país}\label{fig:fig-mosaico_sobrepeso}
+\end{figure}
+\begin{figure}[H]
 
-```{r}
-read.csv("../res/csv/summary_prevalence_by_canton.csv") %>%
-  arrange(ob_mean) %>% 
-  filter(row_number() <= 5 | row_number() > n() - 5) %>%
-  transmute(
-    Grupo = stringr::str_to_title(Canton),
-    Media_Obesidad        = round(ob_mean, 5),
-    `Intervalo Obesidad`  = paste0("[", round(ob_q2.5, 5),  ", ", round(ob_q97.5, 5),  "]"),
-    Media_Sobrepeso       = round(sb_mean, 5),
-    `Intervalo Sobrepeso` = paste0("[", round(sb_q2.5, 5), ", ", round(sb_q97.5, 5), "]")
-  ) %>%
-  kable(
-    caption = "Resumen por cantones más relevantes: obesidad y sobrepeso",
-    align = "c"
-  )
-```
+{\centering \includegraphics[width=0.7\linewidth]{../res/graficos/graficos_simulados_no_jer/obesidad/posterior_prevalencia_obesidad_pais} 
+
+}
+
+\caption{Distribución posterior de la prevalencia de obesidad infantil a nivel país}\label{fig:fig-mosaico_obesidad}
+\end{figure}
+
+
+Table: Resumen por provincia: obesidad y sobrepeso
+
+|   Grupo    | Media_Obesidad | Intervalo Obesidad | Media_Sobrepeso | Intervalo Sobrepeso |
+|:----------:|:--------------:|:------------------:|:---------------:|:-------------------:|
+|  Alajuela  |    0.14096     | [0.13957, 0.14236] |     0.19873     | [0.19714, 0.20029]  |
+|  Cartago   |    0.14648     | [0.1451, 0.14789]  |     0.20347     | [0.20194, 0.20497]  |
+| Guanacaste |    0.13749     | [0.13594, 0.13907] |     0.19000     | [0.18815, 0.19185]  |
+|  Heredia   |    0.14832     | [0.14671, 0.14995] |     0.20699     |  [0.2053, 0.20869]  |
+|   Limon    |    0.12645     | [0.12465, 0.12827] |     0.18394     | [0.18187, 0.18604]  |
+| Puntarenas |    0.12810     | [0.12668, 0.12952] |     0.19135     | [0.18964, 0.19305]  |
+|  San Jose  |    0.14892     | [0.14753, 0.1503]  |     0.20379     | [0.20218, 0.20535]  |
+|    Pais    |    0.14143     | [0.14025, 0.14258] |     0.19847     | [0.19708, 0.19978]  |
+
+
+Table: Resumen por cantones más relevantes: obesidad y sobrepeso
+
+|     Grupo     | Media_Obesidad | Intervalo Obesidad | Media_Sobrepeso | Intervalo Sobrepeso |
+|:-------------:|:--------------:|:------------------:|:---------------:|:-------------------:|
+|   Talamanca   |    0.10117     | [0.09779, 0.1046]  |     0.17762     | [0.17413, 0.18114]  |
+| Buenos Aires  |    0.11142     | [0.10907, 0.11383] |     0.18071     | [0.17787, 0.18356]  |
+|  Los Chiles   |    0.11245     | [0.11006, 0.1149]  |     0.17539     | [0.17254, 0.17824]  |
+|    La Cruz    |    0.11639     | [0.11439, 0.11842] |     0.18108     | [0.17874, 0.18344]  |
+|    Matina     |    0.11767     | [0.11545, 0.11994] |     0.17928     |  [0.17661, 0.1819]  |
+|    Heredia    |    0.15713     | [0.15495, 0.15935] |     0.21262     | [0.21051, 0.21465]  |
+| Santo Domingo |    0.15720     | [0.15501, 0.15938] |     0.21487     |  [0.21239, 0.2173]  |
+|    Moravia    |    0.15842     | [0.15617, 0.16073] |     0.21311     |  [0.21097, 0.2152]  |
+|     Belen     |    0.15857     | [0.15622, 0.16087] |     0.21879     | [0.21605, 0.22153]  |
+| Montes De Oca |    0.16897     | [0.16519, 0.17287] |     0.22065     |  [0.2171, 0.22418]  |
 
 Los resultados obtenidos a partir del modelo binomial con enlace logit y muestreo NUTS evidencian un patrón claro en la distribución de la prevalencia de obesidad y sobrepeso infantil en Costa Rica, tanto a nivel nacional como provincial. En el plano nacional, la media posterior estimada para obesidad fue de 0.14143, con un intervalo de credibilidad del 95% entre 0.14023 y 0.14254. En el caso del sobrepeso, la media posterior fue de 0.19848, con un intervalo de credibilidad del 95% entre 0.19715 y 0.19983. Estos resultados, cuando se suman, permiten inferir que aproximadamente un 34% de la población infantil escolar del país presenta exceso de peso, cifra que confirma la magnitud del problema de salud pública y se encuentra alineada con las tendencias observadas en contextos internacionales. La Organización Mundial de la Salud @WHO2025 señala que “childhood obesity has become one of the most serious public health challenges of the 21st century”, al estimar que más de 390 millones de niños y adolescentes de entre 5 y 19 años en el mundo tienen sobrepeso u obesidad. Esta cifra global se sitúa en torno al 20% de esa población, lo que significa que Costa Rica presenta una proporción ligeramente superior al promedio global, aunque en consonancia con otros países de ingreso medio y urbano consolidado.
 
@@ -249,17 +261,90 @@ Desde el punto de vista metodológico, los resultados presentan consistencia y p
 <div id="refs"></div>
 
 # Anexos
-```{r}
-read.csv("../res/csv/summary_prevalence_by_canton.csv") %>%
-  transmute(
-    Grupo = stringr::str_to_title(Canton),
-    Media_Obesidad        = round(ob_mean, 5),
-    `Intervalo Obesidad`  = paste0("[", round(ob_q2.5, 5),  ", ", round(ob_q97.5, 5),  "]"),
-    Media_Sobrepeso       = round(sb_mean, 5),
-    `Intervalo Sobrepeso` = paste0("[", round(sb_q2.5, 5), ", ", round(sb_q97.5, 5), "]")
-  ) %>%
-  kable(
-    caption = "Resumen por cantones: obesidad y sobrepeso",
-    align = "c"
-  )
-```
+
+Table: Resumen por cantones: obesidad y sobrepeso
+
+|        Grupo        | Media_Obesidad | Intervalo Obesidad | Media_Sobrepeso | Intervalo Sobrepeso |
+|:-------------------:|:--------------:|:------------------:|:---------------:|:-------------------:|
+|      Abangares      |    0.14002     | [0.13746, 0.14272] |     0.18187     | [0.17856, 0.18532]  |
+|       Acosta        |    0.13513     | [0.13279, 0.13754] |     0.19586     | [0.19253, 0.19913]  |
+|      Alajuela       |    0.14993     | [0.14848, 0.15137] |     0.20433     | [0.20273, 0.20584]  |
+|     Alajuelita      |    0.13902     | [0.13771, 0.14035] |     0.19931     | [0.19699, 0.20164]  |
+|      Alvarado       |    0.13779     | [0.13467, 0.14101] |     0.20719     | [0.20421, 0.21019]  |
+|       Aserri        |    0.14252     | [0.1412, 0.14385]  |     0.20003     | [0.19862, 0.20137]  |
+|       Atenas        |    0.14991     | [0.14764, 0.15214] |     0.20907     | [0.20645, 0.21173]  |
+|       Bagaces       |    0.13085     | [0.12948, 0.13223] |     0.18810     |  [0.18635, 0.1898]  |
+|        Barva        |    0.15036     | [0.14798, 0.15273] |     0.21326     | [0.21083, 0.21567]  |
+|        Belen        |    0.15857     | [0.15622, 0.16087] |     0.21879     | [0.21605, 0.22153]  |
+|    Buenos Aires     |    0.11142     | [0.10907, 0.11383] |     0.18071     | [0.17787, 0.18356]  |
+|      Carrillo       |    0.13955     | [0.13694, 0.14225] |     0.18453     |  [0.18168, 0.1875]  |
+|       Cartago       |    0.15106     | [0.14961, 0.15249] |     0.20672     | [0.20507, 0.20833]  |
+|        Cañas        |    0.13563     | [0.13421, 0.13701] |     0.19832     |  [0.1964, 0.20027]  |
+|     Corredores      |    0.12164     |  [0.11931, 0.124]  |     0.19494     | [0.19229, 0.19757]  |
+|      Coto Brus      |    0.12038     | [0.11804, 0.12263] |     0.18857     | [0.18553, 0.19155]  |
+|     Curridabat      |    0.15153     | [0.14918, 0.15391] |     0.21138     | [0.20905, 0.21365]  |
+|    Desamparados     |    0.15327     | [0.15164, 0.15492] |     0.20427     | [0.20251, 0.20597]  |
+|        Dota         |    0.12525     | [0.12275, 0.12781] |     0.19638     | [0.19321, 0.19959]  |
+|      El Guarco      |    0.14634     | [0.14481, 0.14791] |     0.20285     | [0.20109, 0.20462]  |
+|       Escazu        |    0.15387     | [0.15175, 0.15606] |     0.21176     |  [0.2095, 0.21395]  |
+|       Esparza       |    0.14310     | [0.14179, 0.14439] |     0.19959     | [0.19809, 0.20104]  |
+|       Flores        |    0.15471     | [0.15192, 0.15749] |     0.21564     | [0.21317, 0.21808]  |
+|      Garabito       |    0.13064     | [0.12908, 0.13216] |     0.19243     |  [0.19046, 0.1944]  |
+|     Goicoechea      |    0.15535     | [0.15362, 0.1571]  |     0.20649     | [0.20448, 0.20846]  |
+|       Golfito       |    0.12345     | [0.12161, 0.12535] |     0.18653     |  [0.1844, 0.18862]  |
+|       Grecia        |    0.14654     | [0.14479, 0.14829] |     0.20229     | [0.20041, 0.20415]  |
+|       Guacimo       |    0.13137     | [0.12948, 0.13329] |     0.18534     | [0.18323, 0.18743]  |
+|       Guatuso       |    0.12292     | [0.12083, 0.12507] |     0.18721     |   [0.18445, 0.19]   |
+|       Heredia       |    0.15713     | [0.15495, 0.15935] |     0.21262     | [0.21051, 0.21465]  |
+|      Hojancha       |    0.13769     | [0.1352, 0.14017]  |     0.19812     | [0.19493, 0.20127]  |
+|       Jimenez       |    0.14469     | [0.14197, 0.14748] |     0.19989     | [0.19801, 0.20172]  |
+|       La Cruz       |    0.11639     | [0.11439, 0.11842] |     0.18108     | [0.17874, 0.18344]  |
+|      La Union       |    0.14868     | [0.14711, 0.15027] |     0.20540     | [0.20342, 0.20731]  |
+|     Leon Cortes     |    0.12654     | [0.12397, 0.12914] |     0.19546     |  [0.19223, 0.1987]  |
+|       Liberia       |    0.13954     | [0.13694, 0.14214] |     0.19038     | [0.18791, 0.19287]  |
+|        Limon        |    0.12692     | [0.12409, 0.12975] |     0.18205     |  [0.1794, 0.18472]  |
+|     Los Chiles      |    0.11245     | [0.11006, 0.1149]  |     0.17539     | [0.17254, 0.17824]  |
+|       Matina        |    0.11767     | [0.11545, 0.11994] |     0.17928     |  [0.17661, 0.1819]  |
+|    Montes De Oca    |    0.16897     | [0.16519, 0.17287] |     0.22065     |  [0.2171, 0.22418]  |
+|    Montes De Oro    |    0.14516     | [0.1435, 0.14681]  |     0.20547     | [0.20372, 0.20724]  |
+|        Mora         |    0.14789     | [0.14644, 0.14931] |     0.19757     | [0.19487, 0.20033]  |
+|       Moravia       |    0.15842     | [0.15617, 0.16073] |     0.21311     |  [0.21097, 0.2152]  |
+|      Nandayure      |    0.14110     | [0.13788, 0.14447] |     0.18227     |  [0.1784, 0.18627]  |
+|       Naranjo       |    0.14555     | [0.14357, 0.14757] |     0.20246     |  [0.20057, 0.2043]  |
+|       Nicoya        |    0.13887     | [0.13707, 0.14067] |     0.19343     | [0.19117, 0.19568]  |
+|      Oreamuno       |    0.14284     | [0.14124, 0.14447] |     0.20584     | [0.20377, 0.20791]  |
+|       Orotina       |    0.13847     |  [0.137, 0.13995]  |     0.19699     | [0.19512, 0.19882]  |
+|         Osa         |    0.12323     | [0.12095, 0.12553] |     0.18917     | [0.18646, 0.19189]  |
+|      Palmares       |    0.15174     | [0.15002, 0.15343] |     0.20603     | [0.20435, 0.20768]  |
+|       Paraiso       |    0.14649     | [0.14454, 0.14847] |     0.19921     | [0.19774, 0.20062]  |
+|       Parrita       |    0.13311     | [0.13122, 0.13504] |     0.19314     | [0.19134, 0.19488]  |
+|    Perez Zeledon    |    0.13395     | [0.13273, 0.1352]  |     0.19147     | [0.18984, 0.19306]  |
+|        Poas         |    0.14608     | [0.1443, 0.14789]  |     0.19600     | [0.19415, 0.19785]  |
+|       Pococi        |    0.13402     | [0.13227, 0.13583] |     0.18629     | [0.18428, 0.18833]  |
+|     Puntarenas      |    0.13486     | [0.13359, 0.13611] |     0.19402     | [0.19245, 0.19557]  |
+|      Puriscal       |    0.14789     | [0.14581, 0.14995] |     0.19622     | [0.19269, 0.19985]  |
+|       Quepos        |    0.13772     | [0.13621, 0.13929] |     0.19031     | [0.18847, 0.19214]  |
+|     San Carlos      |    0.13096     | [0.12904, 0.13284] |     0.19314     | [0.19085, 0.19541]  |
+|     San Isidro      |    0.15440     | [0.15213, 0.15665] |     0.21693     |  [0.21425, 0.2196]  |
+|      San Jose       |    0.15220     | [0.15028, 0.15419] |     0.20525     | [0.20291, 0.20758]  |
+|      San Mateo      |    0.13887     | [0.13659, 0.14112] |     0.19864     | [0.19569, 0.20157]  |
+|      San Pablo      |    0.15510     | [0.15212, 0.15811] |     0.21520     | [0.21286, 0.21749]  |
+|     San Rafael      |    0.15386     | [0.15188, 0.15581] |     0.20979     | [0.20769, 0.21185]  |
+|      San Ramon      |    0.14398     | [0.14259, 0.14536] |     0.19957     | [0.19764, 0.20147]  |
+|      Santa Ana      |    0.14753     | [0.14473, 0.15037] |     0.21331     | [0.21085, 0.21575]  |
+|    Santa Barbara    |    0.15008     | [0.14831, 0.15181] |     0.20963     | [0.20758, 0.21166]  |
+|     Santa Cruz      |    0.14334     | [0.14128, 0.1454]  |     0.19022     |  [0.18762, 0.1929]  |
+|    Santo Domingo    |    0.15720     | [0.15501, 0.15938] |     0.21487     |  [0.21239, 0.2173]  |
+|      Sarapiqui      |    0.12051     | [0.11874, 0.12233] |     0.18089     | [0.17847, 0.18333]  |
+|       Sarchi        |    0.14647     | [0.14444, 0.14851] |     0.19619     | [0.19349, 0.19893]  |
+|      Siquirres      |    0.12822     | [0.12676, 0.12968] |     0.18880     | [0.18707, 0.19053]  |
+|      Talamanca      |    0.10117     | [0.09779, 0.1046]  |     0.17762     | [0.17413, 0.18114]  |
+|       Tarrazu       |    0.13067     | [0.12911, 0.13226] |     0.19458     | [0.19276, 0.19642]  |
+|        Tibas        |    0.15626     | [0.15416, 0.15837] |     0.20752     | [0.20509, 0.20993]  |
+|       Tilaran       |    0.14055     | [0.1389, 0.14223]  |     0.19843     | [0.19663, 0.20016]  |
+|      Turrialba      |    0.13858     | [0.13685, 0.14033] |     0.19674     | [0.19501, 0.19847]  |
+|     Turrubares      |    0.14667     |  [0.1428, 0.1507]  |     0.17948     |  [0.1749, 0.18437]  |
+|        Upala        |    0.11776     | [0.11572, 0.11985] |     0.18586     |  [0.18321, 0.1885]  |
+| Vazquez De Coronado |    0.15645     | [0.1547, 0.15819]  |     0.21151     | [0.20951, 0.21343]  |
+|       Zarcero       |    0.14198     | [0.13857, 0.1454]  |     0.21224     | [0.20828, 0.21631]  |
+|        Pais         |    0.14143     | [0.14025, 0.14258] |     0.19847     | [0.19708, 0.19978]  |
