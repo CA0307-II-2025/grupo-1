@@ -9,7 +9,6 @@ date: "3 de octubre de 2025"
 output:
   pdf_document:
     latex_engine: xelatex
-    toc: yes
     number_sections: yes
   html_document:
     toc: yes
@@ -31,7 +30,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
 # Resumen
-Este estudio analiza la prevalencia de sobrepeso y obesidad infantil en Costa Rica a partir del Primer Censo Escolar de Peso/Talla 2016 (niños de 6 a 12 años). Se modelan los conteos de casos por cantón mediante un modelo binomial con enlace logit e inferencia bayesiana, incorporando covariables socioeconómicas y demográficas estandarizadas. La estimación se realiza con el algoritmo No-U-Turn Sampler (NUTS), que permite obtener distribuciones posteriores bien mezcladas para las probabilidades de prevalencia en cada unidad territorial. A nivel nacional, la media posterior de obesidad es cercana al 14 % y la de sobrepeso al 20 %, lo que implica un exceso de peso combinado de alrededor del 34 %. Se observa un gradiente centro–periferia: provincias y cantones del Valle Central presentan las prevalencias más elevadas, mientras que zonas costeras y periféricas muestran valores sistemáticamente menores. Los resultados confirman que el exceso de peso infantil constituye un problema estructural de salud pública y muestran que el enfoque bayesiano logit–binomial es útil para cuantificar la prevalencia y su incertidumbre a distintos niveles geográficos.
+Este estudio analiza la prevalencia de sobrepeso y obesidad infantil en Costa Rica a partir del Primer Censo Escolar de Peso/Talla 2016 (niños de 6 a 12 años). Se modelan los conteos de casos por cantón mediante un modelo binomial con enlace logit e inferencia bayesiana, incorporando covariables socioeconómicas y demográficas estandarizadas. La estimación se realiza con el algoritmo No-U-Turn Sampler (NUTS), que permite obtener distribuciones posteriores bien mezcladas para las probabilidades de prevalencia en cada unidad territorial. A nivel nacional, la media posterior de obesidad es cercana al 14 % y la de sobrepeso al 20 %, lo que implica un exceso de peso combinado de alrededor del 34 %. Se observa un gradiente centro–periferia: provincias y cantones del Valle Central presentan las prevalencias más elevadas, mientras que zonas costeras y periféricas muestran valores significativamente menores. Los resultados confirman que el exceso de peso infantil constituye un problema estructural de salud pública y muestran que el enfoque bayesiano logit–binomial es útil para cuantificar la prevalencia y su incertidumbre a distintos niveles geográficos.
 
 
 *Palabras clave:* Costa Rica, sobrepeso, obesidad
