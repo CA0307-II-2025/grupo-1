@@ -775,8 +775,7 @@ app.title = "Obesidad y Sobrepeso – Costa Rica"
 app.layout = html.Div(
     [
         html.H1(
-            "Dashboard – Costa Rica: Obesidad y Sobrepeso",
-            style={"marginBottom": 6}
+            "Dashboard – Costa Rica: Obesidad y Sobrepeso", style={"marginBottom": 6}
         ),
         html.P(
             "El sobrepeso y la obesidad infantil se han consolidado como una de las "

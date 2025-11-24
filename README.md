@@ -1,27 +1,27 @@
 # Prevalencia de obesidad y sobrepeso infantil en Costa Rica
 
-Repositorio del proyecto del curso **CA0307 – Estadística II (II-2025, UCR)**.  
+Repositorio del proyecto del curso **CA0307 – Estadística II (II-2025, UCR)**.
 El objetivo es estimar la prevalencia de sobrepeso y obesidad infantil en Costa Rica utilizando el **Primer Censo Escolar de Peso/Talla 2016** y un modelo **binomial con enlace logit** bajo un enfoque **bayesiano**, además de presentar los resultados en un **informe reproducible** y en un **dashboard interactivo** (Dash).
 
 
 ## Estructura del repositorio
 
-- `app/`  
+- `app/`
   Código de la aplicación web (Dash) para explorar los resultados de prevalencia por provincia y cantón.
 
-- `data/`  
+- `data/`
   Datos crudos necesarios para el análisis (por ejemplo, tablas del censo y archivos GeoJSON).
 
-- `docs/`  
+- `docs/`
   Archivos de documentación e informes. Aquí se encuentra el **informe principal en R Markdown** (por ejemplo, `docs/Reporte_final.Rmd`) y el PDF generado.
 
-- `res/`  
+- `res/`
   Resultados intermedios del análisis: tablas `.csv` (por ejemplo, `summary_prevalence_by_province.csv`, `summary_prevalence_by_canton.csv`) y gráficos `.png` que se usan en el informe y en el dashboard.
 
-- `src/`  
+- `src/`
   Código Python de apoyo (funciones para cargar datos, limpieza, modelos, etc.).
 
-- `scrum/`  
+- `scrum/`
   Documentos de gestión del proyecto (sprints, tareas, etc.).
 
 - Archivos de configuración:
@@ -177,7 +177,7 @@ El informe utiliza los resultados almacenados en `res/csv/` y las figuras en `re
 Para dudas sobre el código o el análisis:
 
 - Paola Espinoza; paomariespher@gmail.com
-- José Carlos Quintero  
+- José Carlos Quintero
 - Julián Soto Montoya
 - María Paula Jiménez Torres
 
