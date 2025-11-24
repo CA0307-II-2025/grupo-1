@@ -166,13 +166,13 @@ $p_i$: es la probabilidad (prevalencia) de la condición en la fila $i$, es deci
 
 
 ### Supuestos y consecuencias
-Binomialidad: $y_i\mid p_i \sim \mathrm{Binomial}(n_i,p_i)$ con $\mathrm{Var}(y_i\mid p_i)=n_i p_i(1-p_i)$.  
-Linealidad en logit: la relación entre covariables y $p_i$ es lineal en la escala logit.  
+Binomialidad: $y_i\mid p_i \sim \mathrm{Binomial}(n_i,p_i)$ con $\mathrm{Var}(y_i\mid p_i)=n_i p_i(1-p_i)$.
+Linealidad en logit: la relación entre covariables y $p_i$ es lineal en la escala logit.
 Priors débiles: $\mathcal N(0,5)$ deja que los datos dominen, salvo en celdas con poca exposición.
 
 ### Validación empírica reportada
-Convergencia: $\hat{R}=1.00$ en obesidad y sobrepeso; tamaños efectivos mínimos en núcleo/colas superiores a 4700, lo que sugiere exploración homogénea del posterior.  
-Precisión predictiva: obesidad con $\mathrm{MAE}=0.023$ y $\mathrm{RMSE}=0.032$; sobrepeso con $\mathrm{MAE}=0.021$ y $\mathrm{RMSE}=0.030$. Diferencias promedio entre proporciones observadas y estimadas en el rango 2–3 puntos porcentuales.  
+Convergencia: $\hat{R}=1.00$ en obesidad y sobrepeso; tamaños efectivos mínimos en núcleo/colas superiores a 4700, lo que sugiere exploración homogénea del posterior.
+Precisión predictiva: obesidad con $\mathrm{MAE}=0.023$ y $\mathrm{RMSE}=0.032$; sobrepeso con $\mathrm{MAE}=0.021$ y $\mathrm{RMSE}=0.030$. Diferencias promedio entre proporciones observadas y estimadas en el rango 2–3 puntos porcentuales.
 Cobertura (IC95 %): 77.8 % para obesidad y 89.1 % para sobrepeso. Indica buena reproducción de la variabilidad; ligera subcobertura en obesidad (estimaciones algo más concentradas), calibración más cercana al nominal en sobrepeso.
 
 ### Resumen ejecutivo
@@ -209,7 +209,7 @@ read.csv("../res/csv/summary_prevalence_by_province.csv") %>%
 
 ```{r}
 read.csv("../res/csv/summary_prevalence_by_canton.csv") %>%
-  arrange(ob_mean) %>% 
+  arrange(ob_mean) %>%
   filter(row_number() <= 5 | row_number() > n() - 5) %>%
   transmute(
     Grupo = stringr::str_to_title(Canton),
