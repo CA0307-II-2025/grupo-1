@@ -1,9 +1,9 @@
-dash
-plotly
-pandas
-numpy
-statsmodels
-pymc
 arviz
+dash
 matplotlib
+numpy
+pandas
+plotly
+pymc
 scipy
+statsmodels
