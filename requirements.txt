@@ -1,0 +1,9 @@
+dash
+plotly
+pandas
+numpy
+statsmodels
+pymc
+arviz
+matplotlib
+scipy
