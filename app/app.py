@@ -775,7 +775,20 @@ app.title = "Obesidad y Sobrepeso – Costa Rica"
 app.layout = html.Div(
     [
         html.H1(
-            "Dashboard – Costa Rica: Obesidad y Sobrepeso", style={"marginBottom": 6}
+            "Dashboard – Costa Rica: Obesidad y Sobrepeso",
+            style={"marginBottom": 6}
+        ),
+        html.P(
+            "El sobrepeso y la obesidad infantil se han consolidado como una de las "
+            "principales problemáticas de salud pública. En Costa Rica, el Primer "
+            "Censo Escolar de Peso/Talla 2016 mostró que más de un tercio de los "
+            "escolares presenta exceso de peso."
+        ),
+        html.P(
+            "Este panel resume un análisis bayesiano de la prevalencia de sobrepeso "
+            "y obesidad infantil a nivel nacional, provincial y cantonal, con el fin "
+            "de responder ¿cómo se distribuye territorialmente esta prevalencia y con "
+            "qué grado de incertidumbre podemos estimarla?"
         ),
         dcc.Tabs(
             id="tabs",
@@ -826,6 +839,16 @@ app.layout = html.Div(
                                 id="map-graph",
                                 figure=make_map(SUMMARY_DF, metric="ob_mean"),
                             ),
+                            html.P(
+                                "Cada polígono representa una provincia o un cantón. El color indica "
+                                "la media posterior de la prevalencia estimada y, al pasar el cursor, "
+                                "se muestra también el intervalo de credibilidad del 95 %."
+                            ),
+                            html.P(
+                                "A nivel nacional, la media posterior de obesidad es aproximadamente 14 % y la de "
+                                "sobrepeso aproximadamente 20 %, lo que implica un exceso de peso combinado de "
+                                "alrededor del 34 %."
+                            ),
                         ]
                     ),
                 ),
@@ -835,6 +858,12 @@ app.layout = html.Div(
                     value="tab-mosaic",  # puedes dejar este value igual
                     children=html.Div(
                         [
+                            html.P(
+                                "Las curvas muestran la distribución posterior de la prevalencia de "
+                                "obesidad o sobrepeso para el ámbito seleccionado (país o provincia). "
+                                "La anchura de la curva refleja la incertidumbre: curvas más anchas "
+                                "indican estimaciones menos precisas."
+                            ),
                             html.Div(
                                 [
                                     html.Label("Condición:"),
@@ -896,6 +925,17 @@ app.layout = html.Div(
                             dcc.Graph(
                                 id="forest-graph",
                                 figure=make_forest(SUMMARY_DF, metric="ob"),
+                            ),
+                            html.P(
+                                "Cada punto corresponde a la media posterior de la prevalencia por "
+                                "provincia y las líneas horizontales representan el intervalo de "
+                                "credibilidad del 95 %. La línea punteada indica la media nacional."
+                            ),
+                            html.P(
+                                "Se observa un patrón centro–periferia: San José, Heredia y Cartago "
+                                "concentran las prevalencias más altas, mientras que Guanacaste, "
+                                "Puntarenas y Limón muestran valores menores, coherente con la mayor "
+                                "urbanización y desarrollo socioeconómico del Valle Central."
                             ),
                         ]
                     ),
