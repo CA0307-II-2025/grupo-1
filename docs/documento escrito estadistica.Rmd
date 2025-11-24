@@ -1,5 +1,5 @@
 ---
-title: "Reporte de Proyecto"
+title: "Prevalencia de Obesidad y Sobrepeso en Costa Rica"
 author:
 - José Carlos Quintero
 - Paola Espinoza
