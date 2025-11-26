@@ -240,7 +240,8 @@ Desde una perspectiva de política pública, los resultados apuntan a la necesid
 
 Desde el punto de vista metodológico, los resultados presentan consistencia y precisión aceptables en todos los niveles geográficos: el uso de muestreo NUTS permitió explorar adecuadamente la distribución posterior de los parámetros, reducir la autocorrelación entre cadenas y alcanzar buena convergencia, lo que refuerza la confianza en los valores reportados y en su comparabilidad futura. No obstante, y en línea con las recomendaciones metodológicas de @Gomez2023, una agenda natural de trabajo es extender el modelo hacia estructuras espaciales jerárquicas (por ejemplo, especificaciones tipo BYM2) que capturen dependencia geográfica residual y refinen las estimaciones en provincias y cantones con escasa información, de modo que el sistema de vigilancia estadística del sobrepeso y la obesidad infantil en Costa Rica pueda acompañar con mayor precisión el diseño, la focalización y la evaluación de políticas públicas.
 
-
+# Agradecimientos
+Se agradece profundamente a nuestro profesor, PhD. Maikol Solís, por su orientación y apoyo durante todo el proceso de investigación. Su guía y consejos fueron fundamentales para que la realización de nuestro proyecto fuera posible. Estamos muy agradecidos por su dedicación, paciencia y tiempo brindado.
 
 # Referencias Bibliográficas
 <div id="refs"></div>
