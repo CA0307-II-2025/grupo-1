@@ -2,111 +2,97 @@
 
 ## 🎯  Objetivo del Sprint:
 
- _Declarar la meta del sprint en 1-2 frases (ej: "Tener datos limpios y un análisis descriptivo inicial completado")._
+ _Tener el borrador del reporte y el dashboard._
 
 ## 😃  Historias de usuario
 
-- HU# - "Título de la Historia" (Estimación: Y pts) – *Criterios de aceptación confirmados.*
-- HU# - ...
-*(Listar las historias del backlog que el equipo se compromete a completar este sprint, con sus IDs y breve nombre.)*
-
+- HU# 155 - "Como analista de datos quiero generar el informe completo en borrador con todos los resultados numéricos actualizados y referencias internas correctas" (10pts) – *Que el informe tenga al menos 10 páginas, contenga resultados y referencias como: figuras, tablas, citas.*
+- HU# 156 - "Como analista de datos quiero tener un archivo README.md con instrucciones claras de instalación, ejecución de comandos y reproducción del análisis" (8pts) – *El README debe ser lo más claro posible para que sea replicable por un lector, incluyendo cómo ejecutar la aplicación web local y cómo regenerar el informe.*
+- HU# 157 - "Como analista de datos quiero tener el Dashboard preliminar con los resultados más importantes de la investigación" (15pts) – *La aplicación incluye al menos un control interactivo y refleja resultados del análisis en tiempo real.*
 
 
 ## 🔜  Plan de alto nivel:
-- *Semana 1:* _Tareas principales (ej: Ingesta de datos, Setup entorno CI)._
-- *Semana 2:* _Tareas principales (ej: Implementar modelo y validar, preparar demo)._
+- *Semana 1:* _borrador reporte y dashboard._
 
 
 ## 🥇  Criterios de aceptación del Sprint:
-- [ ] _Todas las historias listadas completadas y aceptadas por el profesor._
-- [ ] _El código limpia automáticamente la base de datos._
+- [ ] _Se completado un informe borrador de 10 páginas._
+- [ ] _Dashboard completamente funcional._
 
 
 ## 📌  Asignación de tareas inicial
-- *Persona A:* Historia 1
-- *Persona B:* Historia 2
-- *Persona C:* documentación
-
-## 🚫 Posibles bloqueos o impedimentos conocidos
-
-- **Bloqueo:** _No tenemos la base de datos limpia.
-- **Solución** _Crear una historia solo para limpiar la base de datos_.
-
+- *Paola Espinoza:* Historia 156 y 157
+- *José Carlos Quintero:* Historia 157
+- *Julián Soto:* Historia 155
+- *Ma Paula Jiménez:* Historia 155
 
 
 
 # ⏳  Daily
 
-El formato para cada estudiante debe ser
 
-- **¿Qué hice ayer?**: _Describir brevemente las tareas completadas ayer, vinculadas a historias (ej: "Implementé la función de limpieza y escribí test para valores faltantes")._
-- **¿Qué haré hoy?**: _Enumerar foco de hoy (ej: "Integrar resultados descriptivos en el reporte y comenzar prueba de hipótesis")._
-- **¿Hay algo que me está bloqueando?**: _Listar obstáculos o dependencias (ej: "Falta confirmar el rango de años con PO" o "La librería X está dando un bug")._
+##  Fecha: 2025-11-17
 
-
-
-##  Fecha: YYYY-MM-DD
-
-### Estudiante A:
+### Paola Espinoza:
 - **¿Qué hice ayer?**:
 - **¿Qué haré hoy?**:
 - **¿Hay algo que me está bloqueando?**:
 
-### Estudiante B:
+### José Carlos Quintero:
 - **¿Qué hice ayer?**:
 - **¿Qué haré hoy?**:
 - **¿Hay algo que me está bloqueando?**:
 
-### Estudiante C:
+### Julián Soto:
 - **¿Qué hice ayer?**:
 - **¿Qué haré hoy?**:
 - **¿Hay algo que me está bloqueando?**:
 
-### Estudiante D:
+### María Paula Jiménez:
 - **¿Qué hice ayer?**:
 - **¿Qué haré hoy?**:
 - **¿Hay algo que me está bloqueando?**:
 
 
+##  Fecha: 2025-11-20
 
-# 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
+### Paola Espinoza:
+- **¿Qué hice ayer?**:
+- **¿Qué haré hoy?**:
+- **¿Hay algo que me está bloqueando?**:
+
+### José Carlos Quintero:
+- **¿Qué hice ayer?**:
+- **¿Qué haré hoy?**:
+- **¿Hay algo que me está bloqueando?**:
+
+### Julián Soto:
+- **¿Qué hice ayer?**:
+- **¿Qué haré hoy?**:
+- **¿Hay algo que me está bloqueando?**:
+
+### María Paula Jiménez:
+- **¿Qué hice ayer?**:
+- **¿Qué haré hoy?**:
+- **¿Hay algo que me está bloqueando?**:
 
 
 
-## 📈  Resultado mostrado
-
-- *Funcionalidad A:* (ej: "Carga automática de dataset desde CSV en base de datos completada").
-- *Funcionalidad B:* (ej: "Gráficos descriptivos generados dinámicamente").
-
-
-## :arrows_counterclockwise:  Retroalimentación
-
-- **Profesor**:
-- **Compañeros:**
 
 
 ## ✔️  Criterios de aceptación cumplidos:
-- [] _Historias 1, 2, 3. completadas. Falta la historia 4.
-- [x] Carga automática de la base de datos.
+- [x] Historias 155, 156 y 157
 
-
-# 🔙  Retrospective – Fecha: YYYY-MM-DD
+# 🔙  Retrospective – Fecha: 2025-11-21
 
 ## :white_check_mark: Qué salió bien
 1.  _Colaboración en el equipo_ Logramos terminar el sprint a tiempo.
-1.  _Usamos commits convencionales correctamente y no hubo errores_
-1.  Documentación actualizada al día evitó retrabajo luego.
-
 
 
 ## :no_good: Qué podría mejorar
 
-- _Gestión de tiempo en Daily:_ a veces se extendieron a 20 min discutiendo detalles innecesarios.
-- _Claridad de criterios de aceptación:_ En HU2 inicialmente no estaba claro cómo validar "datos limpios". Mejoraremos definición de *Done* para tareas de datos.
-- _Distribución de carga:_ Persona A quedó sobrecargada con 3 historias. El próximo sprint se equilibrará asignación más temprano.
+- _Distribución de carga:_ Un integrante quedó sobrecargada con 3 historias.
 
 
 ## :pencil: Acciones concretas  para el próximo sprint
-1. **Timebox en Daily** – SM usará temporizador de 15 min y cortará discusiones largas, anotándolas para after.
-2. **Refinar historias en refinamiento semanal** – Agregar criterios de aceptación más detallados, especialmente para historias técnicas (como limpieza de datos).
-3. **Balancear asignación tareas** – Implementar mini-plan al inicio del sprint donde cada dev toma carga similar; SM monitoreará que nadie tenga >40% de tareas.
+1. – Cierre final del proyecto.
