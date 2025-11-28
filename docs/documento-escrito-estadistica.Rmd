@@ -8,14 +8,14 @@ author:
 - María Paula Jiménez
 date: "28 de noviembre de 2025"
 output:
-  word_document:
-    toc: true
-  html_document:
-    toc: true
-    df_print: paged
   pdf_document:
     latex_engine: xelatex
     number_sections: true
+  html_document:
+    toc: true
+    df_print: paged
+  word_document:
+    toc: true
 lang: es
 geometry: margin=1in
 header-includes:
@@ -102,32 +102,12 @@ Finalmente, al comparar por provincia, la prevalencia combinada oscila entre 30%
 ```{r fig-dist-combo, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución de la prevalencia de sobrepeso y obesidad infantil (distrital) por provincia"}
 knitr::include_graphics("../res/graficos/box_prevalencia_por_provincia_combinada.png")
 ```
+## Modelo: regresión binomial con enlace logit
 
-## Modelo preliminar Beta-Binomial para la prevalencia
+Para poder responder la pregunta de investigación y entender cómo cambia la prevalencia de sobrepeso y obesidad entre las diferentes zonas del país, en este estudio se utiliza un modelo binomial con enlace logit dentro de un enfoque bayesiano. Este modelo permite trabajar directamente con probabilidades a partir de los conteos de casos e incorporar variables sociodemográficas que podrían influir en estas prevalencias. Además, el enlace logit garantiza que las estimaciones se mantengan dentro del rango natural de una prevalencia, y el enfoque bayesiano facilita obtener distribuciones posteriores que reflejan explícitamente la incertidumbre asociada a cada territorio.
 
-Dada la natural de los datos y con el propósito de obtener una primera estimación de la prevalencia de sobrepeso y obesidad infantil se plantea de forma preliminar un modelo que no incorpora covariables ni estructura territorial. Específicamente, se modela el número total de casos observados en cada categoría (sobrepeso y obesidad, respectivamente) mediante una distribución $Y \sim \text{Binom}(N,p)$, donde $Y$ es el número total de casos, N el tamaño de la muestra y $p$ representa la probabilidad (prevalencia verdadera) de pertenecer a la categoría de sobrepeso (o bien, obesidad) independientemente de la pertenencia provincial o cantonal.
+A partir de esta motivación, se plantea un modelo que permite estudiar la variación de la prevalencia entre distritos y su relación con las covariables disponibles. En particular, el modelo de regresión binomial con función de enlace logit describe los conteos de casos observados $y_i$ en el distrito $i$ sobre $n_i$, el total de niños censados en dicho distrito, mediante una verosimilitud binomial y un enlace logit para la prevalencia verdadera $p_i$, según:
 
-Desde un enfoque bayesiano, se asigna una distribución previa de tipo Beta débilmente informativa $\pi \sim \text{Beta}(1,1)$, equivalente a una previa uniforme sobre el intervalo $(0,1)$. La distribución posterior del parámetro $p$ se aproxima mediante el algoritmo Metropolis-Hastings, respectivamente para cada categoría. De esta forma, se obtiene una estimación bayesiana preliminar de la prevalencia de sobrepeso y obesidad infantil en Costa Rica, que sirve como referencia para contextualizar los resultados del modelo con estructura territorial descrito en la siguiente subsección.
-
-```{r, include = FALSE}
-
-### Enfoque Bayesiano
-#Dada la naturaleza de los datos, se modela el número total de casos observados en cada categoría (sobrepeso y obesidad, respectivamente) mediante una distribución $Y \sim \text{Binom}(N,p)$, donde $Y$ es el número total de casos, N el tamaño de la muestra y $p$ la probabilidad de pertenecer a la categoría de sobrepeso (o bien, obesidad) independientemente de la pertenencia provincial o cantonal.
-```
-#### Autocorrelación e Histogramas
-Para el método de Metropolis-Hasting, en ambos casos, se obtuvo una alta autocorrelación entre los elementos de la cadena. Una vez finalizado el proceso, se realizaron histogramas para visualizar la distribución posterior obtenida a partir de esta metodología. Además, se presenta la media y el intervalo de confianza para cada categoría.
-
-```{r fig-sobpreso, echo=FALSE, fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de sobrepeso infantil"}
-knitr::include_graphics("../res/graficos/hist_post_sobrepeso.png")
-```
-
-```{r fig-obesidad, echo=FALSE,fig.pos='H', fig.align='center', out.width='70%', fig.cap="Distribución posterior de la prevalencia de obesidad infantil"}
-knitr::include_graphics("../res/graficos/hist_post_obesidad.png")
-```
-
-## Modelo principal: regresión binomial con enlace logit
-
-Tras la estimación preliminar, se plantea un modelo más flexible que permite estudiar la variación de la prevalencia entre distritos y su relación con covariables sociodemográficas. En este caso, el modelo de regresión binomial con función de enlace logit describe el conteos de casos observados $y_{i}$ en el distrito $i$ sobre \(n_i\) el total de niños censados en dicho distrito, mediante una verosimilitud binomial y un enlace logit para la prevalencia verdadera \(p_i\) según
 \[
 y_i \sim \mathrm{Binomial}(n_i, p_i),\qquad
 \mathrm{logit}(p_i)=\eta_i=\alpha + X_i^\top\beta.
@@ -269,10 +249,17 @@ En conjunto, esta investigación evidencia que Costa Rica enfrenta un desafío n
 # Agradecimientos
 Se agradece profundamente a nuestro profesor, PhD. Maikol Solís, por su orientación y apoyo durante todo el proceso de investigación. Su guía y consejos fueron fundamentales para que la realización de nuestro proyecto fuera posible. Estamos muy agradecidos por su dedicación, paciencia y tiempo brindado.
 
+\newpage
+
 # Referencias Bibliográficas
 <div id="refs"></div>
 
 # Anexos
+
+## Repositorio GitHub
+
+https://github.com/CA0307-II-2025/grupo-1
+
 ```{r}
 read.csv("../res/csv/summary_prevalence_by_canton.csv") %>%
   transmute(
