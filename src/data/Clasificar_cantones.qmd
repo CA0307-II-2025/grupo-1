@@ -1,0 +1,111 @@
+
+```{r}
+library(dplyr)
+library(readr)
+library(dplyr)
+library(stringi)
+
+# Tu base de datos principal
+df <- read_csv("../../res/csv/summary_prevalence_by_canton.csv")
+
+# Tabla de cantones GAM (la que generaste)
+gam_cantones <- tribble(
+  ~provincia,  ~canton,
+  "San José",  "San José",
+  "San José",  "Escazú",
+  "San José",  "Desamparados",
+  "San José",  "Aserrí",
+  "San José",  "Mora",
+  "San José",  "Goicoechea",
+  "San José",  "Santa Ana",
+  "San José",  "Alajuelita",
+  "San José",  "Vázquez de Coronado",
+  "San José",  "Tibás",
+  "San José",  "Moravia",
+  "San José",  "Montes de Oca",
+  "San José",  "Curridabat",
+  "Alajuela", "Alajuela",
+  "Alajuela", "Atenas",
+  "Alajuela", "Poás",
+  "Cartago",  "Cartago",
+  "Cartago",  "Paraíso",
+  "Cartago",  "La Unión",
+  "Cartago",  "Oreamuno",
+  "Cartago",  "Alvarado",
+  "Cartago",  "El Guarco",
+  "Heredia",  "Heredia",
+  "Heredia",  "Barva",
+  "Heredia",  "Santo Domingo",
+  "Heredia",  "Santa Bárbara",
+  "Heredia",  "San Rafael",
+  "Heredia",  "San Isidro",
+  "Heredia",  "Belén",
+  "Heredia",  "Flores",
+  "Heredia",  "San Pablo"
+)
+
+
+gam_cantones_key <- gam_cantones |>
+  mutate(
+    CANTON_KEY = canton |>
+      stri_trans_general("Latin-ASCII") |>  
+      toupper() |>
+      trimws(),
+    GAM = "GAM"
+  ) |>
+  select(CANTON_KEY, GAM)
+
+
+df_gam <- df %>%                 
+  left_join(gam_cantones_key, by = c("Canton" = "CANTON_KEY")) %>% 
+  mutate(
+    GAM = if_else(is.na(GAM), "NO GAM", GAM)
+  )
+
+
+```
+
+```{r}
+library(ggplot2)
+library(cowplot)
+
+ggplot(df_gam, aes(x = ob_mean, y = Canton, color = GAM)) +
+  geom_point(alpha = 0.7) +
+  scale_color_manual(values = c("GAM" = "steelblue", "NO GAM" = "orange")) +
+  labs(
+    x = "Prevalencia",
+    y = "",
+    color = "Zona",
+    title = "Título"
+  ) +
+  theme_cowplot() +
+  theme(axis.ticks.y = element_blank(), axis.text.y  = element_blank())
+```
+
+
+
+```{r}
+library(ggplot2)
+library(cowplot)
+
+ggplot(df_gam) +
+  geom_errorbar(
+    aes(
+      x    = Canton,
+      ymin = ob_q2.5,
+      ymax = ob_q97.5,
+      colour = GAM
+    ),
+    width = 0.01,   
+    alpha = 0.7
+  ) +
+  theme_cowplot() +
+  labs(
+    x = "Cantones",
+    y = "Prevalencia",
+    colour = "Zona"
+  ) +
+  theme(axis.ticks.x = element_blank(), axis.text.x  = element_blank())
+
+```
+
