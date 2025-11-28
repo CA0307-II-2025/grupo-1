@@ -44,14 +44,14 @@
 - ¿Hay algo que me está bloqueando?: no
 
 ### Julián Soto:
-- ¿Qué hice ayer?: revisión preliminar del reporte escrito. 
-- ¿Qué haré hoy?: continuar con la revisión del reporte escrito. 
+- ¿Qué hice ayer?: revisión preliminar del reporte escrito.
+- ¿Qué haré hoy?: continuar con la revisión del reporte escrito.
 - ¿Hay algo que me está bloqueando?: no
 
 ### María Paula Jiménez:
 - ¿Qué hice ayer?: trabajar en el escrito
 - ¿Qué haré hoy?: escribir una parte del README
-- ¿Hay algo que me está bloqueando?: no 
+- ¿Hay algo que me está bloqueando?: no
 
 
 ##  Fecha: 2025-11-20
@@ -63,12 +63,12 @@
 
 ### José Carlos Quintero:
 - ¿Qué hice ayer?: resumir escrito
-- ¿Qué haré hoy?: iniciar la Presentación 
+- ¿Qué haré hoy?: iniciar la Presentación
 - ¿Hay algo que me está bloqueando?: no
 
 ### Julián Soto:
-- ¿Qué hice ayer?: descartar información preliminar de sprints anteriores. 
-- ¿Qué haré hoy?: iniciar con la elaboración del reporte del sprint. 
+- ¿Qué hice ayer?: descartar información preliminar de sprints anteriores.
+- ¿Qué haré hoy?: iniciar con la elaboración del reporte del sprint.
 - ¿Hay algo que me está bloqueando?: no
 
 ### María Paula Jiménez:
