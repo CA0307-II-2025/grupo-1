@@ -33,48 +33,48 @@
 
 ##  Fecha: 2025-11-17
 
-### Paola Espinoza:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Paola Espinoza Hernández:
+- ¿Qué hice ayer?: Poner cantones en dashboard
+- ¿Qué haré hoy?: Generar csv con información actualizada
+- ¿Hay algo que me está bloqueando?: no
 
 ### José Carlos Quintero:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- ¿Qué hice ayer?: trabajar en informe escrito
+- ¿Qué haré hoy?: seguir trabajando en informe escrito
+- ¿Hay algo que me está bloqueando?: no
 
 ### Julián Soto:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- ¿Qué hice ayer?: revisión preliminar del reporte escrito. 
+- ¿Qué haré hoy?: continuar con la revisión del reporte escrito. 
+- ¿Hay algo que me está bloqueando?: no
 
 ### María Paula Jiménez:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- ¿Qué hice ayer?: trabajar en el escrito
+- ¿Qué haré hoy?: escribir una parte del README
+- ¿Hay algo que me está bloqueando?: no 
 
 
 ##  Fecha: 2025-11-20
 
-### Paola Espinoza:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+### Paola Espinoza Hernández:
+- ¿Qué hice ayer?: Arreglar estética de dashboard
+- ¿Qué haré hoy?: Hacer el póster
+- ¿Hay algo que me está bloqueando?: no
 
 ### José Carlos Quintero:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- ¿Qué hice ayer?: resumir escrito
+- ¿Qué haré hoy?: iniciar la Presentación 
+- ¿Hay algo que me está bloqueando?: no
 
 ### Julián Soto:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- ¿Qué hice ayer?: descartar información preliminar de sprints anteriores. 
+- ¿Qué haré hoy?: iniciar con la elaboración del reporte del sprint. 
+- ¿Hay algo que me está bloqueando?: no
 
 ### María Paula Jiménez:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+- ¿Qué hice ayer?: trabajar en el escrito y sprint
+- ¿Qué haré hoy?: trabar en la presentación final
+- ¿Hay algo que me está bloqueando?: no
 
 
 
