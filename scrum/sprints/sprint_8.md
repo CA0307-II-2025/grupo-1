@@ -1,22 +1,27 @@
-# 📆  Planificación
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 
-## 🎯  Objetivo del Sprint:
+#   Planificación Sprint 8
+
+##   Objetivo del Sprint:
 
  Culminar el desarrollo del proyecto, mediante la entrega entrega final del reporte, y la retrospectiva del proyecto.
 
-## 😃  Historias de usuario
+##   Historias de usuario
 
 
 - HU#162 - Como Analista de datos debo realizar la presentación para la exposición final del reporte. (Estimación: 3 pts)
 - HU#163 - Generar el reporte del Sprint 8
-- HU#164 - Como analista de datos quiero ajustar el reporte científico según el formato establecido por la revista Serengueti.
-- HU165  - Como analista de datos quiero ajustar el reporte científico según el formato establecido por la revista Serengueti
+- HU#172 - Como analista de datos quiero ajustar el reporte científico según el formato establecido por la revista Serengueti.
 
-## 🔜  Plan de alto nivel:
-- *Semana 1:* Finalizar las tareas de formato del reporte, así como de la presentación.
+##   Plan de alto nivel:
+- *Smana 1:* Finalizar las tareas restante de formato del reporte, así como de la presentación.
 
-## 🥇  Criterios de aceptación del Sprint:
-- [ ] Se cumplen todos los criterios para (UH#162), (UH#163), (UH#164).
+##   Criterios de aceptación del Sprint:
+- [ ] Se cumplen todos los criterios para (UH#162), (UH#163), (UH#172).
 
 - [ ] (UH#162) Se genera un documento en formato pdf con las secciones requeridas.
 
@@ -25,93 +30,60 @@
 - [ ] (UH#163) Presentación y demo final (slides o demostración en vivo de la app y hallazgos clave).
 - [ ] (UH#163) Retrospectiva del equipo realizada y documentada (lecciones aprendidas, acciones de mejora futura)
 
-
-Se genera un documento en formato word que satisface todos las reglas requeridas.
-## 📌  Asignación de tareas inicial
-- *Persona A:* Historia 1
-- *Persona B:* Historia 2
-- *Persona C:* documentación
-
-## 🚫 Posibles bloqueos o impedimentos conocidos
-
-- **Bloqueo:** _No tenemos la base de datos limpia.
-- **Solución** _Crear una historia solo para limpiar la base de datos_.
+- [ ] (UH#172) Se genera un documento en formato word que satisface todos las reglas requeridas.
 
 
+### Asignación de tareas inicial
+- *José Carlos Quintero: (UH#172), (UH#162)
+- *Paola Espinoza: (UH#162)
+- *Julián Soto: (UH#172), (UH#163)
+- *María Paula Jiménez: (UH#162)
 
 
-# ⏳  Daily
+#   Daily
 
-El formato para cada estudiante debe ser
+##  Fecha: 2025-11-25
 
-- **¿Qué hice ayer?**: _Describir brevemente las tareas completadas ayer, vinculadas a historias (ej: "Implementé la función de limpieza y escribí test para valores faltantes")._
-- **¿Qué haré hoy?**: _Enumerar foco de hoy (ej: "Integrar resultados descriptivos en el reporte y comenzar prueba de hipótesis")._
-- **¿Hay algo que me está bloqueando?**: _Listar obstáculos o dependencias (ej: "Falta confirmar el rango de años con PO" o "La librería X está dando un bug")._
+### Paola Espinoza Hernández:
+- ¿Qué hice ayer?: Revisión del Dashboard.
+- ¿Qué haré hoy?: Investigar sobre el formato necesario para la revista Serengueti.
+- ¿Hay algo que me está bloqueando?: no
 
+### José Carlos Quintero:
+- ¿Qué hice ayer?: Actualización de la sección de resultados del informe escrito.
+- ¿Qué haré hoy?: Continuar con la actuación del informe escrito.
+- ¿Hay algo que me está bloqueando?: no
 
+### Julián Soto:
+- ¿Qué hice ayer?: Reajuste de la especificación del modelo en la sección de metodología del informe escrito.
+- ¿Qué haré hoy?: Continuar trabajando en el informe escrito.
+- ¿Hay algo que me está bloqueando?: no
 
-##  Fecha: YYYY-MM-DD
+### María Paula Jiménez:
+- ¿Qué hice ayer?: Buscar plantillas para la presentación del trabajo escrito.
+- ¿Qué haré hoy?: Empezar la presentación del trabajo escrito.
+- ¿Hay algo que me está bloqueando?: no
 
-### Estudiante A:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+#    Revisión en clase (Fecha: 2025-11-28)
 
-### Estudiante B:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+##   Resultado mostrado
 
-### Estudiante C:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+-  Presentación final de los resultados acerca la prevalencia de sobrepeso y obesidad infantil de la investigación.
+-  Gráficos Coropléticos con la prevalencia de sobrepeso y obesidad infantil según unidad geográfica.
 
-### Estudiante D:
-- **¿Qué hice ayer?**:
-- **¿Qué haré hoy?**:
-- **¿Hay algo que me está bloqueando?**:
+##  Retroalimentación:
 
+- **Profesor**: Considerar modificar el gráfico de los intervalos de confianza de la prevalencia, para mostrar la dependencia sobre la condición de ruralidad cantonal.
 
+##  Criterios de aceptación cumplidos:
+- [$\checkmark$] Historias (UH#162), (UH#163), (UH#172) completadas.
 
-# 🔍   Revisión en clase (Fecha: YYYY-MM-DD)
+#  Retrospective – Fecha: 2025-11-28
 
+##  Qué salió bien
+1.  Se logró cumplir con todos los requerimientos para la presentación del reporte final.
+2.  Se realizó una distribución equilibrada de la carga entre el equipo de trabajo.
 
+##  Qué podría mejorar
 
-## 📈  Resultado mostrado
-
-- *Funcionalidad A:* (ej: "Carga automática de dataset desde CSV en base de datos completada").
-- *Funcionalidad B:* (ej: "Gráficos descriptivos generados dinámicamente").
-
-
-## :arrows_counterclockwise:  Retroalimentación
-
-- **Profesor**:
-- **Compañeros:**
-
-
-## ✔️  Criterios de aceptación cumplidos:
-- [] _Historias 1, 2, 3. completadas. Falta la historia 4.
-- [x] Carga automática de la base de datos.
-
-
-# 🔙  Retrospective – Fecha: YYYY-MM-DD
-
-## :white_check_mark: Qué salió bien
-1.  _Colaboración en el equipo_ Logramos terminar el sprint a tiempo.
-1.  _Usamos commits convencionales correctamente y no hubo errores_
-1.  Documentación actualizada al día evitó retrabajo luego.
-
-
-
-## :no_good: Qué podría mejorar
-
-- _Gestión de tiempo en Daily:_ a veces se extendieron a 20 min discutiendo detalles innecesarios.
-- _Claridad de criterios de aceptación:_ En HU2 inicialmente no estaba claro cómo validar "datos limpios". Mejoraremos definición de *Done* para tareas de datos.
-- _Distribución de carga:_ Persona A quedó sobrecargada con 3 historias. El próximo sprint se equilibrará asignación más temprano.
-
-
-## :pencil: Acciones concretas  para el próximo sprint
-1. **Timebox en Daily** – SM usará temporizador de 15 min y cortará discusiones largas, anotándolas para after.
-2. **Refinar historias en refinamiento semanal** – Agregar criterios de aceptación más detallados, especialmente para historias técnicas (como limpieza de datos).
-3. **Balancear asignación tareas** – Implementar mini-plan al inicio del sprint donde cada dev toma carga similar; SM monitoreará que nadie tenga >40% de tareas.
+- Durante el desarrollo del estudio hubo pocas reuniones de todo el equipo de trabajo.
