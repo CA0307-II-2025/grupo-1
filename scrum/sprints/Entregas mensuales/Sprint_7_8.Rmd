@@ -1,0 +1,43 @@
+---
+title: "Entrega Sprint 7 y 8"
+author:
+  - "José Carlos Quintero"
+  - "Paola Espinoza"
+  - "Julián Soto"
+  - "María Paula Jiménez"
+date: "28 de setiembre de 2025"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+geometry: margin=1in
+header-includes:
+  - \renewcommand{\contentsname}{Tabla de contenidos}
+link-citations: true
+nocite: '@*'
+---
+
+# Informe de cumplimiento - Sprints 7 y 8
+
+## Sprint 7
+
+De acuerdo con lo requerido para este sprint, se cumplió con los entregables solicitados:
+
+- Se elaboró el reporte final en borrador en docs/Reporte_final.md, el cual incluye todos los resultados numéricos actualizados y las referencias.
+
+- Se actualizó la documentación del proyecto, que puede ser consultada directamente en el repositorio a través del siguiente enlace:
+[README](https://github.com/CA0307-II-2025/grupo-1/tree/main#prevalencia-de-obesidad-y-sobrepeso-infantil-en-costa-rica).
+
+- Se implementó un dashboard prelimar con los resultados más importantes de la investigación, consignado en el archivo app.py, el cual se probó localmente. Este archivo puede ser verificado directamente desde el repositorio del grupo.
+
+## Sprint 8
+
+Según lo requerido, se cumplió con los entregables solicitados:
+
+- Se completó el informe científico final, revisado y formateado según las normas establecidas. Este informe incluye las sección requeridas: Resumen, Introducción, Métodos, Resultados, Conclusiones y Bibliografía.
+
+- Se preparó la presentación y demo final de la aplicación y de los hallazgos clave del análisis.
+
+- Se llevó a cabo la retrospectiva del equipo, en la cual se documentan las lecciones aprendidas y acciones de mejora para futuros proyectos. Esta puede ser consultada en el planeamiento del Sprint 8 que se adjunta al final del presente documento.
+
+La versión final del informe científico se adjunta a continuación. Posteriormente, se incluye el planeamiento correspondiente a cada uno de los sprints mencionados. Asimismo, la versión final del código, se encuentra disponible en el repositorio del grupo en la carpeta grupo-1/src/analysis.
