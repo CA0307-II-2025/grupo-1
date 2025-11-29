@@ -8,14 +8,14 @@ author:
 - María Paula Jiménez
 date: "28 de noviembre de 2025"
 output:
-  word_document:
-    toc: true
-  html_document:
-    toc: true
-    df_print: paged
   pdf_document:
     latex_engine: xelatex
     number_sections: true
+  html_document:
+    toc: true
+    df_print: paged
+  word_document:
+    toc: true
 lang: es
 geometry: margin=1in
 header-includes:
@@ -62,13 +62,13 @@ Las variables socioeconómicas y geográficas consideradas se describen a contin
 
 - **provincia**: Nombre de la provincia correspondiente.
 
-- **canton**: Nombre del cantón correspondiente.
+- **cantón**: Nombre del cantón correspondiente.
 
 - **desempleo**: Porcentaje de personas desempleadas dentro del distrito
 
 - **población_urbana**: Porcentaje de la población que reside en áreas urbanas del distrito
 
-- **privación_critica**: Porcentaje de población en situación de privación crítica.
+- **privación_crítica**: Porcentaje de población en situación de privación crítica.
 
 - **población_menor_14**: Porcentaje de personas menores de 14 años en la población total del distrito
 
@@ -93,9 +93,9 @@ Por otra parte, las variables de medición son las siguientes:
 
 ## Análisis exploratorio de la base de datos
 
-En términos generales, la prevalencia combinada de sobrepeso y obesidad infantil muestra una media del 34%, con valores que oscilan entre 13% y 56%, lo que refleja una variabilidad importante importante entre distritos. Al desagregar los datos por condición, la prevalencia de sobrepeso presenta un promedio de 20%, con una desviación estándar del 3% y un rango entre 6% y 33%, mientras que la prevalencia de obesidad registra un promedio de 14%, con desviación estándar del 4% y valores entre 0 y 33%. Estos resultados evidencian que, aunque ambas condiciones están presentes en magnitudes considerables, el sobrepeso es más frecuente que la obesidad, lo cual no es sorprendente al considerar que la obesidad se puede interpretar como un caso extremo de sobrepeso.
+En términos generales, la prevalencia combinada de sobrepeso y obesidad infantil muestra una media del 34%, con valores que oscilan entre 13% y 56%, lo que refleja una variabilidad importante entre distritos. Al desagregar los datos por condición, la prevalencia de sobrepeso presenta un promedio de 20%, con una desviación estándar del 3% y un rango entre 6% y 33%, mientras que la prevalencia de obesidad registra un promedio de 14%, con desviación estándar del 4% y valores entre 0 y 33%. Estos resultados evidencian que, aunque ambas condiciones están presentes en magnitudes considerables, el sobrepeso es más frecuente que la obesidad, lo cual no es sorprendente al considerar que la obesidad se puede interpretar como un caso extremo de sobrepeso.
 
-Los años de escolaridad promedio por distrito se sitúan en 8.1 años, con una desviación estándar moderada aproximadamente de $1.5$ años. La tasa de desempleo es baja en promedio (3%), pero para algunos distritos se alcanzan valores cercanos a 9%. El porcentaje de hogares monomarentales ronda el 20% y la privación crítica promedio de los hogares se ubica en 29%, mostrando casos extremos de hasta 90%. La población urbana evidencia una clara polarización, puesto una cantidad considerable de distritos son predominantemente rurales (0%) o completamente urbanos (100%).
+Los años de escolaridad promedio por distrito se sitúan en 8.1 años, con una desviación estándar moderada aproximadamente de $1.5$ años. La tasa de desempleo es baja en promedio (3%), pero para algunos distritos se alcanzan valores cercanos a 9%. El porcentaje de hogares monomarentales ronda el 20% y la privación crítica promedio de los hogares se ubica en 29%, mostrando casos extremos de hasta 90%. La población urbana evidencia una clara polarización, puesto que una cantidad considerable de distritos son predominantemente rurales (0%) o completamente urbanos (100%).
 
 Finalmente, al comparar por provincia, la prevalencia combinada oscila entre 30% en Limón y 37% en Heredia, siendo esta última la más alta. En la Figura 1 se confirma una mayor heterogeneidad en provincias como San José y Alajuela, mientras que Cartago y Guanacaste presentan distribuciones más concentradas.
 
@@ -129,7 +129,7 @@ Desde un enfoque bayesiano, se asignan distribuciones previas a los parámetros 
 \alpha \sim \mathcal{N}(0,5^{2}), \hspace{3mm} \beta_j\sim\mathcal N(0,5^{2}), \hspace{1.5mm} j = 1,...,R
 \]
 
-Esta distribución previa coloca aproximadamente el 95% de la masa en el intervalo [-9.8,9.8] para cada coeficiente. De esta forma, al considerar covariables estandarizadas, esta elección garantiza distribuciones previas débiles, puesto abarca distintos órdenes de magnitud, y no impone una restricción significativa sobre la probabilidad base, ni los efectos de las covariables
+Esta distribución previa coloca aproximadamente el 95% de la masa en el intervalo [-9.8,9.8] para cada coeficiente. De esta forma, al considerar covariables estandarizadas, esta elección garantiza distribuciones previas débiles, puesto que abarca distintos órdenes de magnitud, y no impone una restricción significativa sobre la probabilidad base, ni los efectos de las covariables
 
 
 ### Interpretación e implementación del modelo.
@@ -140,7 +140,7 @@ A su vez, cada coeficiente \(\beta_{j}\) cuantifica el efecto de la covariable $
 
 En este contexto, las cantidades $p_i$ describen la probabilidad de presentar la condición (sobrepeso, obesidad) en el distrito $i$, dado el perfil sociodemográfico capturado en el vector de covariables $X_{i}$. Asimismo, en el enfoque bayesiano adoptado, la información aportada por los datos y las distribuciones previas se combinan en la distribución posterior de $p_{i}$, a partir de la cual, se obtienen estimaciones puntuales, intervalos de credibilidad e indicadores agregados por cantón o provincia.
 
-Debido a la complejidad de la fórmula exacta de la distribución posterior de los parámetros $\alpha$, $\beta$ del modelo, se recurre a aproximaciones númericas mediante técnicas de muestreo Monte Carlo vía cadenas de Markov. En específico, en el presente estudio se utiliza el algortimo No-U-Turn Sampler (NUTS), a través del software Python versión 3.8.2. Este procedimiento genera una cadena de valores $(\alpha^{(t)}, \beta^{(t)})$ cuya distribución estacionaria coincide con la distribución posterior de los coeficientes del modelo. Con esto, se generan muestras posteriores de la prevalencia $(p_{i}^{(t)})$ mediante el predictor lineal. El fundamento teórico de estos métodos se resume en la siguiente sección.
+Debido a la complejidad de la fórmula exacta de la distribución posterior de los parámetros $\alpha$, $\beta$ del modelo, se recurre a aproximaciones numéricas mediante técnicas de muestreo Monte Carlo vía cadenas de Markov. En específico, en el presente estudio se utiliza el algoritmo No-U-Turn Sampler (NUTS), a través del software Python versión 3.8.2. Este procedimiento genera una cadena de valores $(\alpha^{(t)}, \beta^{(t)})$ cuya distribución estacionaria coincide con la distribución posterior de los coeficientes del modelo. Con esto, se generan muestras posteriores de la prevalencia $(p_{i}^{(t)})$ mediante el predictor lineal. El fundamento teórico de estos métodos se resume en la siguiente sección.
 
 ## Fundamento Teórico
 ### Hamiltonian Monte Carlo
@@ -189,6 +189,7 @@ read.csv("../res/csv/summary_prevalence_by_province.csv") %>%
   ) %>%
   kable(
     caption = "Resumen por provincia: obesidad y sobrepeso",
+    col.names = c("Provincia", "Media Obesidad", "Intervalo Obesidad", "Media Sobrepeso", "Intervalo Sobrepeso"),
     align = "c"
   )
 
@@ -210,6 +211,7 @@ read.csv("../res/csv/summary_prevalence_by_canton.csv") %>%
   ) %>%
   kable(
     caption = "Resumen por cantones más relevantes: obesidad y sobrepeso",
+    col.names = c("Cantón", "Media Obesidad", "Intervalo Obesidad", "Media Sobrepeso", "Intervalo Sobrepeso"),
     align = "c"
   )
 ```
@@ -250,7 +252,7 @@ Se agradece profundamente a nuestro profesor, PhD. Maikol Solís, por su orienta
 
 ## Repositorio GitHub
 
-https://github.com/CA0307-II-2025/grupo-1
+En el siguiente enlace puede accesar el repositorio en Github del presente estudio: https://github.com/CA0307-II-2025/grupo-1
 
 ```{r}
 read.csv("../res/csv/summary_prevalence_by_canton.csv") %>%
@@ -263,6 +265,7 @@ read.csv("../res/csv/summary_prevalence_by_canton.csv") %>%
   ) %>%
   kable(
     caption = "Resumen por cantones: obesidad y sobrepeso",
+    col.names = c("Cantón", "Media Obesidad", "Intervalo Obesidad", "Media Sobrepeso", "Intervalo Sobrepeso"),
     align = "c"
   )
 ```
