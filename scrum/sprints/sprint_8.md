@@ -2,26 +2,31 @@
 
 ## 🎯  Objetivo del Sprint:
 
- _Declarar la meta del sprint en 1-2 frases (ej: "Tener datos limpios y un análisis descriptivo inicial completado")._
+ Culminar el desarrollo del proyecto, mediante la entrega entrega final del reporte, y la retrospectiva del proyecto.
 
 ## 😃  Historias de usuario
 
-- HU# - "Título de la Historia" (Estimación: Y pts) – *Criterios de aceptación confirmados.*
-- HU# - ...
-*(Listar las historias del backlog que el equipo se compromete a completar este sprint, con sus IDs y breve nombre.)*
 
-
+- HU#162 - Como Analista de datos debo realizar la presentación para la exposición final del reporte. (Estimación: 3 pts)
+- HU#163 - Generar el reporte del Sprint 8
+- HU#164 - Como analista de datos quiero ajustar el reporte científico según el formato establecido por la revista Serengueti.
+- HU165  - Como analista de datos quiero ajustar el reporte científico según el formato establecido por la revista Serengueti
 
 ## 🔜  Plan de alto nivel:
-- *Semana 1:* _Tareas principales (ej: Ingesta de datos, Setup entorno CI)._
-- *Semana 2:* _Tareas principales (ej: Implementar modelo y validar, preparar demo)._
-
+- *Semana 1:* Finalizar las tareas de formato del reporte, así como de la presentación.
 
 ## 🥇  Criterios de aceptación del Sprint:
-- [ ] _Todas las historias listadas completadas y aceptadas por el profesor._
-- [ ] _El código limpia automáticamente la base de datos._
+- [ ] Se cumplen todos los criterios para (UH#162), (UH#163), (UH#164).
+
+- [ ] (UH#162) Se genera un documento en formato pdf con las secciones requeridas.
+
+- [ ] (UH#163) Informe científico final completado, revisado y formateado según normas (incluyendo Resumen, Introducción, Métodos, Resultados, Discusión, Conclusiones, Referencias).
+- [ ] (UH#163) Versión release del código (v1.0.0) etiquetada en Git y changelog.
+- [ ] (UH#163) Presentación y demo final (slides o demostración en vivo de la app y hallazgos clave).
+- [ ] (UH#163) Retrospectiva del equipo realizada y documentada (lecciones aprendidas, acciones de mejora futura)
 
 
+Se genera un documento en formato word que satisface todos las reglas requeridas.
 ## 📌  Asignación de tareas inicial
 - *Persona A:* Historia 1
 - *Persona B:* Historia 2
