@@ -7,3 +7,5 @@ plotly
 pymc
 scipy
 statsmodels
+Pillow
+gunicorn

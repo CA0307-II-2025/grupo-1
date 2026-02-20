@@ -56,16 +56,19 @@ PROV_POINTS = {
     "LIMON": (9.99070, -83.03600),  # Limón
 }
 
-DATA_CSV = "../data/clean/datos_limpios.csv"
-OUTDIR_OB = "../res/graficos/graficos_simulados_no_jer/obesidad"
-OUTDIR_SOB = "../res/graficos/graficos_simulados_no_jer/sobrepeso"
-MOSAIC_OB_PAIS = os.path.join(OUTDIR_OB, "posterior_prevalencia_obesidad_pais.png")
-MOSAIC_SOB_PAIS = os.path.join(OUTDIR_SOB, "posterior_prevalencia_sobrepeso_pais.png")
-GEOJSON_PROVINCES = "../data/geo/geoBoundaries-CRI-ADM1_simplified.geojson"
-GEOJSON_CANTONES = "../data/geo/Cantones_de_Costa_Rica.geojson"
-CANTON_CODES_JSON = "../data/geo/CodeSystem-cantones-cs.json"
-SUMMARY_CSV = "../res/csv/summary_prevalence_by_province.csv"
-SUMMARY_CSV_CANTON = "../res/csv/summary_prevalence_by_canton.csv"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+DATA_CSV = os.path.join(BASE_DIR, "data/clean/datos_limpios.csv")
+OUTDIR_OB = os.path.join(BASE_DIR, "res/graficos/graficos_simulados_no_jer/obesidad")
+OUTDIR_SOB = os.path.join(BASE_DIR, "res/graficos/graficos_simulados_no_jer/sobrepeso")
+# MOSAIC_OB_PAIS = os.path.join(OUTDIR_OB, "posterior_prevalencia_obesidad_pais.png")
+# MOSAIC_SOB_PAIS = os.path.join(OUTDIR_SOB, "posterior_prevalencia_sobrepeso_pais.png")
+GEOJSON_PROVINCES = os.path.join(BASE_DIR, "data/geo/geoBoundaries-CRI-ADM1_simplified.geojson")
+GEOJSON_CANTONES = os.path.join(BASE_DIR, "data/geo/Cantones_de_Costa_Rica.geojson")
+CANTON_CODES_JSON = os.path.join(BASE_DIR, "data/geo/CodeSystem-cantones-cs.json")
+SUMMARY_CSV = os.path.join(BASE_DIR, "res/csv/summary_prevalence_by_province.csv")
+SUMMARY_CSV_CANTON = os.path.join(BASE_DIR, "res/csv/summary_prevalence_by_canton.csv")
+
 # ==========================
 # Utilidades
 # ==========================
@@ -769,6 +772,7 @@ SUMMARY_CANTON_DF = get_summary_canton_df()
 # App Dash
 # ==========================
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
+server = app.server
 
 app.title = "Obesidad y Sobrepeso – Costa Rica"
 
