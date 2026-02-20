@@ -63,7 +63,9 @@ OUTDIR_OB = os.path.join(BASE_DIR, "res/graficos/graficos_simulados_no_jer/obesi
 OUTDIR_SOB = os.path.join(BASE_DIR, "res/graficos/graficos_simulados_no_jer/sobrepeso")
 # MOSAIC_OB_PAIS = os.path.join(OUTDIR_OB, "posterior_prevalencia_obesidad_pais.png")
 # MOSAIC_SOB_PAIS = os.path.join(OUTDIR_SOB, "posterior_prevalencia_sobrepeso_pais.png")
-GEOJSON_PROVINCES = os.path.join(BASE_DIR, "data/geo/geoBoundaries-CRI-ADM1_simplified.geojson")
+GEOJSON_PROVINCES = os.path.join(
+    BASE_DIR, "data/geo/geoBoundaries-CRI-ADM1_simplified.geojson"
+)
 GEOJSON_CANTONES = os.path.join(BASE_DIR, "data/geo/Cantones_de_Costa_Rica.geojson")
 CANTON_CODES_JSON = os.path.join(BASE_DIR, "data/geo/CodeSystem-cantones-cs.json")
 SUMMARY_CSV = os.path.join(BASE_DIR, "res/csv/summary_prevalence_by_province.csv")

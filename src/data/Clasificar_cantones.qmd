@@ -48,7 +48,7 @@ gam_cantones <- tribble(
 gam_cantones_key <- gam_cantones |>
   mutate(
     CANTON_KEY = canton |>
-      stri_trans_general("Latin-ASCII") |>  
+      stri_trans_general("Latin-ASCII") |>
       toupper() |>
       trimws(),
     GAM = "GAM"
@@ -56,8 +56,8 @@ gam_cantones_key <- gam_cantones |>
   select(CANTON_KEY, GAM)
 
 
-df_gam <- df %>%                 
-  left_join(gam_cantones_key, by = c("Canton" = "CANTON_KEY")) %>% 
+df_gam <- df %>%
+  left_join(gam_cantones_key, by = c("Canton" = "CANTON_KEY")) %>%
   mutate(
     GAM = if_else(is.na(GAM), "NO GAM", GAM)
   )
@@ -96,7 +96,7 @@ ggplot(df_gam) +
       ymax = ob_q97.5,
       colour = GAM
     ),
-    width = 0.01,   
+    width = 0.01,
     alpha = 0.7
   ) +
   theme_cowplot() +
@@ -108,4 +108,3 @@ ggplot(df_gam) +
   theme(axis.ticks.x = element_blank(), axis.text.x  = element_blank())
 
 ```
-
