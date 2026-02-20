@@ -579,7 +579,7 @@ def get_summary_df() -> pd.DataFrame:
             "Genera el archivo antes de lanzar el dashboard."
         )
 
-    df = pd.read_csv(SUMMARY_CSV)
+    df = pd.read_csv(SUMMARY_CSV, encoding="latin-1")
 
     required_cols = {
         "Province",
@@ -731,7 +731,7 @@ def get_summary_canton_df() -> pd.DataFrame:
             "Genera el archivo de resumen por cantón antes de lanzar el dashboard."
         )
 
-    df = pd.read_csv(SUMMARY_CSV_CANTON)
+    df = pd.read_csv(SUMMARY_CSV_CANTON, encoding="latin-1")
 
     required_cols = {
         "Canton",
