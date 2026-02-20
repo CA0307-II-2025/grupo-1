@@ -1,8 +1,10 @@
 arviz
 dash
+gunicorn
 matplotlib
 numpy
 pandas
+Pillow
 plotly
 pymc
 scipy
