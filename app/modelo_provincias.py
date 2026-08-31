@@ -1,9 +1,10 @@
-import pandas as pd
-import numpy as np
-import pymc as pm
-import arviz as az
 import os
+
+import arviz as az
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import pymc as pm
 
 SUMMARY_CSV = "../res/csv/summary_prevalence_by_province.csv"
 
