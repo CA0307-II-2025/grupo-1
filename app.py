@@ -1,23 +1,19 @@
-# -*- coding: utf-8 -*-
 """
 Dashboard utiliza los resultados generados para:
 - Construir un **mapa interactivo** (hover muestra media e IC95% de obesidad y sobrepeso).
 - Añadir una comparación de intervalos de confianza entre provincias.
 """
 
+import base64
 import os
-import numpy as np
-import pandas as pd
-from typing import Tuple, List
 
 import dash
+import numpy as np
+import pandas as pd
+import plotly.graph_objs as go
 from dash import dcc, html
 from dash.dependencies import Input, Output
-import plotly.graph_objs as go
-
 from PIL import Image
-
-import base64
 
 
 def img_to_data_uri(path: str) -> str:
@@ -166,21 +162,21 @@ def _load_province_geojson(path: str):
     for feat in gj.get("features", []):
         name_raw = str(feat.get("properties", {}).get(prop_key, "")).strip()
         # muchos geoBoundaries traen "Provincia Heredia": quitamos prefijo
-        name_raw = re.sub(r"^\s*Provincia\s+", "", name_raw, flags=re.I)
+        name_raw = re.sub(r"^\s*Provincia\s+", "", name_raw, flags=re.IGNORECASE)
         name_clean = _sanitize_prov(name_raw)
         feat["id"] = name_clean
 
     return gj, "id"
 
 
-def _summarize(draws: np.ndarray) -> Tuple[float, float, float, float]:
+def _summarize(draws: np.ndarray) -> tuple[float, float, float, float]:
     mean = float(draws.mean())
     q2, q50, q97 = [float(x) for x in np.quantile(draws, [0.025, 0.5, 0.975])]
     return mean, q2, q50, q97
 
 
 def _compose_mosaic(
-    image_paths: List[str],
+    image_paths: list[str],
     outpath: str,
     cols: int = 4,
     pad: int = 10,
@@ -217,9 +213,9 @@ def _compose_mosaic(
 
 
 def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
+    import numpy as np
     import plotly.express as px
     import plotly.graph_objects as go
-    import numpy as np
 
     assert metric in {"ob_mean", "sb_mean"}
 
@@ -333,9 +329,9 @@ def make_map(df_summary: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
 
 
 def make_map_canton(df_canton: pd.DataFrame, metric: str = "ob_mean") -> go.Figure:
+    import numpy as np
     import plotly.express as px
     import plotly.graph_objects as go
-    import numpy as np
 
     assert metric in {"ob_mean", "sb_mean"}
 
@@ -443,9 +439,9 @@ def make_map_canton(df_canton: pd.DataFrame, metric: str = "ob_mean") -> go.Figu
 
 
 def make_forest(df_summary: pd.DataFrame, metric: str = "ob"):
-    import plotly.graph_objects as go
     import numpy as np
     import pandas as pd
+    import plotly.graph_objects as go
 
     if metric == "ob":
         mean_col, lo_col, hi_col, title = "ob_mean", "ob_q2.5", "ob_q97.5", "Obesidad"
@@ -662,7 +658,7 @@ def _load_canton_codes(path: str):
     return name_map
 
 
-def _load_canton_geojson(path: str, canton_names: List[str]):
+def _load_canton_geojson(path: str, canton_names: list[str]):
     """
     Carga un GeoJSON de cantones y elige automáticamente la columna de
     'properties' que mejor calza con los nombres de cantón (_canton_clean).
